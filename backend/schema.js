@@ -55,6 +55,7 @@ type Mutation {
     email: String!
   ): Parent
   login(email: String!, password: String!): Token
+  editGroup(name: String! child: String!): Group
 }
 
   type Query {

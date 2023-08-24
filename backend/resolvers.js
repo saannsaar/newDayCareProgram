@@ -133,7 +133,32 @@ const resolvers = {
           })
         })
       },
-  
+      editGroup: async (root, args, context) => {
+        const currentUser = context.currentUser
+
+        if (!currentUser) {
+            throw new GraphQLError('not authenticated to make changes', {
+                extensions: {
+                    code: 'BAD_USER_INPUT',
+                }
+            })
+        }
+
+        const findGroup = await Group.findOne({ name: args.name })
+
+        // If there is no group found from the db 
+        // With given name, return null
+        if (!findGroup) {
+            return null
+        }
+        // Find the child from the db
+        const findChild = await Child.findOne({ name: args.child })
+        // Add child to the groups "children" array
+        findGroup.children = [...findGroup.children, findChild]
+        // Save changes
+        return await findGroup.save()
+
+      },
       login: async (root, args) => {
         const user = await DaycareWorker.findOne({ email: args.email })
   
