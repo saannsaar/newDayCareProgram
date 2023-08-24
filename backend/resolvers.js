@@ -91,6 +91,33 @@ const resolvers = {
         }
         
       },
+      addParent: async (root, args, context) => {
+        console.log(root)
+        console.log(args)
+
+        const currentUser = context.currentUser
+        console.log(currentUser)
+
+        if (!currentUser) {
+            throw new GraphQLError('not authenticated to add a new child', {
+                extensions: {
+                    code: 'BAD_USER_INPUT',
+                }
+            })
+        }
+        const newParent = await new Parent({...args})
+        try {
+            await newParent.save()
+            pubsub.publish('PARENT_ADDED', { addParent: newParent})
+        } catch(error) {
+            throw new GraphQLError(error.message, {
+                extensions: {
+                    code: 'BAD_USER_INPUT',
+                }
+            })
+        }
+        return newParent
+      },
     // TODO Myöhemmin: Yksi user jonka alla eri tyyppisiä usereita esim worker, parent jne
       createWorkerUser: async (root, args) => {
         const newuser = new DaycareWorker({ email: args.email })

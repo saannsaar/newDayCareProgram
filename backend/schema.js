@@ -21,7 +21,7 @@ type Parent {
     id: ID!
     phone: String!
     email: String!
-    children: [Child!]!
+    children: [Child!]
 }
 
 type Child {
@@ -49,6 +49,11 @@ type Mutation {
     phone: String!
     email: String!
   ): DaycareWorker
+  addParent(
+    name: String!
+    phone: String!
+    email: String!
+  ): Parent
   login(email: String!, password: String!): Token
 }
 
