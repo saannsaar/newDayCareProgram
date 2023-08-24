@@ -4,7 +4,7 @@ type DaycareWorker {
   name: String!
   id: ID!
   born: String!
-  group: Group!
+  group:[Group!]
   phone: String!
   email: String!
 }

@@ -35,6 +35,18 @@ const resolvers = {
       addChild: async (root, args, context) => {
         console.log(root)
         console.log(args)
+
+        const currentUser = context.currentUser
+        if (!currentUser) {
+            throw new GraphQLError('not authenticated to add a new child', {
+                extensions: {
+                    code: 'BAD_USER_INPUT',
+                }
+            })
+        }
+
+        // Check if the child has a parent in the db
+       //  const parent_is_found = await Parent.findOne({ name: })
         // TODO
       },
     // TODO Myöhemmin: Yksi user jonka alla eri tyyppisiä usereita esim worker, parent jne
@@ -83,9 +95,10 @@ const resolvers = {
         console.log(root)
         // First get the daycareworker
         const found_daycareworker = await DaycareWorker.findOne({ name: root.name })
-        // Then get books that has has a reference to the found author (with id)
+        // Then get groups that "workers_in_charge" has the 
+        // found_daycareworker.name in side an array
         const allChildren = await Group.find({ workers_in_charge: [workers_in_charge.find(n => n == found_daycareworker.name), ...workers_in_charge] })
-        // return the length as in how many books one author has
+        // return the groups that the daycareworker is in charge of
         return allChildren
       }
     }
