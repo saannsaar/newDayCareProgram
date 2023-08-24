@@ -16,11 +16,11 @@ const resolvers = {
         return result
       },
       allParents: async (root, args) => {
-        const result = await Parent.find({}).populate('children')
+        const result = await Parent.find({}).populate({path: 'children', model: 'Child', populate :{path: 'group', model: 'Group', populate: {path: 'workers_in_charge', model: 'DaycareWorker'}}})
         return result
       },
       allWorkers: async (root, args) => {
-        const result = await DaycareWorker.find({})
+        const result = await DaycareWorker.find({}).populate({path: 'group', model: 'Group', populate: {path: 'workers_in_charge', model: 'DaycareWorker'}})
         return result
       },
 
@@ -37,6 +37,8 @@ const resolvers = {
         console.log(args)
 
         const currentUser = context.currentUser
+        console.log(currentUser)
+
         if (!currentUser) {
             throw new GraphQLError('not authenticated to add a new child', {
                 extensions: {
@@ -45,9 +47,49 @@ const resolvers = {
             })
         }
 
-        // Check if the child has a parent in the db
-       //  const parent_is_found = await Parent.findOne({ name: })
-        // TODO
+        const parent_is_found = await Parent.find({ name: args.parent[0] || args.parent[1] })
+        console.log(parent_is_found)
+
+        // If parent is not found, have to add new parent to the db
+        if(!parent_is_found) {
+            throw new GraphQLError('No parent found and cant add child', {
+                extensions: {
+                    code: 'BAD_USER_INPUT',
+                    invalidArgs: args.parent.name,
+                    error
+                }
+            })
+        }
+        if (parent_is_found.length == 1) {
+            const newChild = await new Child({ ...args, parents: [ parent_is_found[0] ]})
+            try {
+                await newChild.save()
+                pubsub.publish('CHILD_ADDED', { addChild: newChild})
+            } catch(error) {
+                throw new GraphQLError(error.message, {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                })
+            }
+            return newChild
+        }
+
+        if(parent_is_found.length == 2) {
+            const newChild = await new Child({...args, parents: [ parent_is_found[0], parent_is_found[1] ]})
+            try {
+                await newChild.save()
+                pubsub.publish('CHILD_ADDED', { addChild: newChild})
+            } catch(error) {
+                throw new GraphQLError(error.message, {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                })
+            }
+            return newChild
+        }
+        
       },
     // TODO Myöhemmin: Yksi user jonka alla eri tyyppisiä usereita esim worker, parent jne
       createWorkerUser: async (root, args) => {
@@ -57,7 +99,7 @@ const resolvers = {
         .catch(error => {
           throw new GraphQLError('Creating the user failed', {
             extensions: {
-              conde: 'BAD_USER_INPUT',
+              code: 'BAD_USER_INPUT',
               invalidArgs: args.name,
               error
             }
@@ -83,18 +125,6 @@ const resolvers = {
         }
   
         return { value: jwt.sign(userForToken, process.env.JWT_SECRET )}
-      }
-    },
-    DaycareWorker: {
-      group: async (root) => {
-        console.log(root)
-        // First get the daycareworker
-        const found_daycareworker = await DaycareWorker.findOne({ name: root.name })
-        // Then get groups that "workers_in_charge" has the 
-        // found_daycareworker.name in side an array
-        const allChildren = await Group.find({ workers_in_charge: [workers_in_charge.find(n => n == found_daycareworker.name), ...workers_in_charge] })
-        // return the groups that the daycareworker is in charge of
-        return allChildren
       }
     }
   }

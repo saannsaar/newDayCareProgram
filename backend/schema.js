@@ -4,7 +4,7 @@ type DaycareWorker {
   name: String!
   id: ID!
   born: String!
-  group:[Group!]
+  group: Group!
   phone: String!
   email: String!
 }
@@ -28,56 +28,7 @@ type Child {
   name: String!
   born: String!
   parents: [Parent!]!
-  group: Group!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  group: Group
 }
 
 type Token {
@@ -89,7 +40,7 @@ type Mutation {
     name: String!
     born: String!
     parent: [String!]!
-    group: String!
+    group: String
   ): Child
   createWorkerUser(
     name: String!
