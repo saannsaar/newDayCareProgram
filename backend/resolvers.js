@@ -4,6 +4,7 @@ const DaycareWorker = require('./models/DaycareWorker')
 const { GraphQLError } = require('graphql')
 const jwt = require('jsonwebtoken')
 const { PubSub } = require('graphql-subscriptions')
+const Group = require('./models/Group')
 const pubsub = new PubSub()
 
 const resolvers = {
@@ -81,11 +82,11 @@ const resolvers = {
       group: async (root) => {
         console.log(root)
         // First get the daycareworker
-        const booksFromAuthor = await Author.findOne({ name: root.name })
+        const found_daycareworker = await DaycareWorker.findOne({ name: root.name })
         // Then get books that has has a reference to the found author (with id)
-        const allBooks = await Book.find({ author: booksFromAuthor.id })
+        const allChildren = await Group.find({ workers_in_charge: [workers_in_charge.find(n => n == found_daycareworker.name), ...workers_in_charge] })
         // return the length as in how many books one author has
-        return allBooks.length
+        return allChildren
       }
     }
   }
