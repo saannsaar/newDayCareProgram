@@ -4,6 +4,7 @@
   "description": "Program for daycare and home to communicate. ",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Sanni Vepsäläinen",
@@ -18,6 +19,7 @@
     "graphql": "^16.8.0",
     "graphql-subscriptions": "^2.0.0",
     "graphql-ws": "^5.14.0",
+    "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.4",
     "mongoose-unique-validator": "^4.0.0",
     "ws": "^8.13.0"

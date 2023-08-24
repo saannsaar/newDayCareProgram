@@ -10,11 +10,12 @@ const schema = new mongoose.Schema({
     unique: true,
   },
   born: {
-    type: Date,
-  },
-  group: {
     type: String,
     required: true,
+  },
+  group: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Group'
   },
   phone: {
     type: String,

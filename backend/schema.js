@@ -12,14 +12,13 @@ type DaycareWorker {
 type Group {
     name: String!
     id: String!
-    workers_in_charge: [String!]!
+    workers_in_charge: [DaycareWorker!]!
     children: [Child!]!
   }
 
 type Parent {
     name: String!
     id: ID!
-    born: String
     phone: String!
     email: String!
     children: [Child!]!
@@ -28,8 +27,57 @@ type Parent {
 type Child {
   name: String!
   born: String!
-  parent: [Parent!]!
-  groupId: String!
+  parents: [Parent!]!
+  group: Group!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 type Token {
@@ -43,6 +91,14 @@ type Mutation {
     parent: [String!]!
     group: String!
   ): Child
+  createWorkerUser(
+    name: String!
+    born: String!
+    group:[String!]!
+    phone: String!
+    email: String!
+  ): DaycareWorker
+  login(email: String!, password: String!): Token
 }
 
   type Query {
@@ -50,12 +106,9 @@ type Mutation {
     allChildren: [Child!]
     allParents: [Parent!]
     allWorkers: [DaycareWorker!]
-    me: User
+    me: DaycareWorker
   }
 
-  type Subscription {
-    bookAdded: Book!
-  }
 `
 
 module.exports = typeDefs

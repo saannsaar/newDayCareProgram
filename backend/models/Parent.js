@@ -9,9 +9,6 @@ const schema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  born: {
-    type: Date,
-  },
   phone: {
     type: String,
     required: true,

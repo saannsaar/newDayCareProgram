@@ -9,7 +9,8 @@ const schema = new mongoose.Schema({
         unique: true,
     },
     born: {
-        type: Date,
+        type: String,
+        required: true,
     },
     parents: [
         {
@@ -17,9 +18,8 @@ const schema = new mongoose.Schema({
         ref: 'Parent'
     }],
     group: {
-        type: String,
-        required: true,
-        unique: false,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Group'
     },
 })
 

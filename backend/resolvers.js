@@ -12,7 +12,7 @@ const resolvers = {
       childCount: async () => Child.collection.countDocuments(),
 
       allChildren: async (root, args) => {
-        const result = await Child.find({}).populate('parents')
+        const result = await Child.find({}).populate('parents').populate({path: 'group', model: 'Group', populate: {path: 'workers_in_charge', model: 'DaycareWorker'}})
         return result
       },
       allParents: async (root, args) => {
@@ -84,11 +84,6 @@ const resolvers = {
   
         return { value: jwt.sign(userForToken, process.env.JWT_SECRET )}
       }
-    },
-    Subscription: {
-        bookAdded: {
-            subscribe: () => pubsub.asyncIterator('BOOK_ADDED')
-        }
     },
     DaycareWorker: {
       group: async (root) => {

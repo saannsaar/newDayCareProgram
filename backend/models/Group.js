@@ -10,7 +10,8 @@ const schema = new mongoose.Schema({
     unique: true,
   },
   workers_in_charge: [{
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'DaycareWorker'
   }], 
   children: [
         {
