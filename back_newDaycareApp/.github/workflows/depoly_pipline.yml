@@ -1,0 +1,34 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
+
+env: 
+  COMMIT_MESSAGE: ${{ toJson(github.event.commits.*.message)}}
+
+
+jobs:
+  deployment_with_render_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install Dependencies
+        run: npm install
+      - name: Run ui build 
+        run: npm run build:ui
+      - name: Run tests
+        run: npm run test
+      - name: Render Deploy Action
+        if: ${{ success() && github.event_name == 'push' && !contains(join(env.COMMIT_MESSAGE, ' '), '#skip') }}
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with: 
+          service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.MY_RENDER_API_KEY }}
