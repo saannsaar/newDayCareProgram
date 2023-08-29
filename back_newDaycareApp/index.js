@@ -21,7 +21,7 @@ const DaycareWorker = require('./models/DaycareWorker')
 
 require('dotenv').config()
 
-const MONGODB_URI = secrets.MONGODB_URI
+const MONGODB_URI = process.secrets.MONGODB_URI
 
 console.log('Connecting to', MONGODB_URI)
 
