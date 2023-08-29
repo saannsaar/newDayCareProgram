@@ -25,6 +25,7 @@ type Parent {
 }
 
 type Child {
+  id: ID!
   name: String!
   born: String!
   parents: [Parent!]!
