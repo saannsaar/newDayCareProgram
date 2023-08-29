@@ -88,6 +88,7 @@ const start = async () => {
     // in the req is parsed correctly and CORS problems do not appear
     cors(),
     express.json(),
+    express.static('dist'),
     expressMiddleware(server, {
       // Info about the logged-in user is set in the context 
       // using the function defined earlier
