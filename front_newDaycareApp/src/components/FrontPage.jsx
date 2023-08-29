@@ -11,7 +11,7 @@ const FrontPage = () => {
 	const [calendarValue, setCalendarValue] = useState(dayjs('2023-04-04'))
 	
 	useEffect(() => {
-		console.log(new Date(calendarValue.$d))
+		console.log(calendarValue.$d)
 	}, [calendarValue])
 
 	return (
@@ -20,7 +20,7 @@ const FrontPage = () => {
 				<div>
 					<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
 						<DateCalendar value={calendarValue} onChange={(newValue) => setCalendarValue(newValue)}/>
-					</LocalizationProvider>;
+					</LocalizationProvider>
 				</div>
 				<div>
 					Moi

@@ -88,7 +88,7 @@ const start = async () => {
     // in the req is parsed correctly and CORS problems do not appear
     cors(),
     express.json(),
-    express.static('dist'),
+    express.static('build'),
     expressMiddleware(server, {
       // Info about the logged-in user is set in the context 
       // using the function defined earlier
@@ -102,7 +102,7 @@ const start = async () => {
       },
     }),
   )
-  const PORT = 4000
+  const PORT = process.env.PORT || 3001
   httpServer.listen(PORT, () =>
     console.log(`Server is now running on http://localhost:${PORT}`)
   )

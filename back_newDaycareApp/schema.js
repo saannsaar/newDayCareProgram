@@ -16,6 +16,15 @@ type Group {
     children: [Child!]!
   }
 
+
+
+type Event {
+  date: String!
+  id: ID!
+  name: String!
+  
+}
+
 type Parent {
     name: String!
     id: ID!
@@ -66,7 +75,6 @@ type Mutation {
     allWorkers: [DaycareWorker!]
     me: DaycareWorker
   }
-
 `
 
 module.exports = typeDefs
