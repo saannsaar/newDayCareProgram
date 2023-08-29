@@ -145,7 +145,6 @@ const resolvers = {
         }
 
         const findGroup = await Group.findOne({ name: args.name })
-
         // If there is no group found from the db 
         // With given name, return null
         if (!findGroup) {
@@ -153,6 +152,7 @@ const resolvers = {
         }
         // Find the child from the db
         const findChild = await Child.findOne({ name: args.child })
+
         // Add child to the groups "children" array
         findGroup.children = [...findGroup.children, findChild]
         // Save changes
