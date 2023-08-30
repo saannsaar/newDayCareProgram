@@ -19,6 +19,12 @@ const schema = new mongoose.Schema({
         ref: 'Child'
     }
   ],
+  events: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Event'
+    }
+  ]
 })
 
 schema.set('toJSON', {

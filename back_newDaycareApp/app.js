@@ -11,6 +11,7 @@ const workerRouter = require('./controllers/workers')
 const parentRouter = require('./controllers/parents')
 const loginRouter = require('./controllers/login')
 const groupRouter = require('./controllers/groups')
+const eventsRouter = require('./controllers/events')
 
 
 
@@ -40,6 +41,7 @@ mongoose.connect(config.MONGODB_URI)
   app.use('/api/parents', parentRouter)
   app.use ('/api/groups', groupRouter)
   app.use('/api/login', loginRouter)
+  app.use('/api/events', middleware.userExtractor, eventsRouter)
 
   
   app.use(middleware.unknownEndpoint)
