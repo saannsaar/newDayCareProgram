@@ -1,0 +1,47 @@
+const bcrypt = require('bcrypt')
+const workerRouter = require('express').Router()
+const mongoose = require('mongoose')
+
+const DaycareWorker = require('../models/DaycareWorker')
+const {userExtractor } = require('../utils/middleware')
+
+
+// Haetaan kaikki työntekijät tietokannasta
+workerRouter.get('/', async (request, response) => {
+   const workers = await DaycareWorker.find({}).populate({path: 'group', model: 'Group', populate: {path: 'workers_in_charge', model: 'DaycareWorker'}})
+   console.log(workers)
+   response.json(workers)
+})
+
+
+// Lisätään uusi työntekijä tietokantaan
+workerRouter.post('/', userExtractor,  async (request, response) => {
+    const {email, name, born, phone, password} = request.body
+
+    const saltRounds = 10 
+    const passwordHash = await bcrypt.hash(password, saltRounds)
+
+    const user = new DaycareWorker({
+        email,
+        name,
+        born,
+        phone,
+        passwordHash,
+    })
+
+    const saved_worker = await user.save()
+
+    response.status(201).json(saved_worker)
+})
+
+
+workerRouter.get('/:id', async (request, response) => {
+    const spesific_worker = await DaycareWorker.findById(request.params.id).populate({path: 'group', model: 'Group', populate: {path: 'workers_in_charge', model: 'DaycareWorker'}})
+    if (spesific_worker) {
+      response.json(spesific_worker)
+    } else {
+      response.status(404).end()
+    }
+  })
+
+  module.exports = workerRouter

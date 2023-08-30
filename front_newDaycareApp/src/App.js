@@ -1,45 +1,61 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/react-in-jsx-scope */
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import { AppBar, Toolbar, Button } from '@mui/material'
-import { useQuery, useApolloClient } from '@apollo/client'
-
-
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import { ALL_CHILDREN, ALL_PARENTS, ALL_WORKERS } from './queries'
 import LoginForm from './components/LoginForm'
 import FrontPage from './components/FrontPage'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { initializeChildren } from './reducers/ChildReducer'
+import {  initializeWorkers } from './reducers/WorkersReducer'
+import  childService from './services/children'
 
 const App = () => {
 
+	const dispatch = useDispatch()
+
+	const children = useSelector(state => state.children)
+	const workers = useSelector(state => state.workers)
+	console.log(children)
+	console.log(workers)
+	const [currentUser, setCurrentUser] = useState(null)
+
+	useEffect(() => {
+		dispatch(initializeChildren())
+		dispatch(initializeWorkers())
+	}, [dispatch])
+
+	useEffect(() => {
+		const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
+		if (loggedUserJSON) {
+			const user = JSON.parse(loggedUserJSON)
+			setCurrentUser(user)
+			childService.setToken(user.token)
+		}
+	},[])
+
+
+	const logout = (event) => {
+		event.preventDefault()
+		window.localStorage.removeItem('loggedBlogAppUser')
+		setCurrentUser(null)
 	
-	const [token, setToken] = useState(null)
-	const children = useQuery(ALL_CHILDREN)
-	const parents = useQuery(ALL_PARENTS)
-	const workers = useQuery(ALL_WORKERS)
-	const client = useApolloClient()
+	  }
 
-
-	const logout = () => {
-		setToken(null)
-		localStorage.clear()
-		client.resetStore()
-	}
-
-	if (children.loading || parents.loading || workers.loading) {
+	if (children.loading || workers.loading) {
 		return (
 			// eslint-disable-next-line react/react-in-jsx-scope
 			<div> Loading...</div>)
 	}
 
-	if(!token) {
+	if(!currentUser) {
 		return (
 			<div>
-				<LoginForm setToken={setToken}/>
+				<LoginForm setCurrentUser={setCurrentUser}/>
 			</div>
 		)
 	}
-	if (token) {
+	if (currentUser) {
   
 		return (
 			<div>
