@@ -4,7 +4,7 @@
 import {  useState } from 'react'
 import { Button, TextField } from '@mui/material'
 import loginService from '../services/login'
-import childService from '../services/login'
+import childService from '../services/children'
 
 const LoginForm = ({  setCurrentUser }) => {
 	const [userEmail, setuserEmail] = useState('')
@@ -20,7 +20,7 @@ const LoginForm = ({  setCurrentUser }) => {
 
 		try {
  	  const user = await loginService.login({
-				userEmail,
+				email: userEmail,
 				password,
 		  })
 	

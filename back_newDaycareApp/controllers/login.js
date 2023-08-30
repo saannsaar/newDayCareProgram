@@ -21,11 +21,8 @@ loginRouter.post('/', async (request, response) => {
         id: user._id,
     }
 
-
-    // Token on digitaalisesti allekirjoitettu käyttämällä SALAISUUTENA ympäristömuuttujassa 
-    // SECRET olevaa merkkijonoa
     //Tokenin voimassaoloaika on 60*60 sekuntia, eli 1 tunti
-    const token = jwt.sign(userForToken, process.env.SECRET, {expiresIn: 60*60})
+    const token = jwt.sign(userForToken, process.env.JWT_SECRET, {expiresIn: 60*60})
 
     response.status(200).send({token, email: user.email, name: user.name})
 })
