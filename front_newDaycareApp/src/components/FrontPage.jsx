@@ -22,9 +22,7 @@ const FrontPage = () => {
 						<DateCalendar value={calendarValue} onChange={(newValue) => setCalendarValue(newValue)}/>
 					</LocalizationProvider>
 				</div>
-				<div>
-					Moi
-				</div>
+				
 			</div>
 
             

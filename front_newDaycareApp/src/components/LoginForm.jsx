@@ -5,15 +5,21 @@ import {  useState } from 'react'
 import { Button, TextField } from '@mui/material'
 import loginService from '../services/login'
 import childService from '../services/children'
+import { useDispatch } from 'react-redux'
+import { initializeCurrentWorker } from '../reducers/CurrentUser'
+
 
 const LoginForm = ({  setCurrentUser }) => {
 	const [userEmail, setuserEmail] = useState('')
 	const [password, setPassword] = useState('')
 
+	// eslint-disable-next-line no-unused-vars
 	const [error, setError] = useState('')
 
+	const dispatch = useDispatch()
 
 
+	
 
 	const submit = async (event) => {
 		event.preventDefault()
@@ -27,6 +33,7 @@ const LoginForm = ({  setCurrentUser }) => {
 		  window.localStorage.setItem('loggedDaycareAppUser', JSON.stringify(user))
 		  childService.setToken(user.token)
 		  setCurrentUser(user)
+		  dispatch(initializeCurrentWorker(user))
 		  setuserEmail('')
 		  setPassword('')
 		 
@@ -55,9 +62,7 @@ const LoginForm = ({  setCurrentUser }) => {
 					</div>
 				</form>
 			</div>
-			{error ? <div>
-				{error}
-			</div> : null}
+		
 		</>
 
 	)

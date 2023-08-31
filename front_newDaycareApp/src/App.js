@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeChildren } from './reducers/ChildReducer'
 import {  initializeWorkers } from './reducers/WorkersReducer'
 import  childService from './services/children'
+import OwnGroup from './components/OwnGroup'
+import { initializeCurrentWorker } from './reducers/CurrentUser'
 
 const App = () => {
 
@@ -16,8 +18,10 @@ const App = () => {
 
 	const children = useSelector(state => state.children)
 	const workers = useSelector(state => state.workers)
+	const loggedInUser = useSelector(state => state.currentUser)
 	console.log(children)
 	console.log(workers)
+	console.log(loggedInUser)
 	const [currentUser, setCurrentUser] = useState(null)
 
 	useEffect(() => {
@@ -39,6 +43,7 @@ const App = () => {
 		event.preventDefault()
 		window.localStorage.removeItem('loggedBlogAppUser')
 		setCurrentUser(null)
+		dispatch(initializeCurrentWorker(currentUser))
 	
 	  }
 
@@ -60,14 +65,14 @@ const App = () => {
 		return (
 			<div>
 				<Router>
-
 					<AppBar position='static'>
 						<Toolbar>
-							<Button color="inherit" component={Link} to="/">Home</Button>
-							<Button color="inherit" component={Link} to="/daycare">Home</Button>
-							<Button color="inherit" component={Link} to="/families">Home</Button>
-							<Button color="inherit" component={Link} to="/calendar">Home</Button>
-							<Button color="inherit" component="button" onClick={logout}>Logout</Button>
+							<Button color="inherit" component={Link} to="/">Koti</Button>
+							<Button color="inherit" component={Link} to="/daycare">Päiväkoti</Button>
+							<Button color="inherit" component={Link} to="/families">Viestit</Button>
+							<Button color="inherit" component={Link} to="/calendar">Kalenteri</Button>
+							<Button color="inherit" component={Link} to="/own-group">Oma ryhmä</Button>
+							<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
 						</Toolbar>
 					</AppBar>
      
@@ -76,6 +81,7 @@ const App = () => {
 
 					<Routes>
 						<Route path="/" element={<FrontPage />}/>
+						<Route path="/own-group" element={<OwnGroup worker={currentUser} workers={workers}/>}/>
 					</Routes>
 				</Router>
 

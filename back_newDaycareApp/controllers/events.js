@@ -36,7 +36,7 @@ eventsRouter.get('/:id', async (request, response) => {
             date: body.date,
             event_type: body.event_type,
             info: body.info,
-            group: group.id,
+            group: group ? group.id : null 
         })
     
         const saved_event = await new_event.save()
