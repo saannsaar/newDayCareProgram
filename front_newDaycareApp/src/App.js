@@ -65,7 +65,7 @@ const App = () => {
 		return (
 			<div>
 				<Router>
-					<AppBar position='static'>
+					<AppBar sx={{ bgcolor: 'primary.dark'}} position='static'>
 						<Toolbar>
 							<Button color="inherit" component={Link} to="/">Koti</Button>
 							<Button color="inherit" component={Link} to="/daycare">Päiväkoti</Button>
