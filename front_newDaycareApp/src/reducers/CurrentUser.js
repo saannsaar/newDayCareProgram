@@ -9,10 +9,18 @@ const currentUserSlice = createSlice({
 		setUser: (state, action) => {
 			return action.payload
 		},
+		// eslint-disable-next-line no-unused-vars
+		removeUser: (state) => {
+			return ''
+		},
+		editUserInfo: (state, action) => {
+			// EPÄVARMA
+			return action.payload
+		}
 	}
 })
 
-export const { setUser } = currentUserSlice.actions
+export const { setUser, removeUser, editUserInfo } = currentUserSlice.actions
 
 
 
@@ -22,6 +30,21 @@ export const initializeCurrentWorker = (user) => {
 	return async dispatch => {
 		const worker = await workerService.getWorkerById(user)
 		dispatch(setUser(worker))
+	}
+}
+
+export const removeCurrentUser = () => {
+	return async (dispatch) => {
+		dispatch(removeUser())
+	}
+}
+
+export const editUser = (user, id) => {
+	console.log(user, 'EDIT')
+	console.log(id)
+	return async dispatch => {
+		const edited_user = await workerService.editUser(user, id)
+		dispatch(editUserInfo(edited_user))
 	}
 }
 

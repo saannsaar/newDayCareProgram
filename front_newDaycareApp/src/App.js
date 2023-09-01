@@ -1,8 +1,8 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/react-in-jsx-scope */
-import { useState, useEffect} from 'react'
+import {  useEffect} from 'react'
 import { AppBar, Toolbar, Button } from '@mui/material'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 import FrontPage from './components/FrontPage'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,7 +10,11 @@ import { initializeChildren } from './reducers/ChildReducer'
 import {  initializeWorkers } from './reducers/WorkersReducer'
 import  childService from './services/children'
 import OwnGroup from './components/OwnGroup'
-import { initializeCurrentWorker } from './reducers/CurrentUser'
+import {  removeCurrentUser } from './reducers/CurrentUser'
+import Messages from './components/Messages'
+import Daycare from './components/Daycare'
+import Calendar from './components/Calendar'
+
 
 const App = () => {
 
@@ -21,8 +25,9 @@ const App = () => {
 	const loggedInUser = useSelector(state => state.currentUser)
 	console.log(children)
 	console.log(workers)
+	// const navigate = useNavigate()
 	console.log(loggedInUser)
-	const [currentUser, setCurrentUser] = useState(null)
+	
 
 	useEffect(() => {
 		dispatch(initializeChildren())
@@ -33,7 +38,7 @@ const App = () => {
 		const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
-			setCurrentUser(user)
+			
 			childService.setToken(user.token)
 		}
 	},[])
@@ -42,9 +47,8 @@ const App = () => {
 	const logout = (event) => {
 		event.preventDefault()
 		window.localStorage.removeItem('loggedBlogAppUser')
-		setCurrentUser(null)
-		dispatch(initializeCurrentWorker(currentUser))
-	
+		dispatch(removeCurrentUser())
+		console.log(loggedInUser)
 	  }
 
 	if (children.loading || workers.loading) {
@@ -53,23 +57,27 @@ const App = () => {
 			<div> Loading...</div>)
 	}
 
-	if(!currentUser) {
+	if(!loggedInUser) {
 		return (
-			<div>
-				<LoginForm setCurrentUser={setCurrentUser}/>
-			</div>
+			<BrowserRouter>
+				
+				<Routes>
+					<Route path="/" element={<LoginForm />}/>
+				</Routes>
+			</BrowserRouter>
+			
 		)
 	}
-	if (currentUser) {
+	if (loggedInUser) {
   
 		return (
 			<div>
-				<Router>
+				<BrowserRouter>
 					<AppBar sx={{ bgcolor: 'primary.dark'}} position='static'>
 						<Toolbar>
 							<Button color="inherit" component={Link} to="/">Koti</Button>
 							<Button color="inherit" component={Link} to="/daycare">Päiväkoti</Button>
-							<Button color="inherit" component={Link} to="/families">Viestit</Button>
+							<Button color="inherit" component={Link} to="/messages">Viestit</Button>
 							<Button color="inherit" component={Link} to="/calendar">Kalenteri</Button>
 							<Button color="inherit" component={Link} to="/own-group">Oma ryhmä</Button>
 							<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
@@ -81,9 +89,12 @@ const App = () => {
 
 					<Routes>
 						<Route path="/" element={<FrontPage />}/>
-						<Route path="/own-group" element={<OwnGroup worker={currentUser} workers={workers}/>}/>
+						<Route path="/own-group" element={<OwnGroup worker={loggedInUser} workers={workers}/>}/>
+						<Route path="/messages" element={<Messages/>}/>
+						<Route path="/daycare" element={<Daycare/>}/>
+						<Route path="/calendar" element={<Calendar/>}/>
 					</Routes>
-				</Router>
+				</BrowserRouter>
 
       
       

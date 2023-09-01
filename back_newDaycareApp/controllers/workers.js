@@ -44,4 +44,15 @@ workerRouter.get('/:id', async (request, response) => {
     }
   })
 
+  workerRouter.put('/:id', async(request, response, next) => {
+    try {
+        const worker = await DaycareWorker.findByIdAndUpdate(request.params.id, request.body, {
+            new: true,
+        }).exec()
+        response.json(worker)
+    } catch(error) {
+        next(error)
+    }
+  })
+
   module.exports = workerRouter

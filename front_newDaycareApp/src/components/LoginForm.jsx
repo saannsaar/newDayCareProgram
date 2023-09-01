@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux'
 import { initializeCurrentWorker } from '../reducers/CurrentUser'
 
 
-const LoginForm = ({  setCurrentUser }) => {
+const LoginForm = ( ) => {
 	const [userEmail, setuserEmail] = useState('')
 	const [password, setPassword] = useState('')
 
@@ -32,7 +32,7 @@ const LoginForm = ({  setCurrentUser }) => {
 	
 		  window.localStorage.setItem('loggedDaycareAppUser', JSON.stringify(user))
 		  childService.setToken(user.token)
-		  setCurrentUser(user)
+		 
 		  dispatch(initializeCurrentWorker(user))
 		  setuserEmail('')
 		  setPassword('')
