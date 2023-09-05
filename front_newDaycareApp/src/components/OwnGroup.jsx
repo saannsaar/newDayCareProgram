@@ -33,9 +33,6 @@ const OwnGroup = ({ worker, workers }) => {
 	const handleModalOpen = () => {
 		setmodalOpen(true)
 	}
-
-
-
 	const handleModalClose = () => {
 		setmodalOpen(false)
 	}

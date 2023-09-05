@@ -1,33 +1,41 @@
+/* eslint-disable react/prop-types */
+
 /* eslint-disable react/react-in-jsx-scope */
 
+import { Container, Box } from '@mui/material'
+import Item from './Item'
 
-const Daycare = () => {
+
+const Daycare = ( { workers, groups } ) => {
+
+	console.log(workers)
+	console.log(groups)
 	return (
-		<div>
-            PÄIVÄKODIN SIVU
-		</div>
+		<Container>
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'row',
+					p: 1,
+					m: 1,
+					borderRadius: 1,
+					width: '100%',
+				}}
+			>
+				<Item> Kuva? </Item>
+				<Item> <h3>Työntekijät:</h3>
+					{workers.map((worker) => (
+						<Item key={worker.name}> {worker.name}</Item>
+					))}
+				</Item>
+				<Item><h3>Ryhmät:</h3>
+					{groups.map((group) => (
+						<Item key={group.name}> {group.name} </Item>
+					))}</Item>
+			</Box>
+		</Container>
 	)
 }
 
 export default Daycare
 
-// <Container>
-// 				<Card style={{ marginTop: '1em'}}>
-// 					<Grid container spacing={2}>
-// 						<Grid item xs={6}>
-// 							<Item>Ryhmä kuvake </Item>
-// 						</Grid>
-// 						<Grid item xs={6}>
-// 							<Item>{this_worker.group.name}</Item>
-// 						</Grid>
-// 					</Grid>
-// 					<Dialog fullWidth={true} open={modalTwoOpen} onClose={() => handleModalTwoClose()}>
-// 						<DialogTitle>Muokkaa käyttäjätietojasi</DialogTitle>
-// 						<Divider />
-// 						<DialogContent>
-							
-// 						</DialogContent>
-// 					</Dialog>
-// 					<Button variant='contained' color='primary' onClick={() => handleModalTwoOpen()}>Ryhmän tiedot</Button>
-// 				</Card>
-// 			</Container>

@@ -15,6 +15,7 @@ import Messages from './components/Messages'
 import Daycare from './components/Daycare'
 import Calendar from './components/Calendar'
 import { initializeEvents } from './reducers/EventReducer'
+import { initializeGroups } from './reducers/GroupReducer'
 
 
 const App = () => {
@@ -24,7 +25,9 @@ const App = () => {
 	const children = useSelector(state => state.children)
 	const workers = useSelector(state => state.workers)
 	const events = useSelector(state => state.events)
+	const groups = useSelector(state => state.groups)
 	console.log(events)
+	console.log(groups)
 	const loggedInUser = useSelector(state => state.currentUser)
 	console.log(children)
 	console.log(workers)
@@ -36,6 +39,7 @@ const App = () => {
 		dispatch(initializeChildren())
 		dispatch(initializeWorkers())
 		dispatch(initializeEvents())
+		dispatch(initializeGroups())
 	}, [dispatch])
 
 	useEffect(() => {
@@ -95,8 +99,8 @@ const App = () => {
 						<Route path="/" element={<FrontPage events={events}/>}/>
 						<Route path="/own-group" element={<OwnGroup worker={loggedInUser} workers={workers}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
-						<Route path="/daycare" element={<Daycare/>}/>
-						<Route path="/calendar" element={<Calendar/>}/>
+						<Route path="/daycare" element={<Daycare workers={workers} groups={groups}/>}/>
+						<Route path="/calendar" element={<Calendar events={events}/>}/>
 					</Routes>
 				</BrowserRouter>
 
