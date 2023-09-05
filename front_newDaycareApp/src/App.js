@@ -14,6 +14,7 @@ import {  removeCurrentUser } from './reducers/CurrentUser'
 import Messages from './components/Messages'
 import Daycare from './components/Daycare'
 import Calendar from './components/Calendar'
+import { initializeEvents } from './reducers/EventReducer'
 
 
 const App = () => {
@@ -22,6 +23,8 @@ const App = () => {
 
 	const children = useSelector(state => state.children)
 	const workers = useSelector(state => state.workers)
+	const events = useSelector(state => state.events)
+	console.log(events)
 	const loggedInUser = useSelector(state => state.currentUser)
 	console.log(children)
 	console.log(workers)
@@ -32,6 +35,7 @@ const App = () => {
 	useEffect(() => {
 		dispatch(initializeChildren())
 		dispatch(initializeWorkers())
+		dispatch(initializeEvents())
 	}, [dispatch])
 
 	useEffect(() => {
@@ -88,7 +92,7 @@ const App = () => {
     
 
 					<Routes>
-						<Route path="/" element={<FrontPage />}/>
+						<Route path="/" element={<FrontPage events={events}/>}/>
 						<Route path="/own-group" element={<OwnGroup worker={loggedInUser} workers={workers}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
 						<Route path="/daycare" element={<Daycare/>}/>

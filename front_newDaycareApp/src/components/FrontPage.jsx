@@ -1,20 +1,25 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
-import dayjs from 'dayjs'
-import { useEffect, useState } from 'react'
+import {  useState } from 'react'
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/de'
 import { Container, Typography, Card, Grid } from '@mui/material'
 import { useSelector } from 'react-redux'
 import Item from './Item'
+import moment from 'moment'
 
-const FrontPage = () => {
+const FrontPage = ({ events }) => {
+	moment.locale('fin')
+
+	console.log(events)
+	const adapter = new AdapterDayjs()
 	const this_worker = useSelector(state => state.currentUser)
-	const [calendarValue, setCalendarValue] = useState(dayjs('2023-04-04'))
+	const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
+	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
+	console.log(calendarValue.$d)
+	console.log(moment(events[0].date).format('MMM Do YY'))
 	
-	useEffect(() => {
-		console.log(calendarValue.$d)
-	}, [calendarValue])
 
 	return (
 		<><Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
@@ -23,12 +28,14 @@ const FrontPage = () => {
 			<Card>
 				<Grid container spacing={2}>
 					<Grid item xs={8}>
-						<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
+						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<DateCalendar value={calendarValue} onChange={(newValue) => setCalendarValue(newValue)} />
 						</LocalizationProvider>
 					</Grid>
 					<Grid item xs={4}>
-						<Item>{calendarValue}</Item>
+						<Item>
+							{moment(calendarValue.$d).format('MMM Do YY')}
+						</Item>
 					</Grid>
 				</Grid>
 			</Card>

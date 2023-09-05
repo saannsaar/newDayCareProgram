@@ -11,6 +11,7 @@ const setTokenForEvent = newToken => {
 
 const getAllEvents = () => {
 	const request = axios.get(baseUrl)
+	console.log(request)
 	return request.then(response => response.data)
 }
 
@@ -24,5 +25,11 @@ const createEvent = async newObject => {
 	return response.data
 }
 
+const getEventById = async (event) => {
+	console.log('SERVICE Event', event)
+	const response = await axios.get(baseUrl.concat('/').concat(event.id))
+	return response.data
+}
 
-export default { getAllEvents, createEvent,  setTokenForEvent }
+
+export default { getAllEvents, createEvent,  setTokenForEvent, getEventById }
