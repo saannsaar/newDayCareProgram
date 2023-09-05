@@ -11,7 +11,7 @@ import moment from 'moment'
 import EventInfo from './EventInfo'
 
 
-const FrontPage = ({ events }) => {
+const Calendar = ({ events }) => {
 	moment.locale('fin')
 
 	console.log(events)
@@ -61,4 +61,4 @@ const FrontPage = ({ events }) => {
 	)
 }
 
-export default FrontPage
+export default Calendar

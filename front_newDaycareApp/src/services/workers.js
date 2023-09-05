@@ -13,4 +13,10 @@ const getWorkerById = async (worker) => {
 	return response.data
 }
 
-export default { getAll, getWorkerById }
+const editUser = async (worker, id) => {
+	console.log('Service edit', worker)
+	const response = await axios.put(baseUrl.concat('/').concat(id), worker)
+	console.log(response.data)
+	return response.data
+}
+export default { getAll, getWorkerById, editUser }
