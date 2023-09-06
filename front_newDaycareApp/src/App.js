@@ -22,14 +22,14 @@ const App = () => {
 
 	const dispatch = useDispatch()
 
-	const children = useSelector(state => state.children)
+	const kids = useSelector(state => state.children)
 	const workers = useSelector(state => state.workers)
 	const events = useSelector(state => state.events)
 	const groups = useSelector(state => state.groups)
 	console.log(events)
 	console.log(groups)
 	const loggedInUser = useSelector(state => state.currentUser)
-	console.log(children)
+	console.log(kids)
 	console.log(workers)
 	// const navigate = useNavigate()
 	console.log(loggedInUser)
@@ -59,7 +59,7 @@ const App = () => {
 		console.log(loggedInUser)
 	  }
 
-	if (children.loading || workers.loading) {
+	if (kids.loading || workers.loading) {
 		return (
 			// eslint-disable-next-line react/react-in-jsx-scope
 			<div> Loading...</div>)
@@ -99,7 +99,7 @@ const App = () => {
 						<Route path="/" element={<FrontPage events={events}/>}/>
 						<Route path="/own-group" element={<OwnGroup worker={loggedInUser} workers={workers}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
-						<Route path="/daycare" element={<Daycare workers={workers} groups={groups}/>}/>
+						<Route path="/daycare" element={<Daycare workers={workers} groups={groups} kids={kids}/>}/>
 						<Route path="/calendar" element={<Calendar events={events}/>}/>
 					</Routes>
 				</BrowserRouter>
