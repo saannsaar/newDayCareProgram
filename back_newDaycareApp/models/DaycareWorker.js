@@ -31,6 +31,10 @@ const schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Daycare',
   },
+  user_type: {
+    type: String,
+    value: 'worker_user'
+  },
   passwordHash: String,
 })
 

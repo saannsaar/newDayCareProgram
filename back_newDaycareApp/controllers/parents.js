@@ -1,6 +1,7 @@
 const parentRouter = require('express').Router()
-
+const bcrypt = require('bcrypt')
 const Parent = require('../models/Parent')
+const {userExtractor } = require('../utils/middleware')
 
 // Get all the parents from the db
 parentRouter.get('/', async (request, response) => {
@@ -17,5 +18,23 @@ parentRouter.get('/:id', async (request, response) => {
       response.status(404).end()
     }
   })
+
+  parentRouter.post('/', userExtractor,  async (request, response) => {
+    const {email, name, phone, password} = request.body
+
+    const saltRounds = 10 
+    const passwordHash = await bcrypt.hash(password, saltRounds)
+
+    const user = new Parent({
+        email,
+        name,
+        phone,
+        passwordHash,
+    })
+
+    const saved_parent = await user.save()
+
+    response.status(201).json(saved_parent)
+})
 
   module.exports = parentRouter

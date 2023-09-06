@@ -28,6 +28,11 @@ const schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Daycare',
   },
+  user_type: {
+    type: String,
+    value: 'parent_user'
+  },
+  passwordHash: String,
 })
 
 schema.set('toJSON', {
