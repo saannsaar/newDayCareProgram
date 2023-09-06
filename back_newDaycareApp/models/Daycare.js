@@ -6,18 +6,33 @@ const schema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    born: {
-        type: String,
-        required: true,
-    },
-    parents: [
-        {
+    workers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'DaycareWorker',
+    }],
+    parents: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Parent'
     }],
-    group: {
+    groups: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Group'
+    }],
+    children: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Child'
+    }],
+    address: {
+        type: String,
+        required: true,
+    },
+    phone: {
+        type: String,
+        required: true,
+    },
+    email:{
+        type: String,
+        required: true,
     },
 })
 
@@ -29,4 +44,4 @@ schema.set('toJSON', {
     }
 })
 
-module.exports = mongoose.model('Child', schema)
+module.exports = mongoose.model('Daycare', schema)

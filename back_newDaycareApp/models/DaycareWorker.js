@@ -27,6 +27,10 @@ const schema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  daycare: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Daycare',
+  },
   passwordHash: String,
 })
 
