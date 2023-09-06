@@ -16,6 +16,7 @@ import Daycare from './components/Daycare'
 import Calendar from './components/Calendar'
 import { initializeEvents } from './reducers/EventReducer'
 import { initializeGroups } from './reducers/GroupReducer'
+import { initializeDaycare } from './reducers/DaycareReducer'
 
 
 const App = () => {
@@ -26,8 +27,10 @@ const App = () => {
 	const workers = useSelector(state => state.workers)
 	const events = useSelector(state => state.events)
 	const groups = useSelector(state => state.groups)
+	const daycare = useSelector(state => state.daycare)
 	console.log(events)
 	console.log(groups)
+	console.log(daycare)
 	const loggedInUser = useSelector(state => state.currentUser)
 	console.log(kids)
 	console.log(workers)
@@ -42,6 +45,7 @@ const App = () => {
 		dispatch(initializeGroups())
 	}, [dispatch])
 
+
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
 		if (loggedUserJSON) {
@@ -51,6 +55,11 @@ const App = () => {
 		}
 	},[])
 
+	useEffect(() => {
+		if (loggedInUser) {
+			dispatch(initializeDaycare(loggedInUser))
+		}
+	}, [loggedInUser])
 
 	const logout = (event) => {
 		event.preventDefault()
@@ -76,7 +85,7 @@ const App = () => {
 			
 		)
 	}
-	if (loggedInUser) {
+	if (loggedInUser && daycare) {
   
 		return (
 			<div>
@@ -87,7 +96,7 @@ const App = () => {
 							<Button color="inherit" component={Link} to="/daycare">Päiväkoti</Button>
 							<Button color="inherit" component={Link} to="/messages">Viestit</Button>
 							<Button color="inherit" component={Link} to="/calendar">Kalenteri</Button>
-							<Button color="inherit" component={Link} to="/own-group">Oma ryhmä</Button>
+							<Button color="inherit" component={Link} to="/own-group">Omat tiedot</Button>
 							<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
 						</Toolbar>
 					</AppBar>
@@ -99,9 +108,17 @@ const App = () => {
 						<Route path="/" element={<FrontPage events={events}/>}/>
 						<Route path="/own-group" element={<OwnGroup worker={loggedInUser} workers={workers}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
-						<Route path="/daycare" element={<Daycare workers={workers} groups={groups} kids={kids}/>}/>
+						<Route path="/daycare" element={<Daycare workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
 						<Route path="/calendar" element={<Calendar events={events}/>}/>
 					</Routes>
+
+					<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+						<Toolbar>
+							<div>
+								@ NewDayCareApp 0.1
+							</div>
+						</Toolbar>
+					</AppBar>
 				</BrowserRouter>
 
       
@@ -114,7 +131,7 @@ const App = () => {
 
 	else return (
 		<div>
-    Moi
+    Loading...
 		</div>
 	)
  

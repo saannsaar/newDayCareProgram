@@ -14,7 +14,13 @@ import EventInfo from './EventInfo'
 const FrontPage = ({ events }) => {
 	moment.locale('fin')
 
-	console.log(events)
+	if(!events) {
+		return (
+			<div>
+				Loading..
+			</div>
+		)
+	}
 	const adapter = new AdapterDayjs()
 	const this_worker = useSelector(state => state.currentUser)
 	const firstAvailableDay = adapter.date(new Date(2023, 9, 9))

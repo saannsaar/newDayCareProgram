@@ -24,6 +24,10 @@ const schema = new mongoose.Schema({
         ref: 'Child'
     }
   ],
+  daycare: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Daycare',
+  },
 })
 
 schema.set('toJSON', {

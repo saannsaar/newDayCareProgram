@@ -19,6 +19,10 @@ const schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Group'
     },
+    daycare: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Daycare',
+      },
 })
 
 schema.set('toJSON', {

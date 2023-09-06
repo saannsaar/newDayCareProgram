@@ -6,12 +6,14 @@ import { Container, Box } from '@mui/material'
 import Item from './Item'
 
 
-const Daycare = ( { workers, groups, kids } ) => {
+const Daycare = ( { workers, groups, kids, daycare } ) => {
 
 	console.log(workers)
 	console.log(groups)
+	console.log(daycare)
 	return (
 		<Container>
+			<h3>{daycare.name}</h3>
 			<Box
 				sx={{
 					display: 'flex',

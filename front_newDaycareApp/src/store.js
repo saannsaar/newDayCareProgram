@@ -4,7 +4,7 @@ import childrenReducer from './reducers/ChildReducer'
 import workersReducer from './reducers/WorkersReducer'
 import currentuserReducer from './reducers/CurrentUser'
 import groupReducer from './reducers/GroupReducer'
-
+import DaycareReducer from './reducers/DaycareReducer'
 import EventReducer from './reducers/EventReducer'
 
 const store = configureStore({
@@ -14,6 +14,8 @@ const store = configureStore({
 		currentUser: currentuserReducer,
 		events: EventReducer,
 		groups: groupReducer,
+		daycare: DaycareReducer,
+
 	}
 })
 console.log(store)
