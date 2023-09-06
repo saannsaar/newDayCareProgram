@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
 const DaycareWorker = require('../models/DaycareWorker')
+const Parent = require('../models/Parent')
 
 loginRouter.post('/', async (request, response) => {
     const {email, password, user_type} = request.body
@@ -25,7 +26,7 @@ loginRouter.post('/', async (request, response) => {
     //Tokenin voimassaoloaika on 60*60 sekuntia, eli 1 tunti
     const token = jwt.sign(userForToken, process.env.JWT_SECRET, {expiresIn: 60*60})
 
-    response.status(200).send({token, email: user.email, name: user.name, id: user.id, user_type: user.user_type})
+    response.status(200).send({token, email: user.email, name: user.name, id: user.id, user_type})
     }
     
     if (user_type === 'parent_user') {
@@ -47,7 +48,7 @@ loginRouter.post('/', async (request, response) => {
     //Tokenin voimassaoloaika on 60*60 sekuntia, eli 1 tunti
     const token = jwt.sign(userForToken, process.env.JWT_SECRET, {expiresIn: 60*60})
 
-    response.status(200).send({token, email: user.email, name: user.name, id: user.id, user_type: user.user_type})
+    response.status(200).send({token, email: user.email, name: user.name, id: user.id, user_type})
     }
     
 })

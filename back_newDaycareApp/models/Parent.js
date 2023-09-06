@@ -30,7 +30,8 @@ const schema = new mongoose.Schema({
   },
   user_type: {
     type: String,
-    value: 'parent_user'
+    value: 'parent_user',
+    required: true
   },
   passwordHash: String,
 })

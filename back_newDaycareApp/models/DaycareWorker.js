@@ -33,7 +33,8 @@ const schema = new mongoose.Schema({
   },
   user_type: {
     type: String,
-    value: 'worker_user'
+    value: 'worker_user',
+    required: true
   },
   passwordHash: String,
 })

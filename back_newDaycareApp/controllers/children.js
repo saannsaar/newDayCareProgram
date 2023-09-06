@@ -22,28 +22,15 @@ childRouter.post('/', userExtractor,  async (request, response) => {
     if (!user) {
       return response.status(401).json({error: "You cant do that"})
     }
-
-   
-    
     // New child-object
     const new_child = new Child({
         name: body.name,
         born: body.born,
         parents: body.parents,
-        group: group ? group._id : null,
     })
-    
     
 // Save 
    const saved_child = await new_child.save()
-   
-   // Add new child's id to the given group
-   if (group) {
-    group.children = group.children.concat(saved_child._id)
-    await group.save()
-   }
-  
-   console.log(group)
    
    response.status(201).json(saved_child)
 })

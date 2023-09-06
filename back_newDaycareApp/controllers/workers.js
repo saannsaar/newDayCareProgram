@@ -36,7 +36,7 @@ workerRouter.post('/', userExtractor,  async (request, response) => {
 
 
 workerRouter.get('/:id', async (request, response) => {
-    const spesific_worker = await DaycareWorker.findById(request.params.id).populate('group')
+    const spesific_worker = await DaycareWorker.findById(request.params.id).populate('group').populate('user_type')
     if (spesific_worker) {
       response.json(spesific_worker)
     } else {

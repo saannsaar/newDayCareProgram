@@ -14,7 +14,6 @@ const currentUserSlice = createSlice({
 			return ''
 		},
 		editUserInfo: (state, action) => {
-			// EPÄVARMA
 			return action.payload
 		}
 	}
@@ -32,6 +31,7 @@ export const initializeCurrentWorker = (user) => {
 		dispatch(setUser(worker))
 	}
 }
+
 
 export const removeCurrentUser = () => {
 	return async (dispatch) => {

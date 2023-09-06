@@ -2,22 +2,28 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 import {  useState } from 'react'
-import { Button, TextField } from '@mui/material'
+import { Button, TextField, Select, MenuItem} from '@mui/material'
 import loginService from '../services/login'
 import childService from '../services/children'
 import { useDispatch } from 'react-redux'
 import { initializeCurrentWorker } from '../reducers/CurrentUser'
+import { initializeUserType } from '../reducers/UserType'
 
 
-const LoginForm = ( ) => {
+
+const LoginForm = (  ) => {
 	const [userEmail, setuserEmail] = useState('')
 	const [password, setPassword] = useState('')
-
 	// eslint-disable-next-line no-unused-vars
 	const [error, setError] = useState('')
+	const [usertype, setUserType] = useState('')
 
 	const dispatch = useDispatch()
 
+	const handleUsertypeChange = (event) => {
+		console.log(event.target.value)
+		setUserType(event.target.value)
+	}
 
 	
 
@@ -28,18 +34,24 @@ const LoginForm = ( ) => {
  	  const user = await loginService.login({
 				email: userEmail,
 				password,
+				user_type: usertype
 		  })
 	
 		  window.localStorage.setItem('loggedDaycareAppUser', JSON.stringify(user))
 		  childService.setToken(user.token)
 		 
 		  dispatch(initializeCurrentWorker(user))
+		  dispatch(initializeUserType(usertype))
 		  setuserEmail('')
 		  setPassword('')
+		  setUserType('')
 		 
 		} catch(exception) {
 			console.log(exception)
 			setError(exception)
+			setTimeout(() => {
+				setError(null)
+			}, 4000)
 	
 		}
 	}
@@ -48,11 +60,22 @@ const LoginForm = ( ) => {
 		<>
 			<div>
 				<h2>Login to newDayCareApp</h2>
+				{error ? <h3 style={{width: '30%', color: '#f0562b'}}>{error.response.data.error}</h3> : null}
 				<form onSubmit={submit}> 
-					<div>
+					<div style={{marginBottom: '10px'}}>
+						<Select
+							value={usertype}
+							label="Käyttäjätyyppi"
+							onChange={handleUsertypeChange}
+						>
+							<MenuItem value={'parent_user'}>Vanhempi</MenuItem>
+							<MenuItem value={'worker_user'}>Työntekijä</MenuItem>
+						</Select>
+					</div>
+					<div style={{marginBottom: '10px'}}>
 						<TextField label="email" value={userEmail} onChange={({ target }) => setuserEmail(target.value)} />
 					</div>
-					<div>
+					<div style={{marginBottom: '10px'}}>
 						<TextField label="password" value={password} onChange={({ target }) => setPassword(target.value)} />
 					</div>
 					<div>

@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/react-in-jsx-scope */
-import {  useEffect} from 'react'
+import {  useEffect } from 'react'
 import { AppBar, Toolbar, Button } from '@mui/material'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
@@ -28,6 +28,7 @@ const App = () => {
 	const events = useSelector(state => state.events)
 	const groups = useSelector(state => state.groups)
 	const daycare = useSelector(state => state.daycare)
+	const usertype = useSelector(state => state.usertype)
 	console.log(events)
 	console.log(groups)
 	console.log(daycare)
@@ -36,7 +37,8 @@ const App = () => {
 	console.log(workers)
 	// const navigate = useNavigate()
 	console.log(loggedInUser)
-	
+
+	console.log(usertype)
 
 	useEffect(() => {
 		dispatch(initializeChildren())
@@ -44,6 +46,8 @@ const App = () => {
 		dispatch(initializeEvents())
 		dispatch(initializeGroups())
 	}, [dispatch])
+
+
 
 
 	useEffect(() => {
@@ -63,7 +67,7 @@ const App = () => {
 
 	const logout = (event) => {
 		event.preventDefault()
-		window.localStorage.removeItem('loggedBlogAppUser')
+		window.localStorage.removeItem('loggedDaycareAppUser')
 		dispatch(removeCurrentUser())
 		console.log(loggedInUser)
 	  }
@@ -79,7 +83,7 @@ const App = () => {
 			<BrowserRouter>
 				
 				<Routes>
-					<Route path="/" element={<LoginForm />}/>
+					<Route path="/" element={<LoginForm  />}/>
 				</Routes>
 			</BrowserRouter>
 			
