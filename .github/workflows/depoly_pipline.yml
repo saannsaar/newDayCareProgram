@@ -21,8 +21,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - name: Install Dependencies
+      - name: Install Dependencies back
         working-directory: ./back_newDaycareApp
+        run:
+          npm install
+      - name: Install Dependencies front
+        working-directory: ./front_newDaycareApp
         run:
           npm install
       - name: Run ui build 
