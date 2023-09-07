@@ -27,7 +27,7 @@ jobs:
       - name: Run ui build 
         working-directory: ./back_newDaycareApp
         run: 
-          npm build:ui
+          npm run build:ui
       - name: Run tests
         working-directory: ./back_newDaycareApp
         run:
