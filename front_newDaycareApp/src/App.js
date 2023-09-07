@@ -9,14 +9,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeChildren } from './reducers/ChildReducer'
 import {  initializeWorkers } from './reducers/WorkersReducer'
 import  childService from './services/children'
-import OwnGroup from './components/OwnGroup'
+import OwnGroup from './components/workerPage/OwnGroup'
 import {  removeCurrentUser } from './reducers/CurrentUser'
 import Messages from './components/Messages'
-import Daycare from './components/Daycare'
-import Calendar from './components/Calendar'
+import Daycare from './components/workerPage/Daycare'
+import Calendar from './components/workerPage/Calendar'
 import { initializeEvents } from './reducers/EventReducer'
 import { initializeGroups } from './reducers/GroupReducer'
 import { initializeDaycare } from './reducers/DaycareReducer'
+import ScheduleCare from './components/parentPage/ScheduleCare'
+import Gallery from './components/parentPage/gallery'
+import MyFamily from './components/parentPage/MyFamily'
 
 
 const App = () => {
@@ -89,7 +92,7 @@ const App = () => {
 			
 		)
 	}
-	if (loggedInUser && daycare) {
+	if (loggedInUser && daycare && usertype === 'worker_user') {
   
 		return (
 			<div>
@@ -127,6 +130,44 @@ const App = () => {
 
       
       
+			</div>
+		)
+	} 
+
+	if (loggedInUser && daycare && usertype === 'parent_user') {
+		return (
+			<div>
+				<BrowserRouter>
+					<AppBar sx={{ bgcolor: 'primary.dark'}} position='static'>
+						<Toolbar>
+							<Button color="inherit" component={Link} to="/">Koti</Button>
+							<Button color="inherit" component={Link} to="/daycare">Ilmoitustaulu</Button>
+							<Button color="inherit" component={Link} to="/messages">Viestit</Button>
+							<Button color="inherit" component={Link} to="/calendar">Hoitoajat</Button>
+							<Button color="inherit" component={Link} to="/gallery">Kuvat</Button>
+							<Button color="inherit" component={Link} to="/own-group">Oma perhe</Button>
+							<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
+						</Toolbar>
+					</AppBar>
+     
+
+					<Routes>
+						<Route path="/" element={<FrontPage events={events}/>}/>
+						<Route path="/own-group" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
+						<Route path="/messages" element={<Messages/>}/>
+						<Route path="/daycare" element={<Daycare workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
+						<Route path="/calendar" element={<ScheduleCare events={events}/>}/>
+						<Route path="/gallery" element={<Gallery />}/>
+					</Routes>
+
+					<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+						<Toolbar>
+							<div>
+								@ NewDayCareApp 0.1
+							</div>
+						</Toolbar>
+					</AppBar>
+				</BrowserRouter>
 			</div>
 		)
 	}

@@ -6,17 +6,18 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/de'
 import { Container, Typography, Card, Grid } from '@mui/material'
 import { useSelector } from 'react-redux'
-import Item from './Item'
+import Item from '../Item'
 import moment from 'moment'
-import EventInfo from './EventInfo'
+import EventInfo from '../EventInfo'
 
 
-const Calendar = ({ events }) => {
+const ScheduleCare = ({ events }) => {
 	moment.locale('fin')
 
 	console.log(events)
 	const adapter = new AdapterDayjs()
 	const this_worker = useSelector(state => state.currentUser)
+	console.log(this_worker)
 	const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
 	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 	const [pickedEvents, setPickedEvents] = useState([])
@@ -36,7 +37,7 @@ const Calendar = ({ events }) => {
 
 	return (
 		<><Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
-			Tervetuloa NewDayCareAppiin {this_worker.name}
+			Ilmoita hoitoajat 
 		</Typography><Container>
 			<Card>
 				<Grid container spacing={2}>
@@ -61,4 +62,4 @@ const Calendar = ({ events }) => {
 	)
 }
 
-export default Calendar
+export default ScheduleCare

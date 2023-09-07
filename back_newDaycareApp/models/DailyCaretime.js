@@ -1,36 +1,22 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    born: {
+    date: {
         type: String,
         required: true,
     },
-    parents: [
-        {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Parent'
-    }],
-    group: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Group'
-    },
-    daycare: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Daycare',
-      },
-    monthly_maxtime: {
+    start_time: {
         type: String,
         required: true,
     },
-    care_time: [{
+    end_time: {
+        type: String,
+        required: true,
+    },
+    child: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'DailyCaretime',
-    }],
+        ref: 'DailyCaretime'
+    }
 })
 
 schema.set('toJSON', {
@@ -41,4 +27,4 @@ schema.set('toJSON', {
     }
 })
 
-module.exports = mongoose.model('Child', schema)
+module.exports = mongoose.model('DailyCaretime', schema)

@@ -3,7 +3,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 
 import { Container, Box } from '@mui/material'
-import Item from './Item'
+import Item from '../Item'
 
 
 const Daycare = ( { workers, groups, kids, daycare } ) => {

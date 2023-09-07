@@ -5,8 +5,8 @@ import { Container, Divider, DialogContent, DialogTitle,  Dialog, Grid, TextFiel
 import { styled } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
-import { editUser } from '../reducers/CurrentUser'
-import Item from './Item'
+import { editUser } from '../../reducers/CurrentUser'
+import Item from '../Item'
 
 const OwnGroup = ({ worker, workers }) => {
 

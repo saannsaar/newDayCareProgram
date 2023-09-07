@@ -39,9 +39,8 @@ const LoginForm = (  ) => {
 	
 		  window.localStorage.setItem('loggedDaycareAppUser', JSON.stringify(user))
 		  childService.setToken(user.token)
-		 
-		  dispatch(initializeCurrentWorker(user))
 		  dispatch(initializeUserType(usertype))
+		  dispatch(initializeCurrentWorker(user))
 		  setuserEmail('')
 		  setPassword('')
 		  setUserType('')
