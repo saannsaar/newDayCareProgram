@@ -26,9 +26,8 @@ jobs:
         run:
           npm install
       - name: Run ui build 
-        working-directory: ./back_newDaycareApp
         run: 
-          rm -rf build && cd ../front_newDaycareApp && npm run build && cp -r build ../back_newDaycareApp
+          rm -rf build && cd ./front_newDaycareApp && npm run build && cp -r build ./back_newDaycareApp
       - name: Run tests
         working-directory: ./back_newDaycareApp
         run:
