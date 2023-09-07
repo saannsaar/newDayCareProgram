@@ -21,14 +21,17 @@ jobs:
         with:
           node-version: '16'
       - name: Install Dependencies
-        run: 
+        run: |
+          cd back_newDaycareApp
           npm install
       - name: Run ui build 
-        run: 
-          npm run build:ui
+        run: |
+          cd back_newDaycareApp
+          npm build:ui
       - name: Run tests
-        run: 
-          npm run test
+        run: |
+          cd back_newDaycareApp
+          npm install
       - name: Render Deploy Action
         if: ${{ success() && github.event_name == 'push' && !contains(join(env.COMMIT_MESSAGE, ' '), '#skip') }}
         uses: johnbeynon/render-deploy-action@v0.0.8
