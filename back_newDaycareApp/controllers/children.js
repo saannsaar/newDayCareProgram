@@ -45,6 +45,23 @@ childRouter.get('/:id', async (request, response) => {
     }
   })
 
+  childRouter.post('/:id/caretimes', async (request, response) => {
+      console.log('Hoitoajan lisäys')
+      const kid = await Child.findById(request.params.id)
+      console.log(request.body)
+      kid.care_time.push({
+        date: request.body.date,
+        start_time: request.body.start_time,
+        end_time: request.body.end_time,
+      })
+
+      const updated_times = await Blog.findByIdAndUpdate(request.params.id, kid, {
+        new: true,
+      }).exec()
+
+      response.status(200).json(updated_times)
+  })
+
 
 
 module.exports = childRouter
