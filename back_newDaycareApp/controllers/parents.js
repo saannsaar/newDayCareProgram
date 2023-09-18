@@ -11,7 +11,7 @@ parentRouter.get('/', async (request, response) => {
 })
 
 parentRouter.get('/:id', async (request, response) => {
-    const sepesific_parent = await Parent.findById(request.params.id).populate('user_type')
+    const sepesific_parent = await Parent.findById(request.params.id)
     console.log(sepesific_parent.user_type)
     if (sepesific_parent) {
       response.json(sepesific_parent)

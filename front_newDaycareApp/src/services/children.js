@@ -11,6 +11,11 @@ const getAll = () => {
 	return request.then(response => response.data)
 }
 
+const getSpesificChild = async (childid) => {
+	const response =  await axios.get(baseUrl.concat('/').concat(childid))
+	return response.data
+}
+
 const create = async newObject => {
 	console.log('children.js')
 	const config = {
@@ -23,4 +28,4 @@ const create = async newObject => {
 
 
 
-export default { getAll, create,  setToken }
+export default { getAll, create,  getSpesificChild, setToken }

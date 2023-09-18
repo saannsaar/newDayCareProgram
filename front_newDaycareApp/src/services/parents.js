@@ -8,13 +8,13 @@ const getAllParents = async () => {
 }
 
 const getParentById = async (user) => {
-	console.log('SERVICE PARENT', user)
+	console.log('SERVICE getParentById -- ', user)
 	const response = await axios.get(baseUrl.concat('/').concat(user.id))
 	return response.data
 }
 
 const editParentUser = async (user, id) => {
-	console.log('Service edit', user)
+	console.log('Service editParentUser -- ', user)
 	const response = await axios.put(baseUrl.concat('/').concat(id), user)
 	console.log(response.data)
 	return response.data

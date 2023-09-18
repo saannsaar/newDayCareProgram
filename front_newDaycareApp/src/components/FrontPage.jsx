@@ -5,15 +5,14 @@ import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/de'
 import { Container, Typography, Card, Grid } from '@mui/material'
-import { useSelector } from 'react-redux'
 import Item from './Item'
 import moment from 'moment'
 import EventInfo from './EventInfo'
 
 
-const FrontPage = ({ events }) => {
+const FrontPage = ({ events, kids, currentUser }) => {
 	moment.locale('fin')
-
+	console.log(kids)
 	if(!events) {
 		return (
 			<div>
@@ -22,7 +21,6 @@ const FrontPage = ({ events }) => {
 		)
 	}
 	const adapter = new AdapterDayjs()
-	const this_worker = useSelector(state => state.currentUser)
 	const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
 	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 	const [pickedEvents, setPickedEvents] = useState([])
@@ -42,7 +40,7 @@ const FrontPage = ({ events }) => {
 
 	return (
 		<><Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
-			Tervetuloa NewDayCareAppiin {this_worker.name}
+			Tervetuloa NewDayCareAppiin {currentUser.name}
 		</Typography><Container>
 			<Card>
 				<Grid container spacing={2}>

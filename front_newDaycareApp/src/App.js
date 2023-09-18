@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 import FrontPage from './components/FrontPage'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeChildren } from './reducers/ChildReducer'
+import { initializeChildren, initializeParentsChildren } from './reducers/ChildReducer'
 import {  initializeWorkers } from './reducers/WorkersReducer'
 import  childService from './services/children'
 import OwnGroup from './components/workerPage/OwnGroup'
@@ -44,14 +44,21 @@ const App = () => {
 	console.log(usertype)
 
 	useEffect(() => {
-		dispatch(initializeChildren())
+		if(loggedInUser && usertype == 'worker_user') {
+			dispatch(initializeChildren())
+		}
 		dispatch(initializeWorkers())
 		dispatch(initializeEvents())
 		dispatch(initializeGroups())
-	}, [dispatch])
+	}, [dispatch, usertype, loggedInUser])
 
 
 
+	useEffect(() => {
+		if(loggedInUser && usertype == 'parent_user') {
+			dispatch(initializeParentsChildren(loggedInUser))
+		}
+	}, [dispatch, usertype, loggedInUser])
 
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
@@ -75,12 +82,7 @@ const App = () => {
 		console.log(loggedInUser)
 	  }
 
-	if (kids.loading || workers.loading) {
-		return (
-			// eslint-disable-next-line react/react-in-jsx-scope
-			<div> Loading...</div>)
-	}
-
+	
 	if(!loggedInUser) {
 		return (
 			<BrowserRouter>
@@ -92,8 +94,8 @@ const App = () => {
 			
 		)
 	}
-	if (loggedInUser && daycare && usertype === 'worker_user') {
-  
+	if (loggedInUser && usertype === 'worker_user') {
+		
 		return (
 			<div>
 				<BrowserRouter>
@@ -112,7 +114,7 @@ const App = () => {
     
 
 					<Routes>
-						<Route path="/" element={<FrontPage events={events}/>}/>
+						<Route path="/" element={<FrontPage events={events} currentUser={loggedInUser} kids={kids} usertype={usertype}/>}/>
 						<Route path="/own-group" element={<OwnGroup worker={loggedInUser} workers={workers}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
 						<Route path="/daycare" element={<Daycare workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
@@ -152,7 +154,7 @@ const App = () => {
      
 
 					<Routes>
-						<Route path="/" element={<FrontPage events={events}/>}/>
+						<Route path="/" element={<FrontPage events={events} currentUser={loggedInUser} kids={kids} usertype={usertype}/>}/>
 						<Route path="/own-group" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
 						<Route path="/daycare" element={<Daycare workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
