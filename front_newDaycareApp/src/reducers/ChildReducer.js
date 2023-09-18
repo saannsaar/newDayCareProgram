@@ -18,10 +18,14 @@ const childrenReducer = createSlice({
 		setChildren(state, action) {
 			return action.payload
 		},
+		// eslint-disable-next-line no-unused-vars
+		cleanChildrenState(state) {
+			return []
+		}
 	}
 })
 
-export const {  appendChildren, setChildren,setParentsChildren } = childrenReducer.actions
+export const {  appendChildren, setChildren,setParentsChildren, cleanChildrenState } = childrenReducer.actions
 
 export const initializeChildren = () => {
 	
@@ -60,8 +64,14 @@ export const createChild = content => {
 		const newChild = await childService.create(content)
 		dispatch(appendChildren(newChild))
 	}
+
 }
 
+export const removeChildren = () => {
+	return async (dispatch) => {
+		dispatch(cleanChildrenState())
+	}
+}
 
 
 

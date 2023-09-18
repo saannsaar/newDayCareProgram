@@ -8,61 +8,141 @@ import { Container, Typography, Card, Grid } from '@mui/material'
 import Item from './Item'
 import moment from 'moment'
 import EventInfo from './EventInfo'
+import CareTimeInfo from './CareTimeInfo'
+import { useDispatch } from 'react-redux'
 
 
-const FrontPage = ({ events, kids, currentUser }) => {
-	moment.locale('fin')
-	console.log(kids)
-	if(!events) {
+
+const FrontPage = ({ events, kids, currentUser, usertype }) => {
+
+
+	if (usertype == 'parent_user') {
+		
+		console.log('PARENT FRONTPAGE')
+		moment.locale('fin')
+		console.log(kids)
+
+		if(!events) {
+			return (
+				<div>
+					Loading..
+				</div>
+			)
+		}
+
+		const adapter = new AdapterDayjs()
+		const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
+		const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
+		const [pickedEvents, setPickedEvents] = useState([])
+		const [pickedCareTimes, setPickedCareTiems] = useState([])
+		console.log(calendarValue.$d)
+		
+		console.log(moment(events[0].date).format('MMM Do YY'))
+		console.log(moment(calendarValue.$d).format('MMM Do YY'))
+		
+	
+		// TODO: Nyt näkyy vaan ensimmäisen lapsen tiedot, pitää toteuttaa
+		// niin että kaikki lapset näkyvät
+		useEffect(() => {
+			const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
+			console.log(find_events)
+			setPickedEvents(find_events)
+			console.log(kids[0].care_time)
+			const find_caretimes = kids[0].care_time?.filter((c) => moment(c[0].date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
+			console.log(find_caretimes)
+			setPickedCareTiems(find_caretimes)
+			console.log(pickedEvents)
+			console.log(find_events.length)
+		}, [calendarValue.$d])
+	
 		return (
-			<div>
-				Loading..
-			</div>
+			<><Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
+				Tervetuloa NewDayCareAppiin {currentUser.name}
+			</Typography><Container>
+				<Card>
+					<Grid container spacing={2}>
+						<Grid item xs={8}>
+							<LocalizationProvider dateAdapter={AdapterDayjs}>
+								<DateCalendar value={calendarValue} onChange={(newValue) => setCalendarValue(newValue)} />
+							</LocalizationProvider>
+						</Grid>
+						<Grid item xs={4}>
+							<Item>
+								{moment(calendarValue.$d).format('MMM Do YY')}
+							</Item>
+							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <Item>Ei tapahtumia</Item>}
+							{usertype == 'parent_worker' && pickedCareTimes ? <CareTimeInfo pickedCareTimes={pickedCareTimes} /> : null}
+						</Grid>
+					</Grid>
+				</Card>
+				<Container>
+			
+				</Container>
+			</Container></>
+				
+		)
+	} else {
+		console.log('PARENT FRONTPAGE')
+		moment.locale('fin')
+		console.log(kids)
+		if(!events) {
+			return (
+				<div>
+					Loading..
+				</div>
+			)
+		}
+		const adapter = new AdapterDayjs()
+		const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
+		const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
+		const [pickedEvents, setPickedEvents] = useState([])
+		
+		console.log(calendarValue.$d)
+		
+		console.log(moment(events[0].date).format('MMM Do YY'))
+		console.log(moment(calendarValue.$d).format('MMM Do YY'))
+		
+	
+		// TODO: Nyt näkyy vaan ensimmäisen lapsen tiedot, pitää toteuttaa
+		// niin että kaikki lapset näkyvät
+		useEffect(() => {
+			const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
+			console.log(find_events)
+			setPickedEvents(find_events)
+			console.log(kids[0].care_time)
+
+			console.log(pickedEvents)
+			console.log(find_events.length)
+		}, [calendarValue.$d])
+	
+		return (
+			<><Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
+				Tervetuloa NewDayCareAppiin {currentUser.name}
+			</Typography><Container>
+				<Card>
+					<Grid container spacing={2}>
+						<Grid item xs={8}>
+							<LocalizationProvider dateAdapter={AdapterDayjs}>
+								<DateCalendar value={calendarValue} onChange={(newValue) => setCalendarValue(newValue)} />
+							</LocalizationProvider>
+						</Grid>
+						<Grid item xs={4}>
+							<Item>
+								{moment(calendarValue.$d).format('MMM Do YY')}
+							</Item>
+							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <Item>Ei tapahtumia</Item>}
+							
+						</Grid>
+					</Grid>
+				</Card>
+				<Container>
+			
+				</Container>
+			</Container></>
+				
 		)
 	}
-	const adapter = new AdapterDayjs()
-	const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
-	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
-	const [pickedEvents, setPickedEvents] = useState([])
-
-	console.log(calendarValue.$d)
 	
-	console.log(moment(events[0].date).format('MMM Do YY'))
-	console.log(moment(calendarValue.$d).format('MMM Do YY'))
-	
-	useEffect(() => {
-		const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
-		console.log(find_events)
-		setPickedEvents(find_events)
-		console.log(pickedEvents)
-		console.log(find_events.length)
-	}, [calendarValue.$d])
-
-	return (
-		<><Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
-			Tervetuloa NewDayCareAppiin {currentUser.name}
-		</Typography><Container>
-			<Card>
-				<Grid container spacing={2}>
-					<Grid item xs={8}>
-						<LocalizationProvider dateAdapter={AdapterDayjs}>
-							<DateCalendar value={calendarValue} onChange={(newValue) => setCalendarValue(newValue)} />
-						</LocalizationProvider>
-					</Grid>
-					<Grid item xs={4}>
-						<Item>
-							{moment(calendarValue.$d).format('MMM Do YY')}
-						</Item>
-						{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <Item>Ei tapahtumia</Item>}
-					</Grid>
-				</Grid>
-			</Card>
-			<Container>
-		
-			</Container>
-		</Container></>
-			
-	)
 }
 
 export default FrontPage

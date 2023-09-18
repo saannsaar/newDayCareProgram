@@ -29,7 +29,7 @@ const schema = new mongoose.Schema({
     },
     care_time: [{
         date: {
-            type: String,
+            type: Date,
             required: true,
         },
         start_time: {

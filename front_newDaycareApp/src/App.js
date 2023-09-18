@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 import FrontPage from './components/FrontPage'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeChildren, initializeParentsChildren } from './reducers/ChildReducer'
+import { initializeChildren, removeChildren, initializeParentsChildren } from './reducers/ChildReducer'
 import {  initializeWorkers } from './reducers/WorkersReducer'
 import  childService from './services/children'
 import OwnGroup from './components/workerPage/OwnGroup'
@@ -47,18 +47,19 @@ const App = () => {
 		if(loggedInUser && usertype == 'worker_user') {
 			dispatch(initializeChildren())
 		}
+		
+		
 		dispatch(initializeWorkers())
 		dispatch(initializeEvents())
 		dispatch(initializeGroups())
-	}, [dispatch, usertype, loggedInUser])
 
-
-
-	useEffect(() => {
-		if(loggedInUser && usertype == 'parent_user') {
+		if (loggedInUser && usertype == 'parent_user') {
+			dispatch(removeChildren())
 			dispatch(initializeParentsChildren(loggedInUser))
 		}
-	}, [dispatch, usertype, loggedInUser])
+		
+	}, [dispatch, loggedInUser])
+
 
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
@@ -82,7 +83,14 @@ const App = () => {
 		console.log(loggedInUser)
 	  }
 
-	
+
+	if (loggedInUser && !kids){
+		console.log('HALOOOO')
+		return(
+			<div>Wait..</div>
+		)
+		
+	}	
 	if(!loggedInUser) {
 		return (
 			<BrowserRouter>
