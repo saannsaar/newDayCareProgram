@@ -27,36 +27,59 @@ const childrenReducer = createSlice({
 
 export const {  appendChildren, setChildren,setParentsChildren, cleanChildrenState } = childrenReducer.actions
 
-export const initializeChildren = () => {
-	
-	return async dispatch => {
-		const children = await childService.getAll()
-		dispatch(setChildren(children))
+export const initializeChildren = (loggedinUser, usertype) => {
+	console.log(loggedinUser, usertype)
+	if (usertype === 'worker_user') {
+		return async dispatch => {
+			const children = await childService.getAll()
+			dispatch(setChildren(children))
+		}
 	}
-}
 
-export const initializeParentsChildren = (loggedinParent) => {
-
-	console.log(loggedinParent)
-	if (loggedinParent.children.length > 1) {
+	if (usertype === 'parent_user' && loggedinUser.children.length > 1) {
 		console.log('More than one child ')
 		const childArray = []
 		
-		loggedinParent.children?.map(async (childId)=>{
+		loggedinUser.children?.map(async (childId)=>{
 			const addChild = await childService.getSpesificChild(childId)
+			console.log(addChild)
 			childArray.push(addChild)
 		})
 		return async dispatch => {
-			dispatch(setParentsChildren(childArray))
+			dispatch(setChildren(childArray))
 		}
 	}
-	else {
+	if (usertype === 'parent_user' && loggedinUser.children.length === 1) {
 		return async dispatch => {
-			const children = await childService.getSpesificChild(loggedinParent.children[0])
-			dispatch(setParentsChildren(children))
+			const children = await childService.getSpesificChild(loggedinUser.children[0])
+			dispatch(setChildren(children))
 		}
 	}
+
 }
+
+// export const initializeParentsChildren = (loggedinParent) => {
+
+// 	console.log(loggedinParent)
+// 	if (loggedinParent.children.length > 1) {
+// 		console.log('More than one child ')
+// 		const childArray = []
+		
+// 		loggedinParent.children?.map(async (childId)=>{
+// 			const addChild = await childService.getSpesificChild(childId)
+// 			childArray.push(addChild)
+// 		})
+// 		return async dispatch => {
+// 			dispatch(setParentsChildren(childArray))
+// 		}
+// 	}
+// 	else {
+// 		return async dispatch => {
+// 			const children = await childService.getSpesificChild(loggedinParent.children[0])
+// 			dispatch(setParentsChildren(children))
+// 		}
+// 	}
+// }
 
 export const createChild = content => {
 	console.log('REDUCERISSA')

@@ -9,14 +9,13 @@ import Item from './Item'
 import moment from 'moment'
 import EventInfo from './EventInfo'
 import CareTimeInfo from './CareTimeInfo'
-import { useDispatch } from 'react-redux'
 
 
 
 const FrontPage = ({ events, kids, currentUser, usertype }) => {
 
 
-	if (usertype == 'parent_user') {
+	if (usertype == 'parent_user' && kids) {
 		
 		console.log('PARENT FRONTPAGE')
 		moment.locale('fin')
@@ -47,12 +46,13 @@ const FrontPage = ({ events, kids, currentUser, usertype }) => {
 			const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
 			console.log(find_events)
 			setPickedEvents(find_events)
-			console.log(kids[0].care_time)
-			const find_caretimes = kids[0].care_time?.filter((c) => moment(c[0].date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
+			console.log(kids.care_time[0].date)
+			console.log(moment(kids.care_time[0].date).format('MMM Do YY'))
+			console.log(moment(calendarValue.$d).format('MMM Do YY'))
+			const find_caretimes = kids.care_time?.filter((c) => moment(c.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
 			console.log(find_caretimes)
 			setPickedCareTiems(find_caretimes)
-			console.log(pickedEvents)
-			console.log(find_events.length)
+			console.log(pickedCareTimes)
 		}, [calendarValue.$d])
 	
 		return (
@@ -71,7 +71,7 @@ const FrontPage = ({ events, kids, currentUser, usertype }) => {
 								{moment(calendarValue.$d).format('MMM Do YY')}
 							</Item>
 							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <Item>Ei tapahtumia</Item>}
-							{usertype == 'parent_worker' && pickedCareTimes ? <CareTimeInfo pickedCareTimes={pickedCareTimes} /> : null}
+							{pickedCareTimes.length > 0 ? pickedCareTimes.map((caretime) => <CareTimeInfo key={caretime.id} kid={kids} pickedCareTimes={caretime} />) : null}
 						</Grid>
 					</Grid>
 				</Card>

@@ -2,12 +2,35 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {   Dialog, DialogContent, DialogTitle, Divider } from '@mui/material'
 import Item from './Item'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import moment from 'moment'
+
 
 // eslint-disable-next-line react/prop-types
-const CareTimeInfo = ({ pickedCareTimes }) => {
+const CareTimeInfo = ({ kid, pickedCareTimes }) => {
 
-	console.log(pickedCareTimes)
+	const [inDayCare, setInDayCare] = useState('No')
+	
+	console.log(kid)
+	console.log(pickedCareTimes.start_time)
+	console.log( moment('2010-10-19 09:00').isBetween('2010-10-19 07:00', '2010-10-19 15:00'))
+	console.log(moment(pickedCareTimes.start_time, 'HH:mm').format('yyyy-MM-DD HH:mm'))
+
+	const startTime = moment(pickedCareTimes.start_time, 'HH:mm').format('yyyy-MM-DD HH:mm')
+	const endTime = moment(pickedCareTimes.end_time, 'HH:mm').format('yyyy-MM-DD HH:mm')
+	const currentTime = moment(moment().format('yyyy-MM-DD HH:mm'))
+	
+	console.log('Current time', currentTime)
+	console.log(moment(currentTime).isBetween(startTime, endTime))
+
+	useEffect(() => {
+
+		if (moment(currentTime).isBetween(startTime, endTime) == true) {
+			setInDayCare('Yes')
+		} else {
+			setInDayCare('No')
+		}
+	}, [])
 	const [modalOpen, setmodalOpen] = useState(false)
 	const handleModalOpen = () => {
 		setmodalOpen(true)
@@ -16,23 +39,23 @@ const CareTimeInfo = ({ pickedCareTimes }) => {
 	const handleModalClose = () => {
 		setmodalOpen(false)
 	}
-	// const defineColor = () => {
-	// 	switch (pickedCareTimes.event_type) {
-	// 	case 'W_event':
-	// 		return '#d4af66'
-	// 	case 'C_event':
-	// 		return '#b29adb'
-	// 	case 'P_event':
-	// 		return '#b6c47e'
-	// 	}
-	// }
+	const defineColor = () => {
+		switch (inDayCare) {
+		case 'No':
+			return '#d4a5ac'
+		case 'Yes':
+			return '#bbf0d0'
+		case 'Soon Home':
+			return '#e0cc9d'
+		}
+	}
 	
 	return (
-		<><Item onClick={() => handleModalOpen()}>
-			{pickedCareTimes.date}
+		<><Item  style={{backgroundColor: defineColor()}} onClick={() => handleModalOpen()}>
+			{pickedCareTimes.start_time} - {pickedCareTimes.end_time}
 		</Item>
 		<Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
-			<DialogTitle >{pickedCareTimes.date}</DialogTitle>
+			<DialogTitle >{pickedCareTimes.start_time}</DialogTitle>
 			<Divider />
 			<DialogContent>
 				

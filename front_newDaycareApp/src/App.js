@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 import FrontPage from './components/FrontPage'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeChildren, removeChildren, initializeParentsChildren } from './reducers/ChildReducer'
+import { initializeChildren } from './reducers/ChildReducer'
 import {  initializeWorkers } from './reducers/WorkersReducer'
 import  childService from './services/children'
 import OwnGroup from './components/workerPage/OwnGroup'
@@ -40,23 +40,16 @@ const App = () => {
 	console.log(workers)
 	// const navigate = useNavigate()
 	console.log(loggedInUser)
-
 	console.log(usertype)
 
 	useEffect(() => {
-		if(loggedInUser && usertype == 'worker_user') {
-			dispatch(initializeChildren())
+		if (loggedInUser) {
+			dispatch(initializeChildren(loggedInUser, usertype))
 		}
-		
 		
 		dispatch(initializeWorkers())
 		dispatch(initializeEvents())
 		dispatch(initializeGroups())
-
-		if (loggedInUser && usertype == 'parent_user') {
-			dispatch(removeChildren())
-			dispatch(initializeParentsChildren(loggedInUser))
-		}
 		
 	}, [dispatch, loggedInUser])
 
@@ -84,7 +77,7 @@ const App = () => {
 	  }
 
 
-	if (loggedInUser && !kids){
+	if (loggedInUser && kids.length < 1){
 		console.log('HALOOOO')
 		return(
 			<div>Wait..</div>
@@ -144,7 +137,8 @@ const App = () => {
 		)
 	} 
 
-	if (loggedInUser && daycare && usertype === 'parent_user') {
+	if (loggedInUser && daycare && typeof kids === 'object' && usertype === 'parent_user') {
+		console.log(typeof kids)
 		return (
 			<div>
 				<BrowserRouter>
@@ -181,12 +175,13 @@ const App = () => {
 			</div>
 		)
 	}
-
+	
 
 
 	else return (
+		
 		<div>
-    Loading...
+    Loading... 
 		</div>
 	)
  
