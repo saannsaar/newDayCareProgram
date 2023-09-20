@@ -28,18 +28,8 @@ const schema = new mongoose.Schema({
         required: true,
     },
     care_time: [{
-        date: {
-            type: Date,
-            required: true,
-        },
-        start_time: {
-            type: String,
-            required: true,
-        },
-        end_time: {
-            type: String,
-            required: true,
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'CareTime',
     }],
     
 })

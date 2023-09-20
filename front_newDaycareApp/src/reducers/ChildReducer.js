@@ -46,13 +46,16 @@ export const initializeChildren = (loggedinUser, usertype) => {
 			childArray.push(addChild)
 		})
 		return async dispatch => {
+			console.log(childArray)
 			dispatch(setChildren(childArray))
 		}
 	}
 	if (usertype === 'parent_user' && loggedinUser.children.length === 1) {
+		const childArray = []
 		return async dispatch => {
-			const children = await childService.getSpesificChild(loggedinUser.children[0])
-			dispatch(setChildren(children))
+			const addChild = await childService.getSpesificChild(loggedinUser.children[0])
+			childArray.push(addChild)
+			dispatch(setChildren(childArray))
 		}
 	}
 

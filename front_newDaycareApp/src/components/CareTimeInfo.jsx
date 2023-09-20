@@ -7,11 +7,11 @@ import moment from 'moment'
 
 
 // eslint-disable-next-line react/prop-types
-const CareTimeInfo = ({ kid, pickedCareTimes }) => {
+const CareTimeInfo = ({ pickedCareTimes }) => {
+
 
 	const [inDayCare, setInDayCare] = useState('No')
-	
-	console.log(kid)
+
 	console.log(pickedCareTimes.start_time)
 	console.log( moment('2010-10-19 09:00').isBetween('2010-10-19 07:00', '2010-10-19 15:00'))
 	console.log(moment(pickedCareTimes.start_time, 'HH:mm').format('yyyy-MM-DD HH:mm'))
@@ -31,6 +31,7 @@ const CareTimeInfo = ({ kid, pickedCareTimes }) => {
 			setInDayCare('No')
 		}
 	}, [])
+
 	const [modalOpen, setmodalOpen] = useState(false)
 	const handleModalOpen = () => {
 		setmodalOpen(true)
@@ -41,10 +42,10 @@ const CareTimeInfo = ({ kid, pickedCareTimes }) => {
 	}
 	const defineColor = () => {
 		switch (inDayCare) {
-		case 'No':
-			return '#d4a5ac'
 		case 'Yes':
 			return '#bbf0d0'
+		case 'No':
+			return '#d4a5ac'
 		case 'Soon Home':
 			return '#e0cc9d'
 		}
@@ -55,7 +56,7 @@ const CareTimeInfo = ({ kid, pickedCareTimes }) => {
 			{pickedCareTimes.start_time} - {pickedCareTimes.end_time}
 		</Item>
 		<Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
-			<DialogTitle >{pickedCareTimes.start_time}</DialogTitle>
+			<DialogTitle >{pickedCareTimes.kid_name}</DialogTitle>
 			<Divider />
 			<DialogContent>
 				
