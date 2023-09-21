@@ -18,7 +18,6 @@ import { initializeEvents } from './reducers/EventReducer'
 import { initializeGroups } from './reducers/GroupReducer'
 import { initializeDaycare } from './reducers/DaycareReducer'
 import ScheduleCare from './components/parentPage/ScheduleCare'
-import Gallery from './components/parentPage/gallery'
 import MyFamily from './components/parentPage/MyFamily'
 import { initializeCaretimes } from './reducers/CaretimeReducer'
 
@@ -151,7 +150,6 @@ const App = () => {
 							<Button color="inherit" component={Link} to="/daycare">Ilmoitustaulu</Button>
 							<Button color="inherit" component={Link} to="/messages">Viestit</Button>
 							<Button color="inherit" component={Link} to="/calendar">Hoitoajat</Button>
-							<Button color="inherit" component={Link} to="/gallery">Kuvat</Button>
 							<Button color="inherit" component={Link} to="/own-group">Oma perhe</Button>
 							<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
 						</Toolbar>
@@ -164,7 +162,6 @@ const App = () => {
 						<Route path="/messages" element={<Messages/>}/>
 						<Route path="/daycare" element={<Daycare workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
 						<Route path="/calendar" element={<ScheduleCare events={events} currentUser={loggedInUser} kids={kids}/>}/>
-						<Route path="/gallery" element={<Gallery />}/>
 					</Routes>
 
 					<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
