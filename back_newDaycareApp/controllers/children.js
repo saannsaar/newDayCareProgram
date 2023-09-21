@@ -7,7 +7,7 @@ const {userExtractor } = require('../utils/middleware')
 
 // Get all the children from the db
 childRouter.get('/', async (request, response) => {
-   const children = await Child.find({}).populate('parents').populate({path: 'group', model: 'Group', populate: {path: 'workers_in_charge', model: 'DaycareWorker'}})
+   const children = await Child.find({}).populate({path: 'care_time', model: 'CareTime'})
    console.log(children)
    response.json(children)
 })
@@ -37,7 +37,7 @@ childRouter.post('/', userExtractor,  async (request, response) => {
 
 // Get one spesific child's information from the db with id
 childRouter.get('/:id', async (request, response) => {
-    const spesific_child = await Child.findById(request.params.id)
+    const spesific_child = await Child.findById(request.params.id).populate({path: 'care_time', model: 'CareTime'})
     if (spesific_child) {
       response.json(spesific_child)
     } else {

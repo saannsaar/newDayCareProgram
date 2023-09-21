@@ -20,6 +20,7 @@ import { initializeDaycare } from './reducers/DaycareReducer'
 import ScheduleCare from './components/parentPage/ScheduleCare'
 import Gallery from './components/parentPage/gallery'
 import MyFamily from './components/parentPage/MyFamily'
+import { initializeCaretimes } from './reducers/CaretimeReducer'
 
 
 const App = () => {
@@ -32,26 +33,28 @@ const App = () => {
 	const groups = useSelector(state => state.groups)
 	const daycare = useSelector(state => state.daycare)
 	const usertype = useSelector(state => state.usertype)
-	console.log(events)
-	console.log(groups)
-	console.log(daycare)
+	
 	const loggedInUser = useSelector(state => state.currentUser)
-	console.log(kids)
-	console.log(workers)
-	// const navigate = useNavigate()
-	console.log(loggedInUser)
-	console.log(usertype)
-
+	
+	const caretimes = useSelector(state => state.caretimes)
+	
+	console.log(caretimes)
 	useEffect(() => {
 		if (loggedInUser) {
 			dispatch(initializeChildren(loggedInUser, usertype))
 		}
-		
+	
 		dispatch(initializeWorkers())
 		dispatch(initializeEvents())
 		dispatch(initializeGroups())
 		
 	}, [dispatch, loggedInUser])
+
+	
+	useEffect(() => {
+		if (loggedInUser)
+			dispatch(initializeCaretimes(loggedInUser, usertype, kids))
+	}, [loggedInUser, kids.length])
 
 
 	useEffect(() => {
@@ -160,7 +163,7 @@ const App = () => {
 						<Route path="/own-group" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
 						<Route path="/daycare" element={<Daycare workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
-						<Route path="/calendar" element={<ScheduleCare events={events}/>}/>
+						<Route path="/calendar" element={<ScheduleCare events={events} currentUser={loggedInUser} kids={kids}/>}/>
 						<Route path="/gallery" element={<Gallery />}/>
 					</Routes>
 

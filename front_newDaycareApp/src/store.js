@@ -7,6 +7,7 @@ import groupReducer from './reducers/GroupReducer'
 import DaycareReducer from './reducers/DaycareReducer'
 import EventReducer from './reducers/EventReducer'
 import userTypeReducer from './reducers/UserType'
+import caretimeReducer from './reducers/CaretimeReducer'
 
 const store = configureStore({
 	reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
 		groups: groupReducer,
 		daycare: DaycareReducer,
 		usertype: userTypeReducer,
+		caretimes: caretimeReducer
 
 	}
 })

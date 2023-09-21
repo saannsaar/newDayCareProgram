@@ -7,13 +7,22 @@ let token = null
 const setToken = newToken => {
 	token = `bearer ${newToken}`
 }
+
 const getAllCaretimes = () => {
 	const request = axios.get(baseUrl)
 	return request.then(response => response.data)
 }
 
 
+const createCaretime = async newObject => {
+	console.log('caretimes service')
+	const config = {
+		headers: { Authorization: token },
+	}
+	const response = await axios.post(baseUrl, newObject, config)
+	return response.data
+    
+}
 
 
-
-export default { getAllCaretimes, setToken }
+export default { getAllCaretimes, createCaretime, setToken }

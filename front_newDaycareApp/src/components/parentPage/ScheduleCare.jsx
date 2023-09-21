@@ -11,10 +11,11 @@ import moment from 'moment'
 import EventInfo from '../EventInfo'
 
 
-const ScheduleCare = ({ events }) => {
+const ScheduleCare = ({ events, kids, currentUser  }) => {
 	moment.locale('fin')
 
 	console.log(events)
+	console.log( kids, currentUser)
 	const adapter = new AdapterDayjs()
 	const this_worker = useSelector(state => state.currentUser)
 	console.log(this_worker)
