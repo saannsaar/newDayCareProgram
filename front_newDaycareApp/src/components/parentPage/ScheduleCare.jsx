@@ -10,9 +10,10 @@ import Item from '../Item'
 import moment from 'moment'
 import EventInfo from '../EventInfo'
 import AddCareTime from '../AddCaretime'
+import CareTimeInfo from '../CareTimeInfo'
 
 
-const ScheduleCare = ({ events, kids, currentUser  }) => {
+const ScheduleCare = ({ events, kids, caretimes, currentUser  }) => {
 	moment.locale('fin')
 	const currentDay = moment(moment().format('yyyy-MM-DD HH:mm'))
 	console.log(currentDay)
@@ -26,6 +27,8 @@ const ScheduleCare = ({ events, kids, currentUser  }) => {
 	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 	const [pickedEvents, setPickedEvents] = useState([])
 	const [pickedChild, setPickedChild] = useState('')
+	const [selectedChildsCaretimes, setSelectedChildsCaretimes] = useState('')
+	const [selectedCaretime, setSelectedCaretime] = useState('')
 
 	// console.log(calendarValue.$d)
 	
@@ -40,9 +43,22 @@ const ScheduleCare = ({ events, kids, currentUser  }) => {
 		const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
 		// console.log(find_events)
 		setPickedEvents(find_events)
+
+		if (selectedChildsCaretimes.length > 0) {
+			for (let i = 0; i < selectedChildsCaretimes.length; i++) {
+				if (moment(selectedChildsCaretimes[i].start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY')) {
+					setSelectedCaretime(selectedChildsCaretimes[i])
+				}
+			}
+		}
 		// console.log(pickedEvents)
 		// console.log(find_events.length)
 	}, [calendarValue.$d])
+
+	useEffect(() => {
+		const foundCaretimes = caretimes.filter((ct) => ct.kid == pickedChild.id)
+		setSelectedChildsCaretimes(foundCaretimes)
+	}, [pickedChild])
 
 	Object.values(kids).map((k)=> console.log(k.name))
 	return (
@@ -74,7 +90,8 @@ const ScheduleCare = ({ events, kids, currentUser  }) => {
 							<Item>
 								{moment(calendarValue.$d).format('MMM Do YY')}
 							</Item>
-							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <><Item>Ei tapahtumia</Item> <AddCareTime kid={kids[0]}/></>}
+							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <><Item>Ei tapahtumia</Item> </>}
+							{selectedCaretime  ?  <CareTimeInfo key={selectedCaretime.id}  pickedCareTimes={selectedCaretime}/> :  <><Item>Ei tapahtumia</Item> <AddCareTime kid={pickedChild} pickedDay={calendarValue.$d}/></>}
 						</Grid>
 					</Grid>
 				</Card>

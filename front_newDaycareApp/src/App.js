@@ -161,7 +161,7 @@ const App = () => {
 						<Route path="/own-group" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
 						<Route path="/daycare" element={<Daycare workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
-						<Route path="/calendar" element={<ScheduleCare events={events} currentUser={loggedInUser} kids={kids}/>}/>
+						<Route path="/calendar" element={<ScheduleCare events={events} currentUser={loggedInUser} caretimes={caretimes} kids={kids}/>}/>
 					</Routes>
 
 					<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
