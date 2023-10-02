@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeChildren } from './reducers/ChildReducer'
 import {  initializeWorkers } from './reducers/WorkersReducer'
 import  childService from './services/children'
+import  careTimeService from './services/caretimes'
 import OwnGroup from './components/workerPage/OwnGroup'
 import {  removeCurrentUser } from './reducers/CurrentUser'
 import Messages from './components/Messages'
@@ -62,6 +63,7 @@ const App = () => {
 			const user = JSON.parse(loggedUserJSON)
 			
 			childService.setToken(user.token)
+			careTimeService.setToken(user.token)
 		}
 	},[])
 

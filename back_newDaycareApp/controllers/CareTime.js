@@ -18,6 +18,8 @@ careTimeRouter.get('/', async (request, response) => {
 careTimeRouter.post('/', userExtractor,  async (request, response) => {
     const body = request.body
     const user = request.user
+    console.log(user)
+
     if (!user) {
       return response.status(401).json({error: "You cant do that"})
     }

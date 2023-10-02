@@ -27,6 +27,7 @@ const ScheduleCare = ({ events, kids, caretimes, currentUser  }) => {
 	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 	const [pickedEvents, setPickedEvents] = useState([])
 	const [pickedChild, setPickedChild] = useState('')
+	const [pickedChildId, setPickedChildId] = useState('')
 	const [selectedChildsCaretimes, setSelectedChildsCaretimes] = useState('')
 	const [selectedCaretime, setSelectedCaretime] = useState('')
 
@@ -37,7 +38,10 @@ const ScheduleCare = ({ events, kids, caretimes, currentUser  }) => {
 
 	const handlePickedChildChange = (event) => {
 		console.log(event.target.value)
+		const picked = Object.values(kids).find((k) => k.name == event.target.value)
+		console.log(picked)
 		setPickedChild(event.target.value)
+		setPickedChildId(picked.id)
 	}
 	useEffect(() => {
 		const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
@@ -60,7 +64,7 @@ const ScheduleCare = ({ events, kids, caretimes, currentUser  }) => {
 		setSelectedChildsCaretimes(foundCaretimes)
 	}, [pickedChild])
 
-	Object.values(kids).map((k)=> console.log(k.name))
+
 	return (
 		<>
 			<div>
@@ -91,7 +95,7 @@ const ScheduleCare = ({ events, kids, caretimes, currentUser  }) => {
 								{moment(calendarValue.$d).format('MMM Do YY')}
 							</Item>
 							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <><Item>Ei tapahtumia</Item> </>}
-							{selectedCaretime  ?  <CareTimeInfo key={selectedCaretime.id}  pickedCareTimes={selectedCaretime}/> :  <><Item>Ei tapahtumia</Item> <AddCareTime kid={pickedChild} pickedDay={calendarValue.$d}/></>}
+							{selectedCaretime  ?  <CareTimeInfo key={selectedCaretime.id}  pickedCareTimes={selectedCaretime}/> :  <><Item>Ei tapahtumia</Item> <AddCareTime pickedChildId={pickedChildId} kid={pickedChild} pickedDay={calendarValue.$d}/></>}
 						</Grid>
 					</Grid>
 				</Card>

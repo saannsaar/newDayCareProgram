@@ -45,8 +45,9 @@ export const initializeCaretimes = (loggedInUser, usertype, kids) => {
 	}
 }
 
-export const createChild = content => {
+export const createCaretime = content => {
 	console.log('REDUCERISSA')
+	console.log(content)
 	return async dispatch => {
 		const newTime = await caretimeService.createCaretime(content)
 		dispatch(appendCaretime(newTime))
