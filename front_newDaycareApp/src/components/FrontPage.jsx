@@ -30,30 +30,30 @@ const FrontPage = ({ events, kids, currentUser, usertype }) => {
 			)
 		}
 
+		
+		// eslint-disable-next-line no-unused-vars
+		const [childsGroup, setchildsGroup] = useState(kids.map((k) => k.group))
 		const adapter = new AdapterDayjs()
 		const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
 		const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 		const [pickedEvents, setPickedEvents] = useState([])
-		const [pickedCareTimes, setPickedCareTiems] = useState([])
+		
 		console.log(calendarValue.$d)
 		
 		console.log(moment(events[0].date).format('MMM Do YY'))
 		console.log(moment(calendarValue.$d).format('MMM Do YY'))
 		
-	
+		console.log(childsGroup)
+		
 		// TODO: Nyt näkyy vaan ensimmäisen lapsen tiedot, pitää toteuttaa
 		// niin että kaikki lapset näkyvät
 		useEffect(() => {
-			const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
+			console.log(events)
+			const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY') && childsGroup.includes(e.group.id))
 			console.log(find_events)
 			setPickedEvents(find_events)
-			console.log(kids[0].care_time[0].date)
-			console.log(moment(kids[0].care_time[0].date).format('MMM Do YY'))
+	
 			console.log(moment(calendarValue.$d).format('MMM Do YY'))
-			const find_caretimes = kids.map((k) => k.care_time?.filter((c) => moment(c.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY')))
-			console.log(find_caretimes)
-			setPickedCareTiems(find_caretimes)
-			console.log(pickedCareTimes)
 		}, [calendarValue.$d])
 	
 		return (
@@ -69,11 +69,9 @@ const FrontPage = ({ events, kids, currentUser, usertype }) => {
 						</Grid>
 						<Grid item xs={4}>
 							<Item>
-								{moment(calendarValue.$d).format('MMM Do YY')}
+								{moment(calendarValue.$d).format('MMM Do YY')}   
 							</Item>
 							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <Item>Ei tapahtumia</Item>}
-							{pickedCareTimes.length > 0 ? pickedCareTimes[0].map((c) => <CareTimeInfo key={c.id} kid={c.kid_name}  pickedCareTimes={c}/> ) : null}
-							
 							
 						</Grid>
 					</Grid>
