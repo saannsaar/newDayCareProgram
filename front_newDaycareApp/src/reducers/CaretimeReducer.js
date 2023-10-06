@@ -55,7 +55,7 @@ export const createCaretime = content => {
 
 }
 
-export const removeChildren = () => {
+export const removeCaretimes = () => {
 	return async (dispatch) => {
 		dispatch(cleanChildCaretime())
 	}

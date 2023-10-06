@@ -140,9 +140,9 @@ const FrontPage = ({ events, kids, currentUser, usertype }) => {
 		return (
 			<><Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
 				Tervetuloa NewDayCareAppiin {currentUser.name}
-			</Typography><Container>
-				<Card>
-					<Grid container spacing={2}>
+			</Typography><Container style={{background: '#f2f6fc'}}>
+				<Card >
+					<Grid container spacing={2} >
 						<Grid item xs={8}>
 							<LocalizationProvider dateAdapter={AdapterDayjs}>
 								<DateCalendar value={calendarValue} onChange={(newValue) => setCalendarValue(newValue)} />

@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 import FrontPage from './components/FrontPage'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeChildren } from './reducers/ChildReducer'
+import { initializeChildren, removeChildren } from './reducers/ChildReducer'
 import {  initializeWorkers } from './reducers/WorkersReducer'
 import  childService from './services/children'
 import  careTimeService from './services/caretimes'
@@ -15,12 +15,13 @@ import {  removeCurrentUser } from './reducers/CurrentUser'
 import Messages from './components/Messages'
 import Daycare from './components/workerPage/Daycare'
 import Calendar from './components/workerPage/Calendar'
-import { initializeEvents } from './reducers/EventReducer'
-import { initializeGroups } from './reducers/GroupReducer'
-import { initializeDaycare } from './reducers/DaycareReducer'
+import { initializeEvents, removeEvents } from './reducers/EventReducer'
+import { initializeGroups, removeGroups } from './reducers/GroupReducer'
+import { initializeDaycare, removeDaycare } from './reducers/DaycareReducer'
 import ScheduleCare from './components/parentPage/ScheduleCare'
 import MyFamily from './components/parentPage/MyFamily'
-import { initializeCaretimes } from './reducers/CaretimeReducer'
+import { initializeCaretimes, removeCaretimes } from './reducers/CaretimeReducer'
+import { removeType } from './reducers/UserType'
 
 
 const App = () => {
@@ -33,7 +34,7 @@ const App = () => {
 	const groups = useSelector(state => state.groups)
 	const daycare = useSelector(state => state.daycare)
 	const usertype = useSelector(state => state.usertype)
-	
+
 	const loggedInUser = useSelector(state => state.currentUser)
 	
 	const caretimes = useSelector(state => state.caretimes)
@@ -77,6 +78,14 @@ const App = () => {
 		event.preventDefault()
 		window.localStorage.removeItem('loggedDaycareAppUser')
 		dispatch(removeCurrentUser())
+		dispatch(removeCaretimes())
+		dispatch(removeDaycare())
+		dispatch(removeType())
+		dispatch(removeChildren())
+		dispatch(removeGroups())
+		dispatch(removeEvents())
+
+	
 		console.log(loggedInUser)
 	  }
 
@@ -95,6 +104,13 @@ const App = () => {
 				<Routes>
 					<Route path="/" element={<LoginForm  />}/>
 				</Routes>
+				<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+					<Toolbar>
+						<div>
+								@ NewDayCareApp 0.1
+						</div>
+					</Toolbar>
+				</AppBar>
 			</BrowserRouter>
 			
 		)

@@ -9,6 +9,7 @@ const {userExtractor } = require('../utils/middleware')
 childRouter.get('/', async (request, response) => {
    const children = await Child.find({}).populate({path: 'care_time', model: 'CareTime'})
    console.log(children)
+
    response.json(children)
 })
 

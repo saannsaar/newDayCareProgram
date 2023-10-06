@@ -18,7 +18,7 @@ const ScheduleCare = ({ events, kids, caretimes, currentUser  }) => {
 	const currentDay = moment(moment().format('yyyy-MM-DD HH:mm'))
 	console.log(currentDay)
 
-	console.log(events)
+	// console.log(events)
 	console.log( kids, currentUser)
 	const adapter = new AdapterDayjs()
 	const this_worker = useSelector(state => state.currentUser)
@@ -49,9 +49,12 @@ const ScheduleCare = ({ events, kids, caretimes, currentUser  }) => {
 		setPickedEvents(find_events)
 
 		if (selectedChildsCaretimes.length > 0) {
-			for (let i = 0; i < selectedChildsCaretimes.length; i++) {
-				if (moment(selectedChildsCaretimes[i].start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY')) {
-					setSelectedCaretime(selectedChildsCaretimes[i])
+			for (let i = 0; i < selectedChildsCaretimes[0].length; i++) {
+				console.log(selectedChildsCaretimes[0][i])
+				console.log(moment(selectedChildsCaretimes[0][i].start_time).format('MMM Do YY'))
+				console.log(moment(calendarValue.$d).format('MMM Do YY'))
+				if (moment(selectedChildsCaretimes[0][i].start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY')) {
+					setSelectedCaretime(selectedChildsCaretimes[0][i])
 				}
 			}
 		}
@@ -95,7 +98,7 @@ const ScheduleCare = ({ events, kids, caretimes, currentUser  }) => {
 								{moment(calendarValue.$d).format('MMM Do YY')}
 							</Item>
 							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <><Item>Ei tapahtumia</Item> </>}
-							{selectedCaretime  ?  <CareTimeInfo key={selectedCaretime.id}  pickedCareTimes={selectedCaretime}/> :  <><Item>Ei tapahtumia</Item> <AddCareTime pickedChildId={pickedChildId} kid={pickedChild} pickedDay={calendarValue.$d}/></>}
+							{selectedCaretime  ?  <CareTimeInfo key={selectedCaretime.id}  pickedCareTimes={selectedCaretime}/> :  <><Item>Ei ilmoitettua hoitoaikaa</Item> <AddCareTime pickedChildId={pickedChildId} kid={pickedChild} pickedDay={calendarValue.$d}/></>}
 						</Grid>
 					</Grid>
 				</Card>
