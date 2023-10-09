@@ -12,6 +12,7 @@ const CareTimeInfo = ({ pickedCareTimes }) => {
 
 	const [inDayCare, setInDayCare] = useState('No')
 
+	console.log(pickedCareTimes)
 	console.log(pickedCareTimes.start_time)
 	console.log(pickedCareTimes.end_time)
 	
@@ -23,7 +24,7 @@ const CareTimeInfo = ({ pickedCareTimes }) => {
 	
 	console.log('Current time', currentTime)
 	console.log(startTime, endTime)
-	console.log(moment(currentTime).isBetween(startTime, endTime))
+	console.log(moment(currentTime).isBetween(pickedCareTimes.start_time, pickedCareTimes.end_time))
 
 	useEffect(() => {
 

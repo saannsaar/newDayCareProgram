@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/react-in-jsx-scope */
-import {  useEffect } from 'react'
-import { AppBar, Toolbar, Button } from '@mui/material'
+import {  useEffect, useState } from 'react'
+import { AppBar, Toolbar, Select, Button, MenuItem } from '@mui/material'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 import FrontPage from './components/FrontPage'
@@ -22,6 +22,7 @@ import ScheduleCare from './components/parentPage/ScheduleCare'
 import MyFamily from './components/parentPage/MyFamily'
 import { initializeCaretimes, removeCaretimes } from './reducers/CaretimeReducer'
 import { removeType } from './reducers/UserType'
+import { initializeCurrentChild, removeCurrentCHild } from './reducers/CurrentChild'
 
 
 const App = () => {
@@ -34,12 +35,15 @@ const App = () => {
 	const groups = useSelector(state => state.groups)
 	const daycare = useSelector(state => state.daycare)
 	const usertype = useSelector(state => state.usertype)
+	const currentChild = useSelector(state => state.currentChild)
 
+	const [pickedChild, setPickedChild] = useState('')
 	const loggedInUser = useSelector(state => state.currentUser)
 	
 	const caretimes = useSelector(state => state.caretimes)
 	
 	console.log(caretimes)
+	console.log(currentChild)
 	useEffect(() => {
 		if (loggedInUser) {
 			dispatch(initializeChildren(loggedInUser, usertype))
@@ -53,10 +57,19 @@ const App = () => {
 
 	
 	useEffect(() => {
-		if (loggedInUser)
+		if (loggedInUser){
 			dispatch(initializeCaretimes(loggedInUser, usertype, kids))
+			console.log(kids)
+			
+		}
+			
 	}, [loggedInUser, kids.length])
 
+	useEffect(() => {
+		if (kids.length > 0 && loggedInUser) {
+			setPickedChild(kids[0].id)
+		}
+	}, [loggedInUser])
 
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
@@ -74,6 +87,12 @@ const App = () => {
 		}
 	}, [loggedInUser])
 
+	const handlePickedChildChange = (event) => {
+		console.log(event.target.value)
+		setPickedChild(event.target.value)
+		dispatch(removeCurrentCHild())
+		dispatch(initializeCurrentChild(event.target.value))
+	}
 	const logout = (event) => {
 		event.preventDefault()
 		window.localStorage.removeItem('loggedDaycareAppUser')
@@ -128,6 +147,7 @@ const App = () => {
 							<Button color="inherit" component={Link} to="/calendar">Kalenteri</Button>
 							<Button color="inherit" component={Link} to="/own-group">Omat tiedot</Button>
 							<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
+							
 						</Toolbar>
 					</AppBar>
      
@@ -159,17 +179,29 @@ const App = () => {
 
 	if (loggedInUser && daycare && typeof kids === 'object' && usertype === 'parent_user') {
 		console.log(typeof kids)
+		
 		return (
 			<div>
 				<BrowserRouter>
 					<AppBar sx={{ bgcolor: 'primary.dark'}} position='static'>
-						<Toolbar>
-							<Button color="inherit" component={Link} to="/">Koti</Button>
-							<Button color="inherit" component={Link} to="/daycare">Ilmoitustaulu</Button>
-							<Button color="inherit" component={Link} to="/messages">Viestit</Button>
-							<Button color="inherit" component={Link} to="/calendar">Hoitoajat</Button>
-							<Button color="inherit" component={Link} to="/own-group">Oma perhe</Button>
-							<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
+						<Toolbar><Select value={pickedChild}
+							label="Käyttäjätyyppi"
+							onChange={handlePickedChildChange}
+						>
+							<MenuItem disabled value="">
+								<em>Valitse lapsi</em>
+							</MenuItem>
+							{Object.values(kids).map((k) => 
+			
+								<MenuItem key={k.name.concat('key')}value={k.id}> {k.name}</MenuItem>
+							)}
+						</Select>
+						<Button color="inherit" component={Link} to="/">Koti</Button>
+						<Button color="inherit" component={Link} to="/daycare">Ilmoitustaulu</Button>
+						<Button color="inherit" component={Link} to="/messages">Viestit</Button>
+						<Button color="inherit" component={Link} to="/calendar">Hoitoajat</Button>
+						<Button color="inherit" component={Link} to="/own-group">Oma perhe</Button>
+						<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
 						</Toolbar>
 					</AppBar>
      
