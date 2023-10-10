@@ -24,10 +24,6 @@ const schema = new mongoose.Schema({
         ref: 'Group',
         required: isChildEvent
     },
-    daycare: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Daycare',
-      },
 }, {timestamps: true})
 
 

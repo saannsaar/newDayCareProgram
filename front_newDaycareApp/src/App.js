@@ -41,9 +41,10 @@ const App = () => {
 	const loggedInUser = useSelector(state => state.currentUser)
 	
 	const caretimes = useSelector(state => state.caretimes)
-	
+	console.log(kids)
 	console.log(caretimes)
 	console.log(currentChild)
+	
 	useEffect(() => {
 		if (loggedInUser) {
 			dispatch(initializeChildren(loggedInUser, usertype))
@@ -65,11 +66,8 @@ const App = () => {
 			
 	}, [loggedInUser, kids.length])
 
-	useEffect(() => {
-		if (kids.length > 0 && loggedInUser) {
-			setPickedChild(kids[0].id)
-		}
-	}, [loggedInUser])
+
+
 
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
@@ -115,7 +113,9 @@ const App = () => {
 			<div>Wait..</div>
 		)
 		
-	}	
+	}
+	
+
 	if(!loggedInUser) {
 		return (
 			<BrowserRouter>
@@ -177,7 +177,7 @@ const App = () => {
 		)
 	} 
 
-	if (loggedInUser && daycare && typeof kids === 'object' && usertype === 'parent_user') {
+	if (loggedInUser && daycare && typeof kids === 'object' && pickedChild.length > 0 && usertype === 'parent_user') {
 		console.log(typeof kids)
 		
 		return (

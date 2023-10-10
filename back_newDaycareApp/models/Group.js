@@ -25,10 +25,6 @@ const schema = new mongoose.Schema({
       ref: 'Event'
     }
   ],
-  daycare: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Daycare',
-  },
 })
 
 schema.set('toJSON', {

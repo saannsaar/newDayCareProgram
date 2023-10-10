@@ -27,10 +27,6 @@ const schema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  daycare: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Daycare',
-  },
   user_type: {
     type: String,
     value: 'worker_user',

@@ -24,10 +24,6 @@ const schema = new mongoose.Schema({
         ref: 'Child'
     }
   ],
-  daycare: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Daycare',
-  },
   user_type: {
     type: String,
     value: 'parent_user',
