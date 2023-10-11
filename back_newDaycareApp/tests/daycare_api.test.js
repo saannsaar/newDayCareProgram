@@ -19,13 +19,15 @@ describe('Parent account logged in', () => {
     beforeEach(async () => {
 
         await Parent.deleteMany({})
+        await Child.deleteMany({})
+        await Child.insertMany(helper.initialChildren)
         
         const passwordHash = await bcrypt.hash("salasana1", 10)
         const newParent = new Parent({
             name: "Caroline Forbes-Kirk",
             email: "caroline.forbeskirk@emailaddress.com",
             phone: "11111111122222",
-            children: [],
+            children: ["6526595cd5caab3108c41444"],
             passwordHash: passwordHash,
             user_type: "parent_user"
         })
@@ -104,10 +106,22 @@ describe('Worker logged', () => {
 
     test('logged in user can get their own children info', async () => {
         const parentsAtStart = await Parent.findOne({name: "Caroline Forbes-Kirk"})
+        console.log(parentsAtStart.children[0].toString())
+        const id = parentsAtStart.children[0].toString()
+        const response = await api.get(`/api/children/${id}`).set("Authorization", authorization).expect(200).expect('Content-Type', /application\/json/)
+        console.log(response.body) 
+        expect(response.body.name).toContain('Weston Kirk')
+    })
 
-        const response = await api.get('/api/parents').set("Authorization", authorization).send(newParent).expect(401).expect('Content-Type', /application\/json/)
-
-        expect(parentsAfter[0].email).toContain(modifiedInfo.email)
+    test('logged in user cant get other childrens info', async () => {
+        const children = await Child.find({})
+        console.log(children[1])
+        const id = children[1].id
+        console.log(id)
+        const response = await api.get(`/api/children/${id}`).set("Authorization", authorization).expect(401).expect('Content-Type', /application\/json/)
+        console.log(response.body.error) 
+        expect(response.body.error).toContain('Not authorized')
+       
     })
     
 })

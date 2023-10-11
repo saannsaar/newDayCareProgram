@@ -23,6 +23,6 @@
 | 6.10.  | 5   | hoitoajan lisäämisessä edelleen ongelmia sittenkin, ongelmien ratkomista  |
 | 9.10.  | 5   | Päädyin siihen  että kirjautunut vanhempi valitsee lapsista lapsen jonka tietoja sillä hetkellä katsotaan, "currentchild" reducer joka pitää huolta sitten valitun lapsen tietojen tilasta, ei tarvitse tehdä turhia looppeja aina oikean lapsen tietojen hakemiseen jokaisessa komponentissa erikseen |
 | 10.10.  | 7   |  |
+| 11.10.  | 8   |  |
 
-
-| yht   | 124  | | 
+| yht     | 132 |  | 

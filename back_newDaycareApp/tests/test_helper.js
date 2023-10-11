@@ -6,27 +6,27 @@ const Group = require('../models/Group')
 
 const initialChildren = [
     {
-      _id: "5a422a851b54a676234d17f7",
+      _id: "6526595cd5caab3108c41444",
       name: "Weston Kirk",
       born: "13.02.2021",
       monthly_maxtime: '130h',
-      parents: ["5a422aa71b54a676234d17f8", "9w391aa71b54a676283d17e0"],
+      parents: [],
       __v: 0
     },
     {
-      _id: "5a313da71b54a676234d19y5",
+      _id: "6526596b1d5a33124b6d3273",
       name: "Mary Lee",
       born: "02.05.2021",
       monthly_maxtime: '130h',
-      parents: ["7w441fc82b54d676283q17p0"],
+      parents: [],
       __v: 0
     },
     {
-        _id: "5a313da90b54a676234d197c",
+        _id: "65265971ed5419ae19531d5c",
         name: "Mindy Gilbert",
         born: "27.08.2020",
         monthly_maxtime: '130h',
-        parents: ["7w441fc82b54d676283q17p0"],
+        parents: [],
         __v: 0
       },
 

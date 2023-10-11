@@ -38,15 +38,20 @@ childRouter.post('/', userExtractor,  async (request, response) => {
 
 // Get one spesific child's information from the db with id
 childRouter.get('/:id', userExtractor, async (request, response) => {
-
+console.log("Child router")
   if (request.user.user_type === 'parent_user') {
-    const findmychild = request.user.children.find(c => c === request.params.id)
+    console.log(request.user)
+    console.log(request.params.id)
+    const findmychild = request.user.children.find(c => c.toString() === request.params.id)
+    console.log(findmychild)
     if (!findmychild) {
-      response.json(401).json({error: "Not authorized to see this child's info"})
+      console.log("not my")
+      response.status(401).json({error: "Not authorized to see this child's info"})
     } else {
       const spesific_child = await Child.findById(request.params.id).populate({path: 'care_time', model: 'CareTime'})
       if (spesific_child) {
-        response.json(spesific_child)
+        console.log("Found child corrext")
+        response.status(200).json(spesific_child)
       } else {
         response.status(404).end()
       }
