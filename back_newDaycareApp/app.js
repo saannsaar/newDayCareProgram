@@ -17,6 +17,11 @@ const careTimeRouter = require('./controllers/CareTime')
 
 //
 
+if (process.env.NODE_ENV === 'test') {
+  console.log("TESTI")
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
 const middleware = require('./utils/middleware')
 
 mongoose.set('strictQuery', false)

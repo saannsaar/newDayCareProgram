@@ -14,59 +14,102 @@ const Group = require('../models/Group')
 const helper = require('./test_helper')
 const DayCare = require('../models/Daycare')
 
-beforeEach(async () => {
-
-    await Parent.deleteMany({})
-    await Parent.insertMany(helper.initialParents)
-    const parents = await Parent.find({})
-    console.log("HALOOOOOOOO", parents)
-    const testParent = parents[0]
-    const loginc = {email: testParent.email, password: "salasana1", user_type: "parent_user"}
-    console.log(testParent)
-    console.log(loginc)
-
-    const response = await api.post('/api/login').send(loginc)
-   
-    authorization = `bearer ${response.body.token}`
-
-})
-
-test('daycareworkers are returned as json', async () => {
-    await api.get('/api/workers')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
-
-
-describe('when there is initially one parent in the db', () => {
+describe('Parent account logged in', () => {
 
     beforeEach(async () => {
+
         await Parent.deleteMany({})
-
-        const passwordHash = await bcrypt.hash('sekret', 10)
-        const parent = new Parent({name: "Test Parent", email: "new.parent@email.com", phone: "12121212121", user_type: "parent_user", passwordHash})
-        await parent.save()
-    })
-
-    test('creation succeeds with a unique email', async () => {
-        const parentsAtStart = await helper.parentsIndDb()
-        console.log(parentsAtStart)
-        const newParent = {
-            name: "Testt tes",
-            email: "test@test.com",
+        
+        const passwordHash = await bcrypt.hash("salasana1", 10)
+        const newParent = new Parent({
+            name: "Caroline Forbes-Kirk",
+            email: "caroline.forbeskirk@emailaddress.com",
             phone: "11111111122222",
             children: [],
-            password: "salasana",
-        }
-
-        await api.post('/api/parents').send(newParent).expect(201).expect('Content-Type', /application\/json/)
-
-        const parentsAtEnd = await Parent.find({})
-        expect(parentsAtEnd).toHaveLength(parentsAtStart.length +1)
-
-        const parentnames = parentsAtEnd.map(p => p.name)
-        expect(parentnames).toContain(newParent.name)
+            passwordHash: passwordHash,
+            user_type: "parent_user"
+        })
+        await Parent.insertMany(newParent)
+       
+        const parents = await Parent.find({})
+       // console.log(parents)
+        const testParent = parents[0]
+        //console.log(testParent)
+        const loginc = {email: testParent.email, password: "salasana1", user_type: "parent_user"}
+    
+        // const d = await api.get('/api/workers')
+        
+        const response = await api.post('/api/login').send(loginc)
+       
+        //console.log(response.error)
+        authorization = `bearer ${response.body.token}`
+        //console.log(authorization)
+    
     })
+
+    test('new account creation shouldnt success since parent account cant add another parent account', async () => {
+        const parentsAtStart = await Parent.find({})
+        //console.log(parentsAtStart)
+        const newParent = {
+            name: "Testt tes",
+            email: "test@test.com" ,
+            phone: "1111111809022",
+            password: "salasana",
+            user_type: "parent_user"
+        }
+        // console.log(newParent)
+
+        const response = await api.post('/api/parents').set("Authorization", authorization).send(newParent).expect(401).expect('Content-Type', /application\/json/)
+        expect(response.body.error).toContain("not authorized")
+        const parentsAtEnd = await Parent.find({})
+        expect(parentsAtEnd).toHaveLength(parentsAtStart.length)
+
+       
+    })
+    test('logged in user can change their own email or phone number', async () => {
+        const parentsAtStart = await Parent.findOne({name: "Caroline Forbes-Kirk"})
+        console.log(JSON.stringify(parentsAtStart))
+        const js = JSON.stringify(parentsAtStart)
+        const jsonParent = JSON.parse(js)
+        const modifiedInfo = {...jsonParent, email: "changedEmail@email.email"}
+        console.log(modifiedInfo)
+        await api.put(`/api/parents/${modifiedInfo.id}`).set("Authorization", authorization).send(modifiedInfo).expect(200)
+        const parentsAfter = await Parent.find({})
+
+        expect(parentsAfter[0].email).toContain(modifiedInfo.email)
+    })
+
+    // test('new parent account creation fails with given statuscode and message if the email is already taken', async () => {
+    //     const parentsAtStart = await Parent.find({})
+    //     console.log(parentsAtStart)
+    //     const newUser = {
+    //         name: "Toinen testi",
+    //         email: "caroline.forbeskirk@emailaddress.com",
+    //         phone: "032111809022",
+    //         password: "salasana",
+    //         user_type: "parent_user"
+    //     }
+
+    //     const result = await api.post('/api/parents').set("Authorization", authorization).send(newUser).expect(400).expect('Content-Type', /application\/json/)
+
+    //     console.log(result.body.message)
+    //     expect(result.body.message).toContain('Error, expected `email` to be unique.')
+
+    //     const parentsAtEnd = await Parent.find({})
+    //     expect(parentsAtEnd).toHaveLength(parentsAtStart.length)
+    // })
+})
+
+describe('Worker logged', () => {
+
+    test('logged in user can get their own children info', async () => {
+        const parentsAtStart = await Parent.findOne({name: "Caroline Forbes-Kirk"})
+
+        const response = await api.get('/api/parents').set("Authorization", authorization).send(newParent).expect(401).expect('Content-Type', /application\/json/)
+
+        expect(parentsAfter[0].email).toContain(modifiedInfo.email)
+    })
+    
 })
 
 

@@ -22,5 +22,7 @@
 | 2.10.  | 3   | Edellisten korjausten lisäys gitiin, suunnittelua paperilla mitä vielä pitää tehdä, testit, deployaus kuntoon, kirjautumiseen liittyvät jutut tarkistaa esim ulos kirjautuminen  |
 | 6.10.  | 5   | hoitoajan lisäämisessä edelleen ongelmia sittenkin, ongelmien ratkomista  |
 | 9.10.  | 5   | Päädyin siihen  että kirjautunut vanhempi valitsee lapsista lapsen jonka tietoja sillä hetkellä katsotaan, "currentchild" reducer joka pitää huolta sitten valitun lapsen tietojen tilasta, ei tarvitse tehdä turhia looppeja aina oikean lapsen tietojen hakemiseen jokaisessa komponentissa erikseen |
+| 10.10.  | 7   |  |
 
-| yht   | 117  | | 
+
+| yht   | 124  | | 

@@ -65,6 +65,7 @@ const userExtractor = async ( request, response, next ) => {
         if (find) {
             request.user = find
         } else {
+            console.log("PARENT userextractor")
             request.user = await Parent.findById(decodedToken.id)
         }
         

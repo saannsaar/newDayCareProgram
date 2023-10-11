@@ -5,7 +5,9 @@ const DaycareWorker = require('../models/DaycareWorker')
 const Parent = require('../models/Parent')
 
 loginRouter.post('/', async (request, response) => {
+   
     const {email, password, user_type} = request.body
+    
     // Etsitään pyynnön mukana olevaa "email"ia vastaavaa käyttäjää tietokannasta
     if (user_type === 'worker_user') {
         const user = await DaycareWorker.findOne({email})

@@ -35,16 +35,6 @@ const initialChildren = [
 
   const initialParents = [
     {
-      _id: "5a422aa71b54a676234d17f8",
-      name: "Caroline Forbes-Kirk",
-      password: "salasana1",
-      phone: "2212121212",
-      user_type: "parent_user",
-      email: "caroline.forbeskirk@emailaddress.com",
-      children: [],
-      __v: 0
-    },
-    {
       _id: "64e70b12d2ec240813742ae4",
       name: "Phoebe Kirk",
       password: "salis1",
