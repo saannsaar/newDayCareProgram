@@ -26,6 +26,7 @@ workerRouter.post('/', userExtractor,  async (request, response) => {
         name,
         born,
         phone,
+        user_type,
         passwordHash,
     })
 

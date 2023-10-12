@@ -70,11 +70,11 @@ describe('Parent account logged in', () => {
     })
     test('logged in user can change their own email or phone number', async () => {
         const parentsAtStart = await Parent.findOne({name: "Caroline Forbes-Kirk"})
-        console.log(JSON.stringify(parentsAtStart))
+        // console.log(JSON.stringify(parentsAtStart))
         const js = JSON.stringify(parentsAtStart)
         const jsonParent = JSON.parse(js)
         const modifiedInfo = {...jsonParent, email: "changedEmail@email.email"}
-        console.log(modifiedInfo)
+        // console.log(modifiedInfo)
         await api.put(`/api/parents/${modifiedInfo.id}`).set("Authorization", authorization).send(modifiedInfo).expect(200)
         const parentsAfter = await Parent.find({})
 
@@ -103,20 +103,20 @@ describe('Parent account logged in', () => {
 
     test('logged in user can get their own childrens info', async () => {
         const parentsAtStart = await Parent.findOne({name: "Caroline Forbes-Kirk"})
-        console.log(parentsAtStart.children[0].toString())
+        // console.log(parentsAtStart.children[0].toString())
         const id = parentsAtStart.children[0].toString()
         const response = await api.get(`/api/children/${id}`).set("Authorization", authorization).expect(200).expect('Content-Type', /application\/json/)
-        console.log(response.body) 
+        // console.log(response.body) 
         expect(response.body.name).toContain('Weston Kirk')
     })
 
     test('logged in user cant get other childrens info', async () => {
         const children = await Child.find({})
-        console.log(children[1])
+        // console.log(children[1])
         const id = children[1].id
-        console.log(id)
+        // console.log(id)
         const response = await api.get(`/api/children/${id}`).set("Authorization", authorization).expect(401).expect('Content-Type', /application\/json/)
-        console.log(response.body.error) 
+        // console.log(response.body.error) 
         expect(response.body.error).toContain('Not authorized')
        
     })
@@ -124,9 +124,69 @@ describe('Parent account logged in', () => {
 
 describe('Worker logged', () => {
 
-   
+    beforeEach(async () => {
+    await Parent.deleteMany({})
+    await Child.deleteMany({})
+    await Worker.deleteMany({})
+    await Child.insertMany(helper.initialChildren)
+
     
+    
+    const passwordHash = await bcrypt.hash("salasana", 10)
+    const newWorker = new Worker({
+        name: "Maddie Mikkelson",
+        born: "19.11.1989",
+        email: "maaddie.mikk@emailaddress.com",
+        phone: "00009999900909",
+        passwordHash: passwordHash,
+        user_type: "worker_user"
+    })
+    await Worker.insertMany(newWorker)
+   
+    const workers = await Worker.find({})
+    console.log(workers)
+    const testWorker = workers[0]
+    console.log(testWorker)
+    const loginc = {email: testWorker.email, password: "salasana", user_type: "worker_user"}
+
+    
+    const response = await api.post('/api/login').send(loginc)
+   
+    //console.log(response.error)
+    authorization = `bearer ${response.body.token}`
+    console.log(authorization)
+ })
+
+ test('logged in workeruser cant all childrens info', async () => {
+
+    const response = await api.get(`/api/children`).set("Authorization", authorization).expect(200).expect('Content-Type', /application\/json/)
+    console.log(response.body) 
+    expect(JSON.stringify(response.body)).toContain("Weston Kirk")   
 })
+ 
+
+ test('logged in workeruser cant get spesific childrens info', async () => {
+    const children = await Child.find({})
+    // console.log(children[1])
+    const id = children[1].id
+    // console.log(id)
+    const response = await api.get(`/api/children/${id}`).set("Authorization", authorization).expect(200).expect('Content-Type', /application\/json/)
+    console.log(response.body) 
+    expect(JSON.stringify(response.body)).toContain("Mary Lee")
+})
+
+
+test('logged in workeruser can add a new childs info', async () => {
+    const childrenatStart = await Child.find({})
+    const newChild = ({
+
+    })
+})
+
+})
+
+
+
 
 
 
