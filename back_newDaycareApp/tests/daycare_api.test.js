@@ -100,11 +100,8 @@ describe('Parent account logged in', () => {
     //     const parentsAtEnd = await Parent.find({})
     //     expect(parentsAtEnd).toHaveLength(parentsAtStart.length)
     // })
-})
 
-describe('Worker logged', () => {
-
-    test('logged in user can get their own children info', async () => {
+    test('logged in user can get their own childrens info', async () => {
         const parentsAtStart = await Parent.findOne({name: "Caroline Forbes-Kirk"})
         console.log(parentsAtStart.children[0].toString())
         const id = parentsAtStart.children[0].toString()
@@ -123,6 +120,11 @@ describe('Worker logged', () => {
         expect(response.body.error).toContain('Not authorized')
        
     })
+})
+
+describe('Worker logged', () => {
+
+   
     
 })
 
