@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 
 const Child = require('../models/Child')
 const {userExtractor } = require('../utils/middleware')
+const Parent = require('../models/Parent')
 
 
 // Get all the children from the db
@@ -23,11 +24,36 @@ childRouter.post('/', userExtractor,  async (request, response) => {
     if (!user) {
       return response.status(401).json({error: "You cant do that"})
     }
+    if (request.body.parents.length == 0) {
+      return response.status(400).json({error: "Child has to have at least one parent"})
+    }
+
+    const parents = await Parent.find({})
+    let helpArray = []
+    console.log(parents)
+    console.log(body.parents)
+    for (i = 0; i < request.body.parents.length; i++) {
+      for (p = 0; p < parents.length; p++) {
+        console.log(parents[p])
+        console.log(request.body.parents[i])
+        if (request.body.parents[i].trim().toLowerCase()  === parents[p].name.trim().toLowerCase() ) {
+            console.log(parents[p])
+            helpArray.push(parents[p].id)
+        }
+      }
+    }
+
+
+    if (helpArray.length === 0) {
+      return response.status(500).send("Something went wrong, couldnt find parents")
+    }
+    console.log(helpArray)
     // New child-object
     const new_child = new Child({
         name: body.name,
         born: body.born,
-        parents: body.parents,
+        parents: helpArray,
+        monthly_maxtime: body.monthly_maxtime,
     })
     
 // Save 

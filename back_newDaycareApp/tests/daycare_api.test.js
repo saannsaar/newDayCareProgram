@@ -178,9 +178,28 @@ describe('Worker logged', () => {
 
 test('logged in workeruser can add a new childs info', async () => {
     const childrenatStart = await Child.find({})
-    const newChild = ({
-
+    const passwordHash = await bcrypt.hash("salasana1", 10)
+    const newParent = new Parent({
+        name: "Caroline Forbes-Kirk",
+        email: "caroline.forbeskirk@emailaddress.com",
+        phone: "11111111122222",
+        children: ["6526595cd5caab3108c41444"],
+        passwordHash: passwordHash,
+        user_type: "parent_user"
     })
+    await Parent.insertMany(newParent)
+   
+    const parents = await Parent.find({})
+    console.log(parents)
+    const newChild = {
+        name: "New Child",
+        born: "01.01.2022",
+        parents: ["Caroline Forbes-Kirk"],
+        monthly_maxtime: "150h",
+    }
+    const response = await api.post('/api/children').set("Authorization", authorization).send(newChild).expect(201).expect('Content-Type', /application\/json/)
+    expect(JSON.stringify(response.body)).toContain("New Child")
+
 })
 
 })
