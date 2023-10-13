@@ -176,7 +176,35 @@ describe('Worker logged', () => {
 })
 
 
-test('logged in workeruser can add a new childs info', async () => {
+test('logged in workeruser can add a new childs info and the child is also added to parents children', async () => {
+    const childrenatStart = await Child.find({})
+    const passwordHash = await bcrypt.hash("salasana1", 10)
+    const newParent = new Parent({
+        name: "Caroline Forbes-Kirk",
+        email: "caroline.forbeskirk@emailaddress.com",
+        phone: "11111111122222",
+        children: ["6526595cd5caab3108c41444"],
+        passwordHash: passwordHash,
+        user_type: "parent_user"
+    })
+    await Parent.insertMany(newParent)
+   
+    const parents = await Parent.find({})
+    console.log(parents)
+    const newChild = {
+        name: "New Child",
+        born: "01.01.2022",
+        parents: ["Caroline Forbes-Kirk"],
+        monthly_maxtime: "150h",
+    }
+    const response = await api.post('/api/children').set("Authorization", authorization).send(newChild).expect(201).expect('Content-Type', /application\/json/)
+    expect(JSON.stringify(response.body)).toContain("New Child")
+    const childrenAtEnd = await Child.find({})
+    expect(childrenAtEnd).toHaveLength(childrenatStart.length +1)
+
+})
+
+test('logged in workeruser cant add a new child if name isnt unique', async () => {
     const childrenatStart = await Child.find({})
     const passwordHash = await bcrypt.hash("salasana1", 10)
     const newParent = new Parent({
@@ -200,7 +228,77 @@ test('logged in workeruser can add a new childs info', async () => {
     const response = await api.post('/api/children').set("Authorization", authorization).send(newChild).expect(201).expect('Content-Type', /application\/json/)
     expect(JSON.stringify(response.body)).toContain("New Child")
 
+
+    const newChild2 = {
+        name: "New Child",
+        born: "12.11.2023",
+        parents: ["Caroline Forbes-Kirk"],
+        monthly_maxtime: "150h",
+    }
+
+
+    const response2 = await api.post('/api/children').set("Authorization", authorization).send(newChild).expect(400).expect('Content-Type', /application\/json/)
+    console.log(response2.error)
+    expect(response2.error.toString()).toContain("cannot POST /api/children (400)")
+
 })
+
+test('logged in user can get all the parents info', async () => {
+    await Parent.deleteMany({})
+    await Parent.insertMany(helper.initialParents)
+
+    const response = await api.get('/api/parents').set("Authorization", authorization).expect(200).expect('Content-Type', /application\/json/)
+    console.log(response.body)
+})
+
+test('logged in user can create a new group and add children in it', async () => {
+    await Parent.deleteMany({})
+    await Child.deleteMany({})
+    await Group.deleteMany({})
+    await Child.insertMany(helper.initialChildren)
+    await Parent.insertMany(helper.initialParents)
+   
+   
+    const newGroup = {
+        name: "Uusi ryhmä",
+        workers_in_charge: "Maddie Mikkelson",
+    }
+
+    const response = await api.post('/api/groups').set("Authorization", authorization).send(newGroup).expect(201).expect('Content-Type', /application\/json/)
+    expect(JSON.stringify(response.body)).toContain("Uusi ryhmä")
+    const groupsAtEnd = await Group.find({})
+    expect(groupsAtEnd).toHaveLength(1)
+})
+test('logged in user cant create a new group with name that is taken', async () => {
+    await Parent.deleteMany({})
+    await Child.deleteMany({})
+    await Group.deleteMany({})
+    await Child.insertMany(helper.initialChildren)
+    await Parent.insertMany(helper.initialParents)
+   
+   
+    const newGroup = {
+        name: "Uusi ryhmä",
+        workers_in_charge: "Maddie Mikkelson",
+    }
+
+    const response = await api.post('/api/groups').set("Authorization", authorization).send(newGroup).expect(201).expect('Content-Type', /application\/json/)
+    expect(JSON.stringify(response.body)).toContain("Uusi ryhmä")
+    const groupsAtEnd = await Group.find({})
+    expect(groupsAtEnd).toHaveLength(1)
+    const newGroup2 = {
+        name: "Uusi ryhmä",
+        workers_in_charge: "Maddie Mikkelson",
+    }
+
+    const response2 = await api.post('/api/groups').set("Authorization", authorization).send(newGroup2).expect(400).expect('Content-Type', /application\/json/)
+    expect(JSON.stringify(response2.error.toString())).toContain("cannot POST /api/groups (400)")
+    const groupsAtEnd2 = await Group.find({})
+    expect(groupsAtEnd2).toHaveLength(1)
+
+
+})
+
 
 })
 

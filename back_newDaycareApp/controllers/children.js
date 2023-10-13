@@ -49,17 +49,35 @@ childRouter.post('/', userExtractor,  async (request, response) => {
     }
     console.log(helpArray)
     // New child-object
-    const new_child = new Child({
+
+    try {
+      const new_child = new Child({
         name: body.name,
         born: body.born,
         parents: helpArray,
         monthly_maxtime: body.monthly_maxtime,
     })
-    
-// Save 
-   const saved_child = await new_child.save()
-   
-   response.status(201).json(saved_child)
+       
+    // Save 
+    const saved_child = await new_child.save()
+    console.log(saved_child)
+    for (i = 0; i < helpArray.length; i++) {
+     try {
+       const updateParent = await Parent.findByIdAndUpdate(helpArray[i], {$push: {"children": saved_child._id}}, {new: true})
+       console.log(updateParent)
+       await updateParent.save()
+     } catch (exc) {
+       console.log(exc)
+       response.status(400).json({error: "Could not add child to parents children"})
+     }
+    }
+    response.status(201).json(saved_child)
+
+    } catch (error) {
+      console.log(error)
+      response.status(400).json(error)
+      
+    }
 })
 
 // Get one spesific child's information from the db with id
@@ -76,7 +94,8 @@ console.log("Child router")
     } else {
       const spesific_child = await Child.findById(request.params.id).populate({path: 'care_time', model: 'CareTime'})
       if (spesific_child) {
-        console.log("Found child corrext")
+        console.log("Found a correct child")
+        
         response.status(200).json(spesific_child)
       } else {
         response.status(404).end()
