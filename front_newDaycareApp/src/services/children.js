@@ -12,7 +12,10 @@ const getAll = () => {
 }
 
 const getSpesificChild = async (childid) => {
-	const response =  await axios.get(baseUrl.concat('/').concat(childid))
+	const config = {
+		headers: { Authorization: token },
+	}
+	const response =  await axios.get(baseUrl.concat('/').concat(childid), config)
 	return response.data
 }
 

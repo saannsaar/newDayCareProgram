@@ -10,43 +10,47 @@ import Item from '../Item'
 
 const MyFamily = ({ user, kids }) => {
 
+	console.log(user, kids)
+	console.log(kids.map(k=>k.name))
 
-	// const [modalOpen, setmodalOpen] = useState(false)
-	// const dispatch = useDispatch()
-	// const handleEditUser = (e) => {
-	// 	e.preventDefault()
-
-	// 	console.log({name, email, phone})
-	// 	dispatch(editUser({name, email, phone, born}, this_worker.id))
-	// 	setmodalOpen(false)
-	// }
-	// console.log(worker)
-	// console.log(workers)
-	// const this_worker = useSelector(state => state.currentUser)
-	// console.log(this_worker)
-
-	// const [name, setName] = useState(this_worker.name)
-	// const [email, setEmail] = useState(this_worker.email)
-	// const [phone, setPhone] = useState(this_worker.phone)
-	// const [born, setBorn] = useState(this_worker.born)
-	// const handleModalOpen = () => {
-	// 	setmodalOpen(true)
-	// }
-	// const handleModalClose = () => {
-	// 	setmodalOpen(false)
-	// }
-	
+	const [showPage, setShowPage] = useState('')
+	console.log(showPage)
+	const handleKidPage = () => {
+		console.log('Lapset')
+		setShowPage('Lapsetsivu')
+	}
 	return (
 		<Container>
 			<Typography variant="h4" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
 				Minun perheeni
 			</Typography>
 			<Container>
-				<Card>
+				<Grid container spacing={2}>
 					<Grid item xs={4}>
-					
+						<Item><Button onClick={handleKidPage}>Lapset</Button>
+							<Button>Omat tiedot</Button>
+						</Item>
 					</Grid>
-				</Card>
+					<Grid item xs={8}>
+						<Item>
+							{showPage == 'Lapsetsivu' ? <Grid container spacing={2}></Grid> : showPage == 'Omattiedotsivu' ? <Grid container spacing={2}>
+								<Grid item xs={4}>
+									<Item>Nimi: </Item>
+								</Grid>
+								<Grid item xs={8}>
+									<Item>{user.name}</Item>
+								</Grid>
+								<Grid item xs={4}>
+									<Item>Sähköposti: </Item>
+								</Grid>
+								<Grid item xs={8}>
+									<Item>{user.email}</Item>
+								</Grid>
+							</Grid> : null}
+						</Item>
+					</Grid>
+				</Grid>
+				
 			</Container>
 		</Container>
 	)

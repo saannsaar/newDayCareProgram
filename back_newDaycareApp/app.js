@@ -23,7 +23,6 @@ if (process.env.NODE_ENV === 'test') {
   app.use('/api/testing', testingRouter)
 }
 const middleware = require('./utils/middleware')
-
 mongoose.set('strictQuery', false)
 
 logger.info('connecting to', config.MONGODB_URI)

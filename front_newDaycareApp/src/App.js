@@ -9,6 +9,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeChildren, removeChildren } from './reducers/ChildReducer'
 import {  initializeWorkers } from './reducers/WorkersReducer'
 import  childService from './services/children'
+import parentService from './services/parents'
+import eventService from './services/events'
+import groupService from './services/groups'
+import workerService from './services/workers'
 import  careTimeService from './services/caretimes'
 import OwnGroup from './components/workerPage/OwnGroup'
 import {  removeCurrentUser } from './reducers/CurrentUser'
@@ -76,6 +80,10 @@ const App = () => {
 			
 			childService.setToken(user.token)
 			careTimeService.setToken(user.token)
+			parentService.setToken(user.token)
+			eventService.setTokenForEvent(user.token)
+			groupService.setToken(user.token)
+			workerService.setToken(user.token)
 		}
 	},[])
 
@@ -177,7 +185,7 @@ const App = () => {
 		)
 	} 
 
-	if (loggedInUser && daycare && typeof kids === 'object' && pickedChild.length > 0 && usertype === 'parent_user') {
+	if (loggedInUser && daycare && typeof kids === 'object'  && usertype === 'parent_user') {
 		console.log(typeof kids)
 		
 		return (

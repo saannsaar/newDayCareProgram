@@ -120,6 +120,20 @@ describe('Parent account logged in', () => {
         expect(response.body.error).toContain('Not authorized')
        
     })
+
+    test('logged in parentuser can add caretimes for own child', async () => {
+       
+        const newCaretime = {
+            start_time: "2023-09-22T07:15:00.00+03:00",
+            end_time: "2023-09-22T15:00:00.00+03:00",
+            child_id: "Weston Kirk"   
+        }
+
+        const response = await api.post('/api/caretimes').set("Authorization", authorization).send(newCaretime).expect(201).expect('Content-Type', /application\/json/)
+        console.log(response)
+        expect(response.body.name).toContain('Weston Kirk')
+
+    })
 })
 
 describe('Worker logged', () => {
@@ -299,6 +313,48 @@ test('logged in user cant create a new group with name that is taken', async () 
 
 })
 
+test('logged in user can create events', async () => {
+    await Parent.deleteMany({})
+    await Child.deleteMany({})
+    await Group.deleteMany({})
+    await Event.deleteMany({})
+
+    await Group.insertMany(helper.initialGroups)
+
+    const groupsAtStart = await Group.find({})
+    console.log(groupsAtStart)
+
+    const newEvent = {
+        name: "Metsäretki",
+        date: "2023-02-10T10:00:00.000Z",
+        event_type: "C_event",
+        info: "Metsäretki pienten kanssa",
+        group: "Pikkusten ryhmä"
+    }
+
+    
+    const response = await api.post('/api/events').set("Authorization", authorization).send(newEvent).expect(201).expect('Content-Type', /application\/json/)
+    expect(JSON.stringify(response.body)).toContain("Metsäretki")
+    const addedEvent = await Event.find({})
+    console.log(addedEvent[0])
+    const event_id = addedEvent[0]._id
+    const groupsAtEnd = await Group.find({})
+    console.log(groupsAtEnd)
+    expect(groupsAtEnd.toString()).toContain(event_id.toString())
+})
+
+test('logged in user can delete event', async () => {
+    await Event.deleteMany({})
+    await Group.deleteMany({})
+    await Event.insertMany(helper.initialEvents)
+    
+    const events = await Event.find({})
+    console.log(events[0])
+    const event_id = events[0]._id.toString()
+    console.log(event_id)
+    const deleteresponse = await api.delete(`/api/events/${event_id}`).set("Authorization", authorization).expect(204).expect('Content-Type', /application\/json/)
+    console.log(deleteresponse)
+})
 
 })
 

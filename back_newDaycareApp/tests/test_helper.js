@@ -80,21 +80,21 @@ const initializeWorkers = [
 const initialEvents = [
 
     {
-        _id: "4eeffcdf0de070a608d607e",
+        _id: "6528f02c5b30c79ea062243a",
         name: "Metsäretki",
         date: "2023-10-23T09:00:00.000+00:00",
         event_type: "C_event",
         info: "Mestäretki metsään, eväät mukaan, tutkitaan kaarnoja",
-        group: "3v422s851b54a676234d17f0",
+        group: "6528d3cc0da4556ae5091db8",
         __v: 0
     },
     {
-        _id: "64ef0040f0de070a608d6084",
+        _id: "6528f0383a9ec48b5027821f",
         name: "Pikkujoulut",
         date: "2023-11-23T09:00:00.000+00:00",
         event_type: "C_event",
         info: "Koko päiväkodin pikkujoulut lapsille",
-        group: ["3v422s851b54a676234d17f0", "7v411s851b54a676234d17p9"],
+        group: ["6528d3cc0da4556ae5091db8", "6528f065e52e35ad84a8f9ce"],
         __v: 0
     }
 ]
@@ -102,20 +102,11 @@ const initialEvents = [
 const initialGroups = [
         
     {  
-        _id: "3v422s851b54a676234d17f0",
+        _id: "6528d3cc0da4556ae5091db8",
         name: "Pikkusten ryhmä",
-        workers_in_charge: ["64e708d2d2ec240813742ae9"],
-        children: ["5a422a851b54a676234d17f7", "5a313da71b54a676234d19y5"],
-        events: ["4eeffcdf0de070a608d607e", "64ef0040f0de070a608d6084"],
-        __v: 0
-    },
-
-    {  
-        _id: "7v411s851b54a676234d17p9",
-        name: "Isompien ryhmä",
-        workers_in_charge: ["64eede26441493d0c737b47d"],
-        children: ["5a313da90b54a676234d197c"],
-        events: ["64ef0040f0de070a608d6084"],
+        workers_in_charge: [],
+        children: [],
+        events: [],
         __v: 0
     }
 

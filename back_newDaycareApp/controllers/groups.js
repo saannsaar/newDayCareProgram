@@ -15,7 +15,7 @@ groupRouter.post('/', userExtractor, async (request, response) => {
   console.log(request.user)
     if (request.user.user_type == 'parent_user') {
       console.log("HALOO:S:S:S:S:S:S:S:S:S:S:S:S:")
-      response.status(401).json({error: "You are not authorized create a new parentaccount"}).end()
+      response.status(401).json({error: "You are not authorized to create a group"}).end()
     } else {
       const {name, workers_in_charge} = request.body
       const findWorker = await DaycareWorker.findOne({name: request.body.workers_in_charge})
