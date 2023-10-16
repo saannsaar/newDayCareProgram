@@ -9,6 +9,7 @@ import EventReducer from './reducers/EventReducer'
 import userTypeReducer from './reducers/UserType'
 import caretimeReducer from './reducers/CaretimeReducer'
 import currentChildReducer from './reducers/CurrentChild'
+import NotificationReducer from './reducers/NotificationReducer'
 
 const store = configureStore({
 	reducer: {
@@ -21,6 +22,7 @@ const store = configureStore({
 		usertype: userTypeReducer,
 		caretimes: caretimeReducer,
 		currentChild: currentChildReducer,
+		notifications: NotificationReducer
 
 	}
 })

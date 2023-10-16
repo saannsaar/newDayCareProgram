@@ -14,6 +14,7 @@ const groupRouter = require('./controllers/groups')
 const eventsRouter = require('./controllers/events')
 const daycareRouter = require('./controllers/daycare')
 const careTimeRouter = require('./controllers/CareTime')
+const notificationRouter = require('./controllers/notificationsController')
 
 //
 
@@ -43,12 +44,13 @@ mongoose.connect(config.MONGODB_URI)
  
 
   app.use('/api/children', middleware.userExtractor, childRouter)
-  app.use('/api/workers', workerRouter)
-  app.use('/api/parents', parentRouter)
-  app.use ('/api/groups', groupRouter)
+  app.use('/api/workers', middleware.userExtractor, workerRouter)
+  app.use('/api/parents', middleware.userExtractor, parentRouter)
+  app.use ('/api/groups',middleware.userExtractor,  groupRouter)
   app.use('/api/login', loginRouter)
   app.use('/api/events', middleware.userExtractor, eventsRouter)
   app.use('/api/daycare', daycareRouter)
+  app.use('/api/notifications', middleware.userExtractor, notificationRouter)
   app.use('/api/caretimes', middleware.userExtractor, careTimeRouter)
 
   

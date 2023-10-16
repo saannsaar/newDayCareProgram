@@ -61,28 +61,6 @@ export const initializeChildren = (loggedinUser, usertype) => {
 
 }
 
-// export const initializeParentsChildren = (loggedinParent) => {
-
-// 	console.log(loggedinParent)
-// 	if (loggedinParent.children.length > 1) {
-// 		console.log('More than one child ')
-// 		const childArray = []
-		
-// 		loggedinParent.children?.map(async (childId)=>{
-// 			const addChild = await childService.getSpesificChild(childId)
-// 			childArray.push(addChild)
-// 		})
-// 		return async dispatch => {
-// 			dispatch(setParentsChildren(childArray))
-// 		}
-// 	}
-// 	else {
-// 		return async dispatch => {
-// 			const children = await childService.getSpesificChild(loggedinParent.children[0])
-// 			dispatch(setParentsChildren(children))
-// 		}
-// 	}
-// }
 
 export const createChild = content => {
 	console.log('REDUCERISSA')

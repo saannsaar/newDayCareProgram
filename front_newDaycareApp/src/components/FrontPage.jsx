@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable for-direction */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
@@ -13,7 +14,7 @@ import CareTimeInfo from './CareTimeInfo'
 
 
 
-const FrontPage = ({ events, kids, currentUser, usertype }) => {
+const FrontPage = ({ events, kids, currentUser, usertype, notifications }) => {
 
 
 	if (usertype == 'parent_user' && kids) {
@@ -21,6 +22,7 @@ const FrontPage = ({ events, kids, currentUser, usertype }) => {
 		console.log('PARENT FRONTPAGE')
 		moment.locale('fin')
 		console.log(kids)
+		console.log(notifications)
 
 		if(!events) {
 			return (
@@ -29,8 +31,6 @@ const FrontPage = ({ events, kids, currentUser, usertype }) => {
 				</div>
 			)
 		}
-
-		
 		// eslint-disable-next-line no-unused-vars
 		const [childsGroup, setchildsGroup] = useState(kids.map((k) => k.group))
 		const adapter = new AdapterDayjs()
@@ -60,7 +60,13 @@ const FrontPage = ({ events, kids, currentUser, usertype }) => {
 			<><Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
 				Tervetuloa NewDayCareAppiin {currentUser.name}
 			</Typography><Container>
-				<Card>
+				<Container style={{ marginBottom: '10px'}}>
+			     <Card>
+				 {notifications.map(n => 
+							<Item key={n.headingtext}>{n.headingtext}</Item>)}
+				 </Card>
+				</Container>
+				<Card style={{padding: '3px'}}> 
 					<Grid container spacing={2}>
 						<Grid item xs={8}>
 							<LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -76,9 +82,7 @@ const FrontPage = ({ events, kids, currentUser, usertype }) => {
 						</Grid>
 					</Grid>
 				</Card>
-				<Container>
-			
-				</Container>
+				
 			</Container></>
 				
 		)

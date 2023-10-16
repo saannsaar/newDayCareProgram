@@ -14,6 +14,7 @@ import eventService from './services/events'
 import groupService from './services/groups'
 import workerService from './services/workers'
 import  careTimeService from './services/caretimes'
+import notiservice from './services/notiservice'
 import OwnGroup from './components/workerPage/OwnGroup'
 import {  removeCurrentUser } from './reducers/CurrentUser'
 import Messages from './components/Messages'
@@ -27,6 +28,7 @@ import MyFamily from './components/parentPage/MyFamily'
 import { initializeCaretimes, removeCaretimes } from './reducers/CaretimeReducer'
 import { removeType } from './reducers/UserType'
 import { initializeCurrentChild, removeCurrentCHild } from './reducers/CurrentChild'
+import { initializeNotifications } from './reducers/NotificationReducer'
 
 
 const App = () => {
@@ -40,6 +42,7 @@ const App = () => {
 	const daycare = useSelector(state => state.daycare)
 	const usertype = useSelector(state => state.usertype)
 	const currentChild = useSelector(state => state.currentChild)
+	const allNotifications = useSelector(state => state.notifications)
 
 	const [pickedChild, setPickedChild] = useState('')
 	const loggedInUser = useSelector(state => state.currentUser)
@@ -48,15 +51,18 @@ const App = () => {
 	console.log(kids)
 	console.log(caretimes)
 	console.log(currentChild)
+	console.log(allNotifications)
 	
 	useEffect(() => {
 		if (loggedInUser) {
 			dispatch(initializeChildren(loggedInUser, usertype))
+			dispatch(initializeWorkers())
+			dispatch(initializeEvents())
+			dispatch(initializeGroups())
+			dispatch(initializeNotifications())
 		}
 	
-		dispatch(initializeWorkers())
-		dispatch(initializeEvents())
-		dispatch(initializeGroups())
+		
 		
 	}, [dispatch, loggedInUser])
 
@@ -84,6 +90,7 @@ const App = () => {
 			eventService.setTokenForEvent(user.token)
 			groupService.setToken(user.token)
 			workerService.setToken(user.token)
+			notiservice.setToken(user.token)
 		}
 	},[])
 
@@ -109,6 +116,7 @@ const App = () => {
 		dispatch(removeChildren())
 		dispatch(removeGroups())
 		dispatch(removeEvents())
+		
 
 	
 		console.log(loggedInUser)
@@ -163,7 +171,7 @@ const App = () => {
     
 
 					<Routes>
-						<Route path="/" element={<FrontPage events={events} currentUser={loggedInUser} kids={kids} usertype={usertype}/>}/>
+						<Route path="/" element={<FrontPage notifications={allNotifications} events={events} currentUser={loggedInUser} kids={kids} usertype={usertype}/>}/>
 						<Route path="/own-group" element={<OwnGroup worker={loggedInUser} workers={workers}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
 						<Route path="/daycare" element={<Daycare workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
@@ -205,20 +213,18 @@ const App = () => {
 							)}
 						</Select>
 						<Button color="inherit" component={Link} to="/">Koti</Button>
-						<Button color="inherit" component={Link} to="/daycare">Ilmoitustaulu</Button>
 						<Button color="inherit" component={Link} to="/messages">Viestit</Button>
 						<Button color="inherit" component={Link} to="/calendar">Hoitoajat</Button>
-						<Button color="inherit" component={Link} to="/own-group">Oma perhe</Button>
+						<Button color="inherit" component={Link} to="/own-family">Oma perhe</Button>
 						<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
 						</Toolbar>
 					</AppBar>
      
 
 					<Routes>
-						<Route path="/" element={<FrontPage events={events} currentUser={loggedInUser} kids={kids} usertype={usertype}/>}/>
-						<Route path="/own-group" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
+						<Route path="/" element={<FrontPage notifications={allNotifications} events={events} currentUser={loggedInUser} kids={kids} usertype={usertype}/>}/>
+						<Route path="/own-family" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
-						<Route path="/daycare" element={<Daycare workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
 						<Route path="/calendar" element={<ScheduleCare events={events} currentUser={loggedInUser} caretimes={caretimes} kids={kids}/>}/>
 					</Routes>
 

@@ -21,6 +21,7 @@ const getParentById = async (user) => {
 		headers: { Authorization: token },
 	}
 	console.log('SERVICE getParentById -- ', user)
+	console.log(token)
 	const response = await axios.get(baseUrl.concat('/').concat(user.id), config)
 	return response.data
 }

@@ -19,6 +19,11 @@ const MyFamily = ({ user, kids }) => {
 		console.log('Lapset')
 		setShowPage('Lapsetsivu')
 	}
+
+	const handleOwnInfoPage = () => {
+		console.log('Omat tiedot')
+		setShowPage('Omattiedotsivu')
+	}
 	return (
 		<Container>
 			<Typography variant="h4" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
@@ -28,12 +33,16 @@ const MyFamily = ({ user, kids }) => {
 				<Grid container spacing={2}>
 					<Grid item xs={4}>
 						<Item><Button onClick={handleKidPage}>Lapset</Button>
-							<Button>Omat tiedot</Button>
+							<Button  onClick={handleOwnInfoPage}>Omat tiedot</Button>
 						</Item>
 					</Grid>
 					<Grid item xs={8}>
 						<Item>
-							{showPage == 'Lapsetsivu' ? <Grid container spacing={2}></Grid> : showPage == 'Omattiedotsivu' ? <Grid container spacing={2}>
+							{showPage == 'Lapsetsivu' ? <Grid container spacing={2}>{kids.map(k=> <><Grid item xs={4}>
+								<Item>KUVA </Item>
+							</Grid><Grid item xs={8}>
+								<Item>{kids[0].name}</Item>
+							</Grid></>)}</Grid> : showPage == 'Omattiedotsivu' ? <Grid container spacing={2}>
 								<Grid item xs={4}>
 									<Item>Nimi: </Item>
 								</Grid>
