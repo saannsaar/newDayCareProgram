@@ -16,6 +16,7 @@
     "axios": "^1.5.0",
     "core-js": "^3.32.1",
     "dayjs": "^1.11.9",
+    "env-cmd": "^10.1.0",
     "express": "^4.18.2",
     "graphql": "^16.8.0",
     "graphql-ws": "^5.14.0",
@@ -62,6 +63,7 @@
     "cypress": "^12.17.4",
     "eslint": "^8.48.0",
     "eslint-plugin-react": "^7.33.2",
+    "react-error-overlay": "^6.0.9",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"

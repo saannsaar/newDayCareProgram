@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable for-direction */
 /* eslint-disable react/prop-types */
@@ -6,25 +7,40 @@ import {  useEffect, useState } from 'react'
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/de'
-import { Container, Typography, Card, Grid } from '@mui/material'
+import { Container, Button, Typography, Card, Grid } from '@mui/material'
 import Item from './Item'
 import moment from 'moment'
 import EventInfo from './EventInfo'
 import CareTimeInfo from './CareTimeInfo'
-
+import axios from 'axios'
 
 
 const FrontPage = ({ events, kids, currentUser, usertype, notifications }) => {
 
 
-	if (usertype == 'parent_user' && kids) {
+	const api_key = process.env.REACT_APP_WEATHER_API_KEY
+	console.log(api_key)
+	console.log(process.env)
+	const lat = '62.24147'
+	const lon = '25.72088'
+	const [weather, setWeather] = useState({})
+	useEffect(() => {
+		axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric`)
+			.then((response) => {
+				console.log('weather')
+				setWeather(response.data)
+			})
+	},[])
+	if (usertype == 'parent_user' && kids && weather) {
+
+		console.log(weather)
 		
 		console.log('PARENT FRONTPAGE')
 		moment.locale('fin')
 		console.log(kids)
 		console.log(notifications)
 
-		if(!events) {
+		if(!events || !weather) {
 			return (
 				<div>
 					Loading..
@@ -32,7 +48,9 @@ const FrontPage = ({ events, kids, currentUser, usertype, notifications }) => {
 			)
 		}
 		// eslint-disable-next-line no-unused-vars
-		const [childsGroup, setchildsGroup] = useState(kids.map((k) => k.group))
+		console.log(kids)
+		// eslint-disable-next-line no-unused-vars
+		
 		const adapter = new AdapterDayjs()
 		const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
 		const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
@@ -43,47 +61,85 @@ const FrontPage = ({ events, kids, currentUser, usertype, notifications }) => {
 		console.log(moment(events[0].date).format('MMM Do YY'))
 		console.log(moment(calendarValue.$d).format('MMM Do YY'))
 		
-		console.log(childsGroup)
+		
+		const childGroup = kids[0].group
+		console.log(childGroup)
+		console.log(events)
 		
 		// TODO: Nyt näkyy vaan ensimmäisen lapsen tiedot, pitää toteuttaa
 		// niin että kaikki lapset näkyvät
-		useEffect(() => {
-			console.log(events)
-			const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY') && childsGroup.includes(e.group.id))
+
+		// TEE HANDLE PICK!!!
+
+		const handleDayPick = (event) => {
+			console.log(event)
+			setCalendarValue(event)
+			const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(event.$d).format('MMM Do YY') && e.group.toString().includes(childGroup))
 			console.log(find_events)
 			setPickedEvents(find_events)
+		}
+		// useEffect(() => {
+		// 	console.log(events)
+		// 	console.log(calendarValue.$d)
+		// 	const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY') && childGroup === e.group.id)
+		// 	console.log(find_events)
+		// 	setPickedEvents(find_events)
 	
-			console.log(moment(calendarValue.$d).format('MMM Do YY'))
-		}, [calendarValue.$d])
+		// 	console.log(moment(calendarValue.$d).format('MMM Do YY'))
+		// }, [calendarValue])
 	
+		console.log(pickedEvents)
 		return (
-			<><Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
-				Tervetuloa NewDayCareAppiin {currentUser.name}
-			</Typography><Container>
-				<Container style={{ marginBottom: '10px'}}>
-			     <Card>
+			<>
+
+
+				<Grid container spacing={3} style={{marginTop: '20px', marginLeft: '5px'}}>
+					<Grid style={{ margin: '10px'}}>
+			     <Item>
+				 <Typography variant="h6" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
+						Ilmoitukset
+							</Typography>
 				 {notifications.map(n => 
-							<Item key={n.headingtext}>{n.headingtext}</Item>)}
-				 </Card>
-				</Container>
-				<Card style={{padding: '3px'}}> 
-					<Grid container spacing={2}>
-						<Grid item xs={8}>
-							<LocalizationProvider dateAdapter={AdapterDayjs}>
-								<DateCalendar value={calendarValue} onChange={(newValue) => setCalendarValue(newValue)} />
-							</LocalizationProvider>
-						</Grid>
-						<Grid item xs={4}>
-							<Item>
-								{moment(calendarValue.$d).format('MMM Do YY')}   
-							</Item>
-							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <Item>Ei tapahtumia</Item>}
-							
-						</Grid>
+								<Item key={n.headingtext} style={{backgroundColor: '#edbed8'}}>{n.headingtext}</Item>)}
+				 </Item>
 					</Grid>
-				</Card>
+					<Grid style={{padding: '3px'}}> 
+						<Item>
+							<Grid container spacing={2} >
+								<Grid item xs={8}>
+									<LocalizationProvider dateAdapter={AdapterDayjs}>
+										<DateCalendar value={calendarValue} onChange={(newValue) => handleDayPick(newValue)} />
+									</LocalizationProvider>
+								</Grid>
+								<Grid item xs={4}>
+									<Item>
+										{moment(calendarValue.$d).format('MMM Do YY')}   
+									</Item>
+									{pickedEvents?.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <Item>Ei tapahtumia</Item>}
+							
+								</Grid>
+							</Grid>
+						</Item>
+					</Grid>
+					<Item>
+						<Typography variant="h6" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
+						Sää tänään {weather.name}ssa
+						</Typography>
+						<img style={{width: '50px'}} src={` http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} /><br/>
+						<Typography variant="p" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
+							{weather.main.temp} astetta
+						</Typography> <br/>
+						<Typography variant="p" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
+							{weather.wind.speed} m/s
+						</Typography><br/>
+					
+					
+
+					</Item>
+				</Grid>
+
 				
-			</Container></>
+			</>
 				
 		)
 	} 
@@ -145,6 +201,13 @@ const FrontPage = ({ events, kids, currentUser, usertype, notifications }) => {
 			<><Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
 				Tervetuloa NewDayCareAppiin {currentUser.name}
 			</Typography><Container style={{background: '#f2f6fc'}}>
+				<Container style={{ marginBottom: '10px'}}>
+					<Button>Lisää ilmoitus</Button>
+			     <Card>
+				 {notifications.map(n => 
+							<Item key={n.headingtext} style={{backgroundColor: '#edbed8'}}>{n.headingtext}</Item>)}
+				 </Card>
+				</Container>
 				<Card >
 					<Grid container spacing={2} >
 						<Grid item xs={8}>

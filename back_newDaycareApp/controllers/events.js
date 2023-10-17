@@ -6,7 +6,7 @@ const { userExtractor } = require('../utils/middleware')
 
 // Get all the events from the db
 eventsRouter.get('/', async (request, response) => {
-    const events = await Event.find({}).populate({path: 'group', model: 'Group', populate: {path: 'workers_in_charge', model: 'DaycareWorker'}})
+    const events = await Event.find({})
     console.log(events)
     response.json(events)
 })
