@@ -1,14 +1,18 @@
+/* eslint-disable indent */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
-import {   Dialog, DialogContent, DialogTitle, Divider } from '@mui/material'
+import {   Dialog, DialogContent, DialogTitle, Divider, Button } from '@mui/material'
 import Item from './Item'
 import moment from 'moment'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteEvent } from '../reducers/EventReducer'
 
 // eslint-disable-next-line react/prop-types
-const EventInfo = ({ event }) => {
+const EventInfo = ({ event, usertype }) => {
 
 	const [modalOpen, setmodalOpen] = useState(false)
+	const dispatch = useDispatch()
 	const handleModalOpen = () => {
 		setmodalOpen(true)
 	}
@@ -25,6 +29,13 @@ const EventInfo = ({ event }) => {
 		case 'P_event':
 			return '#b6c47e'
 		}
+	}
+
+	const handleDeleteEvent = () => {
+		
+		dispatch(deleteEvent(event.id))
+		setmodalOpen(false)
+
 	}
 	
 	return (
@@ -45,6 +56,10 @@ const EventInfo = ({ event }) => {
 					{event.group.name}
 				</Item>
 			</DialogContent>
+			{usertype == 'worker_user' ? <Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
+					onClick={() => handleDeleteEvent()}> 
+                                                Poista tapahtuma 
+				</Button> : null }
 		</Dialog></>
 	)
 }

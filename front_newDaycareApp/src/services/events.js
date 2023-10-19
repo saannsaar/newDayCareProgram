@@ -31,5 +31,14 @@ const getEventById = async (event) => {
 	return response.data
 }
 
+const deleteEvent = async (id) => {
+	const config = {
+		headers: { Authorization: token },
+	}
 
-export default { getAllEvents, createEvent,  setTokenForEvent, getEventById }
+	const response = await axios.delete(baseUrl.concat('/').concat(id), config)
+	return response.data
+}
+
+
+export default { getAllEvents, createEvent,  setTokenForEvent, deleteEvent, getEventById }

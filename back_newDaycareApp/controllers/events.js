@@ -12,14 +12,14 @@ eventsRouter.get('/', async (request, response) => {
 })
 
 eventsRouter.delete('/:id', userExtractor, async (request, response) => {
-    const event = await Event.findById(request.params.id)
-    console.log(event)
+   
     const user = request.user
     if( !user || user.user_type == "parent_user") {
       return response(401).json({error: "You are not aaouthorized to delete an event"})
     }
 
-    await event.remove()
+    const event = await Event.deleteOne({_id: request.params.id })
+    console.log(event)
     response.status(204).end()
 
 })

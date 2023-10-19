@@ -163,7 +163,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 									<Item>
 										{moment(calendarValue.$d).format('MMM Do YY')}   
 									</Item>
-									{pickedEvents?.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <Item>Ei tapahtumia</Item>}
+									{pickedEvents?.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} usertype={usertype} event={e}/>) : <Item>Ei tapahtumia</Item>}
 									
 								</Grid>
 							</Grid>
