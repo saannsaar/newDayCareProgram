@@ -8,7 +8,7 @@ const Child = require('../models/Child')
 
 // Get all the caretimes from the db
 careTimeRouter.get('/', async (request, response) => {
-   const caretimes = await CareTime.find({}).populate('Child')
+   const caretimes = await CareTime.find({})
    console.log(caretimes)
    response.json(caretimes)
 })

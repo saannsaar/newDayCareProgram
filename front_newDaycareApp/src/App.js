@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/react-in-jsx-scope */
 import {  useEffect, useState } from 'react'
@@ -17,6 +18,7 @@ import  careTimeService from './services/caretimes'
 import notiservice from './services/notiservice'
 import OwnGroup from './components/workerPage/OwnGroup'
 import {  removeCurrentUser } from './reducers/CurrentUser'
+import axios from 'axios'
 import Messages from './components/Messages'
 import Daycare from './components/workerPage/Daycare'
 import Calendar from './components/workerPage/Calendar'
@@ -34,6 +36,12 @@ import { initializeNotifications } from './reducers/NotificationReducer'
 const App = () => {
 
 	const dispatch = useDispatch()
+	const [weather, setWeather] = useState(null)
+	const api_key = process.env.REACT_APP_WEATHER_API_KEY
+	console.log(api_key)
+	console.log(process.env)
+	const lat = '62.24147'
+	const lon = '25.72088'
 
 	const kids = useSelector(state => state.children)
 	const workers = useSelector(state => state.workers)
@@ -78,6 +86,13 @@ const App = () => {
 
 
 
+	useEffect(() => {
+		axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric`)
+			.then((response) => {
+				console.log('weather', response.data)
+				setWeather(response.data)
+			})
+	},[])
 
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
@@ -171,7 +186,7 @@ const App = () => {
     
 
 					<Routes>
-						<Route path="/" element={<FrontPage notifications={allNotifications} events={events} currentUser={loggedInUser} kids={kids} usertype={usertype}/>}/>
+						<Route path="/" element={<FrontPage weather={weather} notifications={allNotifications} events={events} kids={kids} usertype={usertype}/>}/>
 						<Route path="/own-group" element={<OwnGroup worker={loggedInUser} workers={workers}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
 						<Route path="/daycare" element={<Daycare workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
@@ -222,7 +237,7 @@ const App = () => {
      
 
 					<Routes>
-						<Route path="/" element={<FrontPage notifications={allNotifications} events={events} currentUser={loggedInUser} kids={kids} usertype={usertype}/>}/>
+						<Route path="/" element={<FrontPage weather={weather} notifications={allNotifications} events={events}  kids={currentChild} usertype={usertype}/>}/>
 						<Route path="/own-family" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
 						<Route path="/calendar" element={<ScheduleCare events={events} currentUser={loggedInUser} caretimes={caretimes} kids={kids}/>}/>

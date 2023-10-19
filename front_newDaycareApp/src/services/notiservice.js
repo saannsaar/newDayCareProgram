@@ -23,7 +23,7 @@ const postNotification = async newNotification => {
 		headers: { Authorization: token },
 	}
 	console.log('Service postNotification -- ', newNotification)
-	const response = await axios.put(baseUrl, newNotification, config)
+	const response = await axios.post(baseUrl, newNotification, config)
 	console.log(response.data)
 	return response.data
 }
