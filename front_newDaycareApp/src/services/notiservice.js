@@ -27,4 +27,13 @@ const postNotification = async newNotification => {
 	console.log(response.data)
 	return response.data
 }
-export default { getAllNotifications, postNotification, setToken }
+
+const deleteNotification = async (id) => {
+	const config = {
+		headers: { Authorization: token },
+	}
+
+	const response = await axios.delete(baseUrl.concat('/').concat(id), config)
+	return response.data
+}
+export default { getAllNotifications, postNotification, deleteNotification, setToken }

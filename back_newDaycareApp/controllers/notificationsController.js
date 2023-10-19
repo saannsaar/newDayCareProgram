@@ -44,9 +44,15 @@ notificationRouter.post('/', userExtractor, async (request, response) => {
         response.status(400).json(error)
     }
 
+})
 
-
-
+notificationRouter.delete('/:id', userExtractor, async (request, response) => {
+    if (request.user.user_type == 'parent_user') {
+        return response.status(401).json({error: 'You are not authorized to delete notifications.'})
+    }
+    console.log('delete back')
+    const findNoti = await Notification.deleteOne({ _id: request.params.id })
+    response.status(204).end()
 })
 
 module.exports = notificationRouter
