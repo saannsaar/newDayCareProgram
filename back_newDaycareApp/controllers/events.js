@@ -47,7 +47,7 @@ eventsRouter.get('/:id', async (request, response) => {
 
         if (request.user.user_type == 'parent_user') {
           console.log("HALOO:S:S:S:S:S:S:S:S:S:S:S:S:")
-          response.status(401).json({error: "You are not authorized create a new parentaccount"}).end()
+          response.status(401).json({error: "You are not authorized create a new event"}).end()
         } else {
 
 

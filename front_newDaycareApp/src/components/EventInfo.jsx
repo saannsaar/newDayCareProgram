@@ -11,6 +11,7 @@ import { deleteEvent } from '../reducers/EventReducer'
 // eslint-disable-next-line react/prop-types
 const EventInfo = ({ event, usertype }) => {
 
+	console.log(event)
 	const [modalOpen, setmodalOpen] = useState(false)
 	const dispatch = useDispatch()
 	const handleModalOpen = () => {
@@ -52,9 +53,9 @@ const EventInfo = ({ event, usertype }) => {
 				<Item>
 					{event.info}
 				</Item>
-				<Item>
+{event.group ? <Item>
 					{event.group.name}
-				</Item>
+				</Item> : null}
 			</DialogContent>
 			{usertype == 'worker_user' ? <Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
 					onClick={() => handleDeleteEvent()}> 

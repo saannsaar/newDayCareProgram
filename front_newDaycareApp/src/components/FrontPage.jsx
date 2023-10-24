@@ -4,21 +4,28 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 import {  useState } from 'react'
-import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
+import { DateCalendar, DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/de'
-import { Button, Typography, Grid, Dialog, DialogTitle, Divider, TextField, DialogContent, Checkbox, FormControlLabel} from '@mui/material'
+import { Button, Typography, Grid, MenuItem,  Dialog, DialogTitle, Divider, TextField, DialogContent, Checkbox, FormControlLabel, Select} from '@mui/material'
 import Item from './Item'
 import moment from 'moment'
 import EventInfo from './EventInfo'
 import { createNotification } from '../reducers/NotificationReducer'
 import { useDispatch } from 'react-redux'
 import NotiInfo from './NotiInfo'
+// eslint-disable-next-line no-unused-vars
+import dayjs, { Dayjs } from 'dayjs'
+import { createEvent } from '../reducers/EventReducer'
+
 
 
 
 const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 	const [modalOpen, setmodalOpen] = useState(false)
+	const [emodalOpen, setemodalOpen] = useState(false)
+	
+	console.log(events)
 	const dispatch = useDispatch()
 	if(!events || !notifications || !weather) {
 		return (
@@ -47,7 +54,11 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 		const [headingtext, setHeadingtext] = useState('')
 		const [contenttext, setContenttext] = useState('')
 		const [toParents, setToparents] = useState(true)
-	
+		const [name, setName] = useState('')
+		const [date, setDate] = useState(dayjs('2023-10-24T07:30'))
+		const [event_type, setEventType] = useState('W_event')
+		const [info, setInfo] = useState('')
+		const [group, setGroup] = useState('')
 		
 
 		console.log(!weather)
@@ -89,6 +100,13 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 		const handleModalClose = () => {
 			setmodalOpen(false)
 		}
+
+		const handleEModalOpen = () => {
+			setemodalOpen(true)
+		}
+		const handleEModalClose = () => {
+			setemodalOpen(false)
+		}
 	
 		const handleAddNoti = (e) => {
 			e.preventDefault()
@@ -96,6 +114,13 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 			console.log({headingtext, contenttext, toParents})
 			dispatch(createNotification({headingtext, contenttext, toParents}))
 			setmodalOpen(false)
+		}
+		const handleAddEvent = (e) => {
+			e.preventDefault()
+
+			console.log({name, date, event_type, info, group})
+			dispatch(createEvent({name, date: date.$d, event_type, info, group}))
+			setemodalOpen(false)
 		}
 		return (
 			<>
@@ -108,7 +133,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 								Ilmoitukset
 							</Typography>
 						 {notifications.map(n => 
-								<NotiInfo key={n} noti={n} usertype={usertype} />)}
+								<NotiInfo key={n.headingtext} noti={n} usertype={usertype} />)}
 							{usertype == 'worker_user' ? <><Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
 								<DialogTitle>Lisää ilmoitus</DialogTitle>
 								<Divider />
@@ -163,8 +188,55 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 									<Item>
 										{moment(calendarValue.$d).format('MMM Do YY')}   
 									</Item>
-									{pickedEvents?.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} usertype={usertype} event={e}/>) : <Item>Ei tapahtumia</Item>}
-									
+									{pickedEvents?.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id.concat(e.name)} usertype={usertype} event={e}/>) : <Item>Ei tapahtumia</Item>}
+									{usertype == 'worker_user' ? <><Dialog fullWidth={true} open={emodalOpen} onClose={() => handleEModalClose()}>
+										<DialogTitle>Lisää tapahtuma</DialogTitle>
+										<Divider />
+										<DialogContent>
+											<div>
+												<form onSubmit={handleAddEvent}>
+													<TextField
+														label="Tapahtuman nimi: "
+														fullWidth
+														value={name}
+														onChange={({ target }) => setName(target.value)} />
+										
+													<LocalizationProvider dateAdapter={AdapterDayjs}>
+														<DateTimePicker label='Päivämäärä: ' value={date} onChange={(newValue) => setDate(newValue)}/>
+													</LocalizationProvider>
+
+													<Select value={event_type} onChange={({ target }) => setEventType(target.value)}>
+														<MenuItem value='W_event'>Työntekijät</MenuItem>
+														<MenuItem value='P_event'>Vanhemmat</MenuItem>
+														<MenuItem value='C_event'>Lapset</MenuItem>
+													</Select>
+													<TextField
+														label="Tapahtuman sisältö: "
+														fullWidth
+														value={info}
+														onChange={({ target }) => setInfo(target.value)} />
+													<TextField
+														label="Ryhmä: "
+														fullWidth
+														value={group}
+														onChange={({ target }) => setGroup(target.value)} />
+											
+													<Grid>
+														<Grid item>
+															<Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
+																onClick={() => handleEModalClose()}>
+														Peruuta
+															</Button>
+														</Grid>
+														<Grid item>
+															<Button style={{ float: 'right', }} type="submit" variant="contained"> Tallenna
+															</Button>
+														</Grid>
+													</Grid>
+												</form>
+											</div>
+										</DialogContent>
+									</Dialog><Button onClick={handleEModalOpen}>Lisää ilmoitus</Button></> : null}
 								</Grid>
 							</Grid>
 						</Item>
