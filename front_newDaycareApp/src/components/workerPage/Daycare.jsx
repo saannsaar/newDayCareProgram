@@ -3,15 +3,64 @@
 /* eslint-disable react/react-in-jsx-scope */
 
 import { Container, Box, Typography } from '@mui/material'
+
 import Item from '../Item'
 
+// eslint-disable-next-line no-unused-vars
+import moment from 'moment'
 import logopic from '../../pictures/examplelogo.png'
-const Daycare = ( { workers, groups, kids, daycare } ) => {
+import { useEffect, useState } from 'react'
+
+
+import GroupInfo from '../GroupInfo'
+const Daycare = ( { workers, groups, kids, daycare, caretimes } ) => {
+
 
 	console.log(workers)
 	console.log(groups)
 	console.log(daycare)
 	console.log(kids)
+	console.log(caretimes)
+	const [todaysCaretimes, setTodaysCaretimes] = useState([])
+	const [groupModalOpen, setGmodalOpen] = useState(false)
+
+	// const [pickedChildForGroup, setPickedChildForGroup] = useState('')
+	
+	const handleGroupModalOpen = () => {
+		setGmodalOpen(true)
+		
+	}
+	const handleGroupModalClose = () => {
+		setGmodalOpen(false)
+	
+	}
+
+	
+	const today = new Date()
+	console.log(moment(today).format('MMM Do YY'))
+	useEffect(() => {
+		let apuarr = []
+		for (let i = 0; i < caretimes.length; i++) {
+			console.log(moment(caretimes[i].start_time).format('MMM Do YY'))
+			console.log(moment(today).format('MMM Do YY'))
+			if (moment(today).format('MMM Do YY') == moment(caretimes[i].start_time).format('MMM Do YY')) {
+				console.log('MOI')
+				const findChildName = kids.filter((k) => k.id == caretimes[i].kid)
+				console.log(findChildName)
+				apuarr.push({ ...caretimes[i], kid: findChildName[0].name})
+			}
+
+		}
+		setTodaysCaretimes(apuarr)
+ 
+	}, [])
+
+	
+
+	console.log(todaysCaretimes)
+
+	console.log(groups[0].children.map((cc) => cc.name))
+
 	return (
 		<Container>
 			<h3>{daycare.name}</h3>
@@ -38,9 +87,19 @@ const Daycare = ( { workers, groups, kids, daycare } ) => {
 				</Item>
 				<Item sx={{p:1, m:1}} ><h3>Ryhmät:</h3>
 					{groups.map((group) => (
-						<Item key={group.name}> {group.name} </Item>
+						
+						// eslint-disable-next-line react/jsx-key
+						<GroupInfo group={group} kids={kids} handleGroupModalOpen={handleGroupModalOpen} handleGroupModalClose={handleGroupModalClose} groupModalOpen={groupModalOpen} />
 					))}</Item>
-				<Item sx={{p:1, m:1}}>TÄLLÄ VIIKOLLA</Item>
+				<Item sx={{p:1, m:1}}>
+					<Typography style={{ color: '#000000', fontSize:'16px', marginTop: '1px', marginBottom: '0.5em' }}>Tänään hoidossa</Typography>
+					{todaysCaretimes.map((tCT) => (
+						
+						<>
+							<Item style={{color: '#000000', backgroundColor: '#a4f5af', marginBottom: '4px'}}> {tCT.kid}: {moment(tCT.start_time).format('HH:MM')} - {moment(tCT.end_time).format('HH:MM')} </Item> 
+						</>
+					))}
+				</Item>
 			</Box>
 		</Container>
 	)

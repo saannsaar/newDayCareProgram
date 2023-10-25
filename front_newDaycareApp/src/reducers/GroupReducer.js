@@ -13,11 +13,14 @@ const groupReducer = createSlice({
 		// eslint-disable-next-line no-unused-vars
 		cleanGroupSlice: (state) => {
 			return []
+		},
+		editGroupInfo: (state, action) => {
+			return action.payload
 		}
 	}
 })
 
-export const { setGroups, cleanGroupSlice} = groupReducer.actions
+export const { setGroups, cleanGroupSlice, editGroupInfo} = groupReducer.actions
 
 export const initializeGroups = () => {
 	return async dispatch => {
@@ -32,5 +35,14 @@ export const removeGroups = () => {
 		dispatch(cleanGroupSlice())
 	}
 }
+
+export const editGroup = (group) => {
+	console.log(group)
+	return async dispatch => {
+		const edited_group = await groupService.updateGroup(group)
+		dispatch(editGroupInfo(edited_group))
+	}
+}
+
 
 export default groupReducer.reducer

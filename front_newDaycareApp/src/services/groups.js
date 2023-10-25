@@ -20,7 +20,15 @@ const createGroup = async newObject => {
 	return response.data
 }
 
+const updateGroup = async (group) => {
+	const config = {
+		headers: { Authorization: token },
+	}
+	const response = await axios.put(baseUrl.concat('/').concat(group.id), group, config)
+	console.log(response.data)
+	return response.data
+}
 
 
 
-export default { getAllGroups, createGroup,  setToken }
+export default { getAllGroups, createGroup,  setToken, updateGroup }

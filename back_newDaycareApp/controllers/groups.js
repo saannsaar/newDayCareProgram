@@ -38,6 +38,26 @@ groupRouter.post('/', userExtractor, async (request, response) => {
     }
 })
 
+groupRouter.put('/:id', userExtractor, async (request, response) => {
+  if (request.user.user_type == 'parent_user') {
+    console.log("HALOO:S:S:S:S:S:S:S:S:S:S:S:S:")
+    response.status(401).json({error: "You are not authorized to modify a group"}).end()
+  } else {
+    
+    try { 
+
+      const changeGroup = await Group.findByIdAndUpdate(request.params.id, request.body, {
+        new: true,
+      }).exec()
+      response.json(changeGroup)
+    } catch (error) {
+      console.log(error)
+      response.status(400).json(error)
+
+    }
+  }
+})
+
 groupRouter.get('/:id', async (request, response) => {
     const spesific_group = await Group.findById(request.params.id)
     if (spesific_group) {
