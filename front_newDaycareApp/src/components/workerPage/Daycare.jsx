@@ -59,7 +59,7 @@ const Daycare = ( { workers, groups, kids, daycare, caretimes } ) => {
 
 	console.log(todaysCaretimes)
 
-	console.log(groups[0].children.map((cc) => cc.name))
+	
 
 	return (
 		<Container>
@@ -82,7 +82,7 @@ const Daycare = ( { workers, groups, kids, daycare, caretimes } ) => {
 
 				<Item sx={{p:1, m:1}}> <h3>Työntekijät:</h3>
 					{workers.map((worker) => (
-						<Item key={worker.name}> {worker.name}</Item>
+						<Item style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }} key={worker.name}> {worker.name}</Item>
 					))}
 				</Item>
 				<Item sx={{p:1, m:1}} ><h3>Ryhmät:</h3>

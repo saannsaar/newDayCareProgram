@@ -13,15 +13,17 @@ const WorkerInfo = ({worker, group}) => {
 		console.log('HALOO')
 		const filteredWorkers = group.workers_in_charge.filter((w) => w.id != worker.id)
 		const onlyIds = filteredWorkers.map((m) => m.id)
+		const onlyChildrenIds = group.children.map((c) => c.id)
 		console.log(onlyIds)
-		const newgroup = {...group, workers_in_charge: onlyIds}
+		console.log(onlyChildrenIds)
+		const newgroup = {...group, children: onlyChildrenIds, workers_in_charge: onlyIds}
 
 		console.log(newgroup)
 		dispatch(editGroup(newgroup))
 	}
 
 	return ( 
-		<Item key={worker.name.concat('s')}>{worker.name} <Button onClick={() => handleDeleteWorkerInCharge()}><DeleteOutlineIcon></DeleteOutlineIcon></Button></Item>
+		<Item style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}key={worker.name.concat('s')}>{worker.name} <Button onClick={() => handleDeleteWorkerInCharge()}><DeleteOutlineIcon></DeleteOutlineIcon></Button></Item>
 	)
 
 }

@@ -19,7 +19,7 @@ const GroupInfo = ({group, kids, handleGroupModalOpen, handleGroupModalClose, gr
 		handleGroupModalClose()
 	}
 	return (
-		<><Item key={group.name} onClick={() => handleGroupModalOpen()}> {group.name} </Item><Dialog fullWidth={true} open={groupModalOpen} onClose={() => handleGroupModalClose()}>
+		<><Item style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }} key={group.name} onClick={() => handleGroupModalOpen()}> {group.name} </Item><Dialog fullWidth={true} open={groupModalOpen} onClose={() => handleGroupModalClose()}>
 			<DialogTitle style={{backgroundColor: '#d5c5fc'}}>{group.name}</DialogTitle>
 			<Divider />
 			<div style={{margin: '15px'}}>
