@@ -33,7 +33,7 @@ const GroupInfo = ({group, kids, handleGroupModalOpen, handleGroupModalClose, gr
 					<Grid item>
 						<Button color="secondary" variant="contained" style={{ float: 'left',  backgroundColor: '#d5c5fc'}} type="button"
 							onClick={() => handleGroupModalClose(group)}> 
-                                                Peru 
+                                                Sulje 
 						</Button>
 					</Grid>
 					<Grid item>

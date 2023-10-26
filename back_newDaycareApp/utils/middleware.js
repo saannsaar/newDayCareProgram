@@ -63,6 +63,7 @@ const userExtractor = async ( request, response, next ) => {
         const find = await DaycareWorker.findById(decodedToken.id)
 
         if (find) {
+            console.log('Found')
             request.user = find
         } else {
             console.log("PARENT userextractor")

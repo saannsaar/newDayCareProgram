@@ -30,7 +30,7 @@ import MyFamily from './components/parentPage/MyFamily'
 import { initializeCaretimes, removeCaretimes } from './reducers/CaretimeReducer'
 import { removeType } from './reducers/UserType'
 import { initializeCurrentChild, removeCurrentCHild } from './reducers/CurrentChild'
-import { initializeNotifications } from './reducers/NotificationReducer'
+import { emptyNotifications, initializeNotifications } from './reducers/NotificationReducer'
 
 
 const App = () => {
@@ -38,8 +38,8 @@ const App = () => {
 	const dispatch = useDispatch()
 	const [weather, setWeather] = useState(null)
 	const api_key = process.env.REACT_APP_WEATHER_API_KEY
-	console.log(api_key)
-	console.log(process.env)
+
+
 	const lat = '62.24147'
 	const lon = '25.72088'
 
@@ -56,10 +56,7 @@ const App = () => {
 	const loggedInUser = useSelector(state => state.currentUser)
 	
 	const caretimes = useSelector(state => state.caretimes)
-	console.log(kids)
-	console.log(caretimes)
-	console.log(currentChild)
-	console.log(allNotifications)
+
 	
 	useEffect(() => {
 		if (loggedInUser) {
@@ -68,22 +65,16 @@ const App = () => {
 			dispatch(initializeEvents())
 			dispatch(initializeGroups())
 			dispatch(initializeNotifications())
+			dispatch(initializeDaycare(loggedInUser))
+			
 		}
-	
-		
-		
-	}, [dispatch, loggedInUser])
-
-	
-	useEffect(() => {
-		if (loggedInUser){
+		if (loggedInUser && kids) {
 			dispatch(initializeCaretimes(loggedInUser, usertype, kids))
-			console.log(kids)
-			
 		}
-			
+	
+		
+		
 	}, [loggedInUser, kids.length])
-
 
 
 	useEffect(() => {
@@ -98,7 +89,6 @@ const App = () => {
 		const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
-			
 			childService.setToken(user.token)
 			careTimeService.setToken(user.token)
 			parentService.setToken(user.token)
@@ -107,13 +97,9 @@ const App = () => {
 			workerService.setToken(user.token)
 			notiservice.setToken(user.token)
 		}
+
 	},[])
 
-	useEffect(() => {
-		if (loggedInUser) {
-			dispatch(initializeDaycare(loggedInUser))
-		}
-	}, [loggedInUser])
 
 	const handlePickedChildChange = (event) => {
 		console.log(event.target.value)
@@ -131,7 +117,7 @@ const App = () => {
 		dispatch(removeChildren())
 		dispatch(removeGroups())
 		dispatch(removeEvents())
-		
+		dispatch(emptyNotifications())
 
 	
 		console.log(loggedInUser)

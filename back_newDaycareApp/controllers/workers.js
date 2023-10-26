@@ -16,7 +16,7 @@ workerRouter.get('/', async (request, response) => {
 
 // Lisätään uusi työntekijä tietokantaan
 workerRouter.post('/', userExtractor,  async (request, response) => {
-    const {email, name, born, phone, password} = request.body
+    const {email, name, born, phone, password, user_type} = request.body
 
     const saltRounds = 10 
     const passwordHash = await bcrypt.hash(password, saltRounds)

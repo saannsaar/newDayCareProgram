@@ -7,7 +7,7 @@ import {  useState } from 'react'
 import { DateCalendar, DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/de'
-import { Button, Typography, Grid, MenuItem,  Dialog, DialogTitle, Divider, TextField, DialogContent, Checkbox, FormControlLabel, Select} from '@mui/material'
+import { Button, Typography, Grid, MenuItem,  Dialog, DialogTitle, Divider, TextField, DialogContent, Checkbox,  Select} from '@mui/material'
 import Item from './Item'
 import moment from 'moment'
 import EventInfo from './EventInfo'
@@ -25,7 +25,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 	const [modalOpen, setmodalOpen] = useState(false)
 	const [emodalOpen, setemodalOpen] = useState(false)
 	
-	console.log(events)
+	
 	const dispatch = useDispatch()
 	if(!events || !notifications || !weather) {
 		return (
@@ -50,7 +50,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 		const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
 		const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 		const [pickedEvents, setPickedEvents] = useState([])
-		console.log(kids)
+	
 		const [headingtext, setHeadingtext] = useState('')
 		const [contenttext, setContenttext] = useState('')
 		const [toParents, setToparents] = useState(true)
@@ -61,7 +61,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 		const [group, setGroup] = useState('')
 		
 
-		console.log(!weather)
+		
 		
 		console.log('PARENT FRONTPAGE')
 		moment.locale('fin')
@@ -86,10 +86,12 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 				const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(event.$d).format('MMM Do YY') && e.group.toString().includes(childGroup))
 				console.log(find_events)
 				setPickedEvents(find_events)
+				setDate(event)
 			} else {
 				const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(event.$d).format('MMM Do YY'))
 				console.log(find_events)
 				setPickedEvents(find_events)
+				setDate(event)
 			}
 			
 		}
@@ -122,6 +124,11 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 			dispatch(createEvent({name, date: date.$d, event_type, info, group}))
 			setemodalOpen(false)
 		}
+
+		const handleCheckParents = (event) => {
+			setToparents(event.target.checked)
+		}
+		console.log(toParents)
 		return (
 			<>
 		
@@ -150,13 +157,12 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 												fullWidth
 												value={contenttext}
 												onChange={({ target }) => setContenttext(target.value)} />
-											<FormControlLabel 
-												control={<Checkbox 
-													checked={toParents}
-													onChange={({ target }) => setToparents(target.value.checked)}
-													inputProps={{ 'aria-label': 'controlled'}}/>}
-												label='Näytä vanhemmille'
-											/>
+											<Checkbox 
+												checked={toParents}
+												onChange={handleCheckParents}
+												inputProps={{ 'aria-label': 'controlled'}}/>
+												
+											
 											
 											<Grid>
 												<Grid item>
