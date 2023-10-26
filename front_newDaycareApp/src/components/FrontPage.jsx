@@ -34,6 +34,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 			</div>
 		)
 	} else if(!kids && usertype == 'parent_user') {
+		console.log(kids)
 		return(
 			<div>
 				Valitse lapsi!
@@ -46,6 +47,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 			</div>
 		)
 	} else {
+		console.log(kids)
 		const adapter = new AdapterDayjs()
 		const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
 		const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
@@ -54,36 +56,31 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 		const [headingtext, setHeadingtext] = useState('')
 		const [contenttext, setContenttext] = useState('')
 		const [toParents, setToparents] = useState(true)
+		const [colorCode, setColorCode] = useState('#5e8072')
 		const [name, setName] = useState('')
 		const [date, setDate] = useState(dayjs('2023-10-24T07:30'))
 		const [event_type, setEventType] = useState('W_event')
 		const [info, setInfo] = useState('')
 		const [group, setGroup] = useState('')
-		
 
-		
-		
-		console.log('PARENT FRONTPAGE')
+		const handleColorChange = (newValue) => {
+			console.log('change', newValue.target.value)
+			
+			setColorCode(newValue.target.value)
+			
+		  }
+
+
 		moment.locale('fin')
-		// console.log(kids)
-		// console.log(notifications)
+		  console.log(kids)
+	
 
-			
-		// console.log(calendarValue.$d)
-			
-		// console.log(moment(events[0].date).format('MMM Do YY'))
-		// console.log(moment(calendarValue.$d).format('MMM Do YY'))
-			
-			
-		const childGroup = kids.group
-		// console.log(childGroup)
-		// console.log(events)
-		
+
 		const handleDayPick = (event) => {
 			console.log(event)
 			setCalendarValue(event)
 			if (usertype == 'parent_user') {
-				const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(event.$d).format('MMM Do YY') && e.group.toString().includes(childGroup))
+				const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(event.$d).format('MMM Do YY'))
 				console.log(find_events)
 				setPickedEvents(find_events)
 				setDate(event)
@@ -113,8 +110,13 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 		const handleAddNoti = (e) => {
 			e.preventDefault()
 
-			console.log({headingtext, contenttext, toParents})
-			dispatch(createNotification({headingtext, contenttext, toParents}))
+			console.log({headingtext, contenttext, toParents, colorCode})
+			dispatch(createNotification({headingtext, contenttext, toParents, colorCode}))
+			setHeadingtext('')
+			setContenttext('')
+			setToparents(true)
+			setColorCode('#5e8072')
+
 			setmodalOpen(false)
 		}
 		const handleAddEvent = (e) => {
@@ -142,40 +144,62 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 						 {notifications.map(n => 
 								<NotiInfo key={n.headingtext} noti={n} usertype={usertype} />)}
 							{usertype == 'worker_user' ? <><Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
-								<DialogTitle>Lisää ilmoitus</DialogTitle>
+								<DialogTitle style={{backgroundColor: colorCode}}>Lisää ilmoitus</DialogTitle>
 								<Divider />
 								<DialogContent>
 									<div>
 										<form onSubmit={handleAddNoti}>
-											<TextField
+											<TextField style={{margin: '4px'}}
 												label="Ilmoituksen otsikko: "
 												fullWidth
 												value={headingtext}
+												
 												onChange={({ target }) => setHeadingtext(target.value)} />
 											<TextField
 												label="Ilmoituksen sisältö: "
+												 style={{margin: '4px'}}
 												fullWidth
 												value={contenttext}
 												onChange={({ target }) => setContenttext(target.value)} />
-											<Checkbox 
-												checked={toParents}
-												onChange={handleCheckParents}
-												inputProps={{ 'aria-label': 'controlled'}}/>
+											
+											<Grid container direction='column'>
+												<Grid item > 
+													<Grid container direction='row' alignItems="stretch" marginBottom='20px'>
+														<Grid item >
+															<Typography  style={{  marginLeft: '4px', marginTop: '6px' }}>Näytä vanhemmille: </Typography>
+															<Checkbox 
+												
+																checked={toParents}
+																size='medium'
+																onChange={handleCheckParents}
+																inputProps={{ 'aria-label': 'controlled'}}/> </Grid>
+
+													</Grid>
+													<Grid item xs={4} >
+														
+														<Typography  style={{  marginLeft: '4px', marginTop: '6px' }}> Valitse ilmoituksen väri:</Typography>
+														<input id='colorpickerinput' type='color' value={colorCode} style={{marginLeft: '4px', marginTop:'10px'}} onChange={handleColorChange}/>
+														
+													</Grid>
+												</Grid>
 												
 											
+												
 											
-											<Grid>
 												<Grid item>
-													<Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
-														onClick={() => handleModalClose()}>
+													<Grid item>
+														<Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
+															onClick={() => handleModalClose()}>
 														Peruuta
-													</Button>
-												</Grid>
-												<Grid item>
-													<Button style={{ float: 'right', }} type="submit" variant="contained"> Tallenna
-													</Button>
+														</Button>
+													</Grid>
+													<Grid item>
+														<Button style={{ float: 'right', }} type="submit" variant="contained"> Tallenna
+														</Button>
+													</Grid>
 												</Grid>
 											</Grid>
+											
 										</form>
 									</div>
 								</DialogContent>

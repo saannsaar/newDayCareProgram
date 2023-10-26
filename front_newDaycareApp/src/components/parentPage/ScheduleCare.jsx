@@ -4,7 +4,7 @@ import {  useEffect, useState } from 'react'
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/de'
-import { Container, Typography, Card, Grid, Select, MenuItem } from '@mui/material'
+import { Container, Typography, Card, Grid } from '@mui/material'
 import { useSelector } from 'react-redux'
 import Item from '../Item'
 import moment from 'moment'
@@ -13,21 +13,19 @@ import AddCareTime from '../AddCaretime'
 import CareTimeInfo from '../CareTimeInfo'
 
 
-const ScheduleCare = ({ events, kids, caretimes, currentUser  }) => {
+const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChildId }) => {
 	moment.locale('fin')
 	const currentDay = moment(moment().format('yyyy-MM-DD HH:mm'))
 	console.log(currentDay)
 
 	// console.log(events)
-	console.log( kids, currentUser)
+	console.log( pickedChild, currentUser)
 	const adapter = new AdapterDayjs()
 	const this_worker = useSelector(state => state.currentUser)
 	console.log(this_worker)
 	const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
 	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 	const [pickedEvents, setPickedEvents] = useState([])
-	const [pickedChild, setPickedChild] = useState('')
-	const [pickedChildId, setPickedChildId] = useState('')
 	const [selectedChildsCaretimes, setSelectedChildsCaretimes] = useState('')
 	const [selectedCaretime, setSelectedCaretime] = useState('')
 
@@ -36,13 +34,7 @@ const ScheduleCare = ({ events, kids, caretimes, currentUser  }) => {
 	// console.log(moment(events[0].date).format('MMM Do YY'))
 	// console.log(moment(calendarValue.$d).format('MMM Do YY'))
 
-	const handlePickedChildChange = (event) => {
-		console.log(event.target.value)
-		const picked = Object.values(kids).find((k) => k.name == event.target.value)
-		console.log(picked)
-		setPickedChild(event.target.value)
-		setPickedChildId(picked.id)
-	}
+
 	useEffect(() => {
 		const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
 		// console.log(find_events)
@@ -70,17 +62,7 @@ const ScheduleCare = ({ events, kids, caretimes, currentUser  }) => {
 
 	return (
 		<>
-			<div>
-				Valitse lapsi:
-				<Select value={pickedChild}
-					label="Käyttäjätyyppi"
-					onChange={handlePickedChildChange}>
-					{Object.values(kids).map((k) => 
 			
-						<MenuItem key={k.name.concat('key')}value={k.name}> {k.name}</MenuItem>
-					)}
-				</Select>
-			</div>
 			<Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
 			Ilmoita hoitoajat 
 			</Typography>

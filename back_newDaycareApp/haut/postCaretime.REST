@@ -1,4 +1,4 @@
-POST http://localhost:3001/api/caretimes
+POST http://localhost:3001/api/children/6507f8a77ee5794652673730/caretime
 content-type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvaW5lbi50eW9udGVraWphQGVtYWlsLmZpIiwiaWQiOiI2NGVlZGUyNjQ0MTQ5M2QwYzczN2I0N2QiLCJpYXQiOjE2OTU5Nzk3ODMsImV4cCI6MTY5NTk4MzM4M30.RdECjUJ_g6kvX_MP0aY9JOzWM7-ZyMLYjnMiHUtkJpY
 

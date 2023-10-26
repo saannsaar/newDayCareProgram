@@ -24,11 +24,11 @@ const NotiInfo = ({ noti, usertype }) => {
 	
 
 	return (
-		<><Item  style={{backgroundColor: '#fca4b4'}} onClick={() => handleModalOpen()}>
+		<><Item  style={{backgroundColor: noti.colorCode ? noti.colorCode : '#FFFFFF', margin: '4px'}} onClick={() => handleModalOpen()}>
 			{noti.headingtext}
 		</Item>
 		<Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
-			<DialogTitle  style={{backgroundColor: '#fca4b4'}}>{noti.headingtext}</DialogTitle>
+			<DialogTitle  style={{backgroundColor:  noti.colorCode ? noti.colorCode : '#FFFFFF'}}>{noti.headingtext}</DialogTitle>
 			<Divider />
 			<DialogContent>
 				<Item>

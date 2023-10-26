@@ -21,7 +21,7 @@ import {  removeCurrentUser } from './reducers/CurrentUser'
 import axios from 'axios'
 import Messages from './components/Messages'
 import Daycare from './components/workerPage/Daycare'
-import Calendar from './components/workerPage/Calendar'
+
 import { initializeEvents, removeEvents } from './reducers/EventReducer'
 import { initializeGroups, removeGroups } from './reducers/GroupReducer'
 import { initializeDaycare, removeDaycare } from './reducers/DaycareReducer'
@@ -70,6 +70,10 @@ const App = () => {
 		}
 		if (loggedInUser && kids) {
 			dispatch(initializeCaretimes(loggedInUser, usertype, kids))
+		}
+		if (loggedInUser && usertype == 'parent_user') {
+			setPickedChild(loggedInUser.children[0])
+			dispatch(initializeCurrentChild(loggedInUser.children[0]))
 		}
 	
 		
@@ -161,7 +165,6 @@ const App = () => {
 							<Button color="inherit" component={Link} to="/">Koti</Button>
 							<Button color="inherit" component={Link} to="/daycare">Päiväkoti</Button>
 							<Button color="inherit" component={Link} to="/messages">Viestit</Button>
-							<Button color="inherit" component={Link} to="/calendar">Kalenteri</Button>
 							<Button color="inherit" component={Link} to="/own-group">Omat tiedot</Button>
 							<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
 							
@@ -176,7 +179,6 @@ const App = () => {
 						<Route path="/own-group" element={<OwnGroup worker={loggedInUser} workers={workers}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
 						<Route path="/daycare" element={<Daycare caretimes={caretimes} workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
-						<Route path="/calendar" element={<Calendar events={events}/>}/>
 					</Routes>
 
 					<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
@@ -194,7 +196,7 @@ const App = () => {
 		)
 	} 
 
-	if (loggedInUser && daycare && typeof kids === 'object'  && usertype === 'parent_user') {
+	if (loggedInUser && daycare && typeof kids === 'object' && currentChild && usertype === 'parent_user') {
 		console.log(typeof kids)
 		
 		return (
@@ -215,7 +217,7 @@ const App = () => {
 						</Select>
 						<Button color="inherit" component={Link} to="/">Koti</Button>
 						<Button color="inherit" component={Link} to="/messages">Viestit</Button>
-						<Button color="inherit" component={Link} to="/calendar">Hoitoajat</Button>
+						<Button color="inherit" component={Link} to="/caretimes">Hoitoajat</Button>
 						<Button color="inherit" component={Link} to="/own-family">Oma perhe</Button>
 						<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
 						</Toolbar>
@@ -226,7 +228,7 @@ const App = () => {
 						<Route path="/" element={<FrontPage weather={weather} notifications={allNotifications} events={events}  kids={currentChild} usertype={usertype}/>}/>
 						<Route path="/own-family" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
 						<Route path="/messages" element={<Messages/>}/>
-						<Route path="/calendar" element={<ScheduleCare events={events} currentUser={loggedInUser} caretimes={caretimes} kids={kids}/>}/>
+						<Route path="/caretimes" element={<ScheduleCare events={events} currentUser={loggedInUser} caretimes={caretimes} pickedChildId={currentChild.id} pickedChild={currentChild}/>}/>
 					</Routes>
 
 					<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>

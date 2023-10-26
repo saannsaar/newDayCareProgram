@@ -75,27 +75,27 @@ const OwnGroup = ({ worker, workers }) => {
 						<Divider />
 						<DialogContent>
 							<div>
-								<form onSubmit={handleEditUser}>
-									<TextField
+								<form onSubmit={handleEditUser} style={{margin: '2px'}}>
+									<TextField  style={{margin: '4px'}}
 										label="Nimi: "
 										placeholder={this_worker.name}
 										fullWidth 
 										value={name}
 										onChange={({ target }) => setName(target.value)}
 									/>
-									<TextField
+									<TextField  style={{margin: '4px'}}
 										label="Sähköposti: "
 										fullWidth
 										value={email}
 										onChange={({ target }) => setEmail(target.value)}
 									/>
-									<TextField
+									<TextField  style={{margin: '4px'}}
 										label="Puhelinnumero: "
 										fullWidth
 										value={phone}
 										onChange={({ target }) => setPhone(target.value)}
 									/>
-									<TextField
+									<TextField  style={{margin: '4px'}}
 										label="Syntymäaika: "
 										fullWidth
 										value={born}
@@ -105,11 +105,11 @@ const OwnGroup = ({ worker, workers }) => {
 										<Grid item>
 											<Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
 												onClick={() => handleModalClose()}> 
-                                                Cancel 
+                                                Peruuta 
 											</Button>
 										</Grid>
 										<Grid item>
-											<Button style={{ float: 'right', }} type="submit" variant="contained"> Add
+											<Button style={{ float: 'right', }} type="submit" variant="contained"> Tallenna
 											</Button>
 										</Grid>
 									</Grid>

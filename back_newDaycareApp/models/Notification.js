@@ -15,6 +15,9 @@ const schema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  colorCode: {
+    type: String
+  },
 })
 
 schema.set('toJSON', {

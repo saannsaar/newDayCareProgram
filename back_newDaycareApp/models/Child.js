@@ -23,10 +23,14 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    care_time: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'CareTime',
-    }],
+    care_time: [
+        {start_time: {
+        type: Date
+    },
+        end_time: {
+            type: Date
+        }}
+    ],
     
 })
 

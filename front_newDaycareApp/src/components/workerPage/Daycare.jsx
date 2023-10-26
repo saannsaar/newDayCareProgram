@@ -22,18 +22,10 @@ const Daycare = ( { workers, groups, kids, daycare, caretimes } ) => {
 	console.log(kids)
 	console.log(caretimes)
 	const [todaysCaretimes, setTodaysCaretimes] = useState([])
-	const [groupModalOpen, setGmodalOpen] = useState(false)
+	
 
 	// const [pickedChildForGroup, setPickedChildForGroup] = useState('')
-	
-	const handleGroupModalOpen = () => {
-		setGmodalOpen(true)
-		
-	}
-	const handleGroupModalClose = () => {
-		setGmodalOpen(false)
-	
-	}
+
 
 	
 	const today = new Date()
@@ -89,7 +81,7 @@ const Daycare = ( { workers, groups, kids, daycare, caretimes } ) => {
 					{groups.map((group) => (
 						
 						// eslint-disable-next-line react/jsx-key
-						<GroupInfo group={group} kids={kids} handleGroupModalOpen={handleGroupModalOpen} handleGroupModalClose={handleGroupModalClose} groupModalOpen={groupModalOpen} />
+						<GroupInfo group={group} kids={kids}  />
 					))}</Item>
 				<Item sx={{p:1, m:1}}>
 					<Typography style={{ color: '#000000', fontSize:'16px', marginTop: '1px', marginBottom: '0.5em' }}>Tänään hoidossa</Typography>

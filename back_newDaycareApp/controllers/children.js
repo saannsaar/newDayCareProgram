@@ -110,22 +110,44 @@ console.log("Child router")
     }
   })
 
-  childRouter.post('/:id/caretimes', async (request, response) => {
-      console.log('Hoitoajan lisäys')
-      const kid = await Child.findById(request.params.id)
-      console.log(request.body)
-      kid.care_time.push({
-        date: request.body.date,
-        start_time: request.body.start_time,
-        end_time: request.body.end_time,
-      })
+  childRouter.post('/:id/caretimes', userExtractor, async (request, response) => {
 
-      const updated_times = await Blog.findByIdAndUpdate(request.params.id, kid, {
-        new: true,
-      }).exec()
+    if (request.user.user_type === 'parent_user') {
+      console.log(request.user)
+      console.log(request.params.id)
+      const findmychild = request.user.children.find(c => c.toString() === request.params.id)
+      console.log(findmychild)
+      if (!findmychild) {
+        console.log("not my")
+        response.status(401).json({error: "Not authorized to see this child's info"})
+      } else {
+        try {
+          const spesific_child = await Child.findById(request.params.id)
+          if (spesific_child) {
+            console.log("Found a correct child")
+            console.log(spesific_child)
+            spesific_child.care_time.push({
+              start_time: request.body.start_time,
+              end_time: request.body.end_time,
+            })
+            console.log(spesific_child)
 
-      response.status(200).json(updated_times)
-  })
+            const updated_times = await Child.findByIdAndUpdate(request.params.id, spesific_child, {
+              new: true,
+            }).exec()
+
+            response.status(201).json(updated_times)
+          } else {
+            response.status(404).end()
+          }
+        } catch (error) {
+          response.status(400).json(error)
+        }
+      
+      }
+
+
+  }})
 
 
 

@@ -4,7 +4,7 @@
 import {  useState } from 'react'
 import { Button, TextField, Select, MenuItem, Typography} from '@mui/material'
 import loginService from '../services/login'
-import childService from '../services/children'
+// import childService from '../services/children'
 import { useDispatch } from 'react-redux'
 import { initializeCurrentWorker } from '../reducers/CurrentUser'
 import { initializeUserType } from '../reducers/UserType'
@@ -38,7 +38,7 @@ const LoginForm = (  ) => {
 		  })
 	
 		  window.localStorage.setItem('loggedDaycareAppUser', JSON.stringify(user))
-		  childService.setToken(user.token)
+		
 		  dispatch(initializeUserType(usertype))
 		  dispatch(initializeCurrentWorker(user))
 		  setuserEmail('')

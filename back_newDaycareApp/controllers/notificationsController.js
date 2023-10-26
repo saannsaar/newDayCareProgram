@@ -12,9 +12,13 @@ notificationRouter.get('/', userExtractor, async (request,response) => {
     }
 
     if (request.user.user_type == 'parent_user') {
+        console.log("PARENT notification get")
         const notifications = await Notification.find({toParents: true})
+        console.log(notifications)
         response.json(notifications)
     } else {
+        console.log(request.user)
+        console.log("STAFF notification get")
         const notifications = await Notification.find({})
         response.json(notifications)
     }
@@ -34,6 +38,7 @@ notificationRouter.post('/', userExtractor, async (request, response) => {
             headingtext: body.headingtext,
             contenttext: body.contenttext,
             toParents: body.toParents,
+            colorCode: body.colorCode ? body.colorCode : null
         })
 
         const saved_notification = await new_notification.save()
