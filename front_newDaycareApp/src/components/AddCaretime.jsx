@@ -3,27 +3,29 @@
 import {   Dialog, DialogContent, DialogTitle, Grid, Button, Divider, TextField } from '@mui/material'
 import Item from './Item'
 import { useState } from 'react'
-import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers'
+import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { createCaretime } from '../reducers/CaretimeReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch} from 'react-redux'
 import moment from 'moment'
 import dayjs from 'dayjs'
+import { createCaretime } from '../reducers/CaretimeReducer'
 
 // Element which renders an form where the user can add 
 // new caretimes for their child 
 
 // eslint-disable-next-line react/prop-types
 const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
-	moment.locale('utc')
+	moment.locale('fin')
+	
+
 	const yy = new Date(pickedDay).getFullYear()
 	const mm = new Date(pickedDay).getMonth()
 	const dd = new Date(pickedDay).getDate()
 	const pickeddateString = moment(pickedDay).format('MMM Do YY')
 	//console.log(moment(new Date(yy, mm, dd, 7, 20)).format())
 	// const adapter = new AdapterDayjs()
-	const[start_time, setStartTime] = useState(moment(new Date(yy, mm, dd, 7, 20)))
-	const[end_time, setEndTime] = useState(moment(new Date(yy, mm, dd, 17, 20)))
+	const[start_time, setStartTime] = useState(moment(new Date(yy, mm, dd, 3, 20)))
+	const[end_time, setEndTime] = useState(moment(new Date(yy, mm, dd, 15, 20)))
 	const [modalOpen, setmodalOpen] = useState(false)
 	// console.log(new Date(pickedDay).getFullYear())
 	// console.log(start_time)
@@ -44,7 +46,7 @@ const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
 		
 		// console.log(child_id)
 		console.log({start_time: moment(start_time).format(),end_time: moment(end_time).format(), child_id })
-		dispatch(createCaretime({start_time: moment(start_time).format(), end_time: moment(end_time).format(), child_id}))
+		dispatch(createCaretime({start_time: moment(start_time).format(), end_time: moment(end_time).format()}, child_id))
 		setmodalOpen(false)
 	}
 	
@@ -53,19 +55,17 @@ const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
 			Lisää hoitoaika
 		</Item>
 		<Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
-			<DialogTitle >{kid}</DialogTitle>
+			<DialogTitle >{kid.name}</DialogTitle>
 			<Divider />
 			<DialogContent>
 				<div>
 					<form onSubmit={handleAddCaretime}>
 						<TextField label="Date" fullWidth value={pickeddateString}/>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
-							<DateTimePicker
-								label="Daycare starts"
+							<TimePicker label="Daycare starts"
 								value={start_time}
-								onChange={(newValue) => setStartTime(newValue)}
-							/>
-							<DateTimePicker
+								onChange={(newValue) => setStartTime(newValue)}/>
+							<TimePicker
 								label="Daycare ends"
 								value={end_time}
 								onChange={(newValue) => setEndTime(newValue)}

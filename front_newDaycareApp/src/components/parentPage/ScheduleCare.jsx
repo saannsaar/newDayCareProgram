@@ -17,6 +17,8 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 	moment.locale('fin')
 	const currentDay = moment(moment().format('yyyy-MM-DD HH:mm'))
 	console.log(currentDay)
+	console.log(caretimes)
+	console.log(events)
 
 	// console.log(events)
 	console.log( pickedChild, currentUser)
@@ -26,7 +28,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 	const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
 	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 	const [pickedEvents, setPickedEvents] = useState([])
-	const [selectedChildsCaretimes, setSelectedChildsCaretimes] = useState('')
+	
 	const [selectedCaretime, setSelectedCaretime] = useState('')
 
 	// console.log(calendarValue.$d)
@@ -36,28 +38,25 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 
 
 	useEffect(() => {
+		
 		const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
 		// console.log(find_events)
 		setPickedEvents(find_events)
-
-		if (selectedChildsCaretimes.length > 0) {
-			for (let i = 0; i < selectedChildsCaretimes[0].length; i++) {
-				console.log(selectedChildsCaretimes[0][i])
-				console.log(moment(selectedChildsCaretimes[0][i].start_time).format('MMM Do YY'))
-				console.log(moment(calendarValue.$d).format('MMM Do YY'))
-				if (moment(selectedChildsCaretimes[0][i].start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY')) {
-					setSelectedCaretime(selectedChildsCaretimes[0][i])
-				}
-			}
+		console.log(caretimes[0])
+	
+		const find_caretime = caretimes.filter((c) => moment(c.start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
+		console.log(find_caretime)
+		if (!find_caretime) {
+			setSelectedCaretime('')
+		} else {
+			setSelectedCaretime(find_caretime)
 		}
-		// console.log(pickedEvents)
+		
+		
 		// console.log(find_events.length)
 	}, [calendarValue.$d])
 
-	useEffect(() => {
-		const foundCaretimes = caretimes.filter((ct) => ct.kid == pickedChild.id)
-		setSelectedChildsCaretimes(foundCaretimes)
-	}, [pickedChild])
+	console.log(selectedCaretime)
 
 
 	return (
@@ -80,7 +79,11 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 								{moment(calendarValue.$d).format('MMM Do YY')}
 							</Item>
 							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <><Item>Ei tapahtumia</Item> </>}
-							{selectedCaretime  ?  <CareTimeInfo key={selectedCaretime.id}  pickedCareTimes={selectedCaretime}/> :  <><Item>Ei ilmoitettua hoitoaikaa</Item> <AddCareTime pickedChildId={pickedChildId} kid={pickedChild} pickedDay={calendarValue.$d}/></>}
+
+							{selectedCaretime == '' ? <><Item>Ei ilmoitettua hoitoaikaa</Item> 
+								<AddCareTime pickedChildId={pickedChildId} kid={pickedChild} pickedDay={calendarValue.$d}/></> :
+								<CareTimeInfo key={selectedCaretime._id}  pickedCareTimes={selectedCaretime}/> 
+							}
 						</Grid>
 					</Grid>
 				</Card>

@@ -29,6 +29,10 @@ const schema = new mongoose.Schema({
     },
         end_time: {
             type: Date
+        },
+        kid_name: {
+            type: String,
+            required: true,
         }}
     ],
     

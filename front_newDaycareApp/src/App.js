@@ -14,7 +14,6 @@ import parentService from './services/parents'
 import eventService from './services/events'
 import groupService from './services/groups'
 import workerService from './services/workers'
-import  careTimeService from './services/caretimes'
 import notiservice from './services/notiservice'
 import OwnGroup from './components/workerPage/OwnGroup'
 import {  removeCurrentUser } from './reducers/CurrentUser'
@@ -69,7 +68,7 @@ const App = () => {
 			
 		}
 		if (loggedInUser && kids) {
-			dispatch(initializeCaretimes(loggedInUser, usertype, kids))
+			dispatch(initializeCaretimes(loggedInUser, usertype, kids, currentChild))
 		}
 		if (loggedInUser && usertype == 'parent_user') {
 			setPickedChild(loggedInUser.children[0])
@@ -94,7 +93,6 @@ const App = () => {
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
 			childService.setToken(user.token)
-			careTimeService.setToken(user.token)
 			parentService.setToken(user.token)
 			eventService.setTokenForEvent(user.token)
 			groupService.setToken(user.token)

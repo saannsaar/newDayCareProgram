@@ -7,8 +7,8 @@ const Parent = require('../models/Parent')
 
 
 // Get all the children from the db
-childRouter.get('/', async (request, response) => {
-   const children = await Child.find({}).populate({path: 'care_time', model: 'CareTime'})
+childRouter.get('/', userExtractor, async (request, response) => {
+   const children = await Child.find({})
    console.log(children)
 
    response.json(children)
@@ -129,6 +129,7 @@ console.log("Child router")
             spesific_child.care_time.push({
               start_time: request.body.start_time,
               end_time: request.body.end_time,
+              kid_name: spesific_child.name
             })
             console.log(spesific_child)
 
@@ -136,7 +137,7 @@ console.log("Child router")
               new: true,
             }).exec()
 
-            response.status(201).json(updated_times)
+            response.status(201).json(updated_times.care_time[updated_times.care_time.length -1])
           } else {
             response.status(404).end()
           }

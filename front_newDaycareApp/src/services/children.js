@@ -28,7 +28,18 @@ const create = async newObject => {
 	return response.data
 }
 
+const addCaretime = async (newObject, childid) => {
+	console.log('children.js')
+	const config = {
+		headers: { Authorization: token },
+	}
+	console.log(config)
+	const response = await axios.post(baseUrl.concat('/').concat(childid).concat('/caretimes'), newObject, config)
+	return response.data
+}
 
 
 
-export default { getAll, create,  getSpesificChild, setToken }
+
+
+export default { getAll, create,  getSpesificChild, addCaretime, setToken }

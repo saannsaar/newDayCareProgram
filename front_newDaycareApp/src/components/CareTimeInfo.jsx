@@ -13,18 +13,18 @@ const CareTimeInfo = ({ pickedCareTimes }) => {
 	const [inDayCare, setInDayCare] = useState('No')
 
 	console.log(pickedCareTimes)
-	console.log(pickedCareTimes.start_time)
-	console.log(pickedCareTimes.end_time)
+	console.log(pickedCareTimes[0].start_time)
+	console.log(pickedCareTimes[0].end_time)
 	
 	console.log(moment(pickedCareTimes.start_time).format('yyyy-MM-DD HH:mm'))
 
-	const startTime = moment(pickedCareTimes.start_time, 'HH:mm').format('yyyy-MM-DD HH:mm')
-	const endTime = moment(pickedCareTimes.end_time, 'HH:mm').format('yyyy-MM-DD HH:mm')
-	const currentTime = moment(moment().format('yyyy-MM-DD HH:mm'))
+	const startTime = moment(pickedCareTimes[0].start_time).format('HH:mm')
+	const endTime = moment(pickedCareTimes[0].end_time).format('HH:mm')
+	const currentTime = moment(moment().format('HH:mm'))
 	
-	console.log('Current time', currentTime)
+	console.log('Current time', currentTime._i)
 	console.log(startTime, endTime)
-	console.log(moment(currentTime).isBetween(pickedCareTimes.start_time, pickedCareTimes.end_time))
+	console.log(moment(currentTime._i).isBetween(pickedCareTimes.start_time, pickedCareTimes.end_time))
 
 	useEffect(() => {
 
@@ -56,10 +56,10 @@ const CareTimeInfo = ({ pickedCareTimes }) => {
 	
 	return (
 		<><Item  style={{backgroundColor: defineColor()}} onClick={() => handleModalOpen()}>
-			{pickedCareTimes.start_time} - {pickedCareTimes.end_time}
+			{startTime} - {endTime}
 		</Item>
 		<Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
-			<DialogTitle >{pickedCareTimes.kid_name}</DialogTitle>
+			<DialogTitle >{pickedCareTimes[0].kid_name}</DialogTitle>
 			<Divider />
 			<DialogContent>
 				
