@@ -21,10 +21,16 @@ export const { setCurrentChild, removeCurrentCHild } = currentChildSlice.actions
 
 
 export const initializeCurrentChild = (pickedChild) => {
-	console.log('reducerissa')
+	console.log('reducerissa', pickedChild)
 	return async dispatch => {
-		const child = await childSercive.getSpesificChild(pickedChild)
-		dispatch(setCurrentChild(child))
+		try{
+			const child = await childSercive.getSpesificChild(pickedChild)
+			console.log(child)
+			dispatch(setCurrentChild(child))
+		} catch(error) {
+			console.log(error)
+		}
+		
 	}
 
 }

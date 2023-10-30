@@ -49,7 +49,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 	} else {
 		console.log(kids)
 		const adapter = new AdapterDayjs()
-		const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
+		const firstAvailableDay = adapter.date(new Date())
 		const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 		const [pickedEvents, setPickedEvents] = useState([])
 	
@@ -135,61 +135,127 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 			<>
 		
 		
-				<Grid container spacing={3} style={{marginTop: '20px', marginLeft: '5px'}}>
-					<Grid style={{ margin: '10px'}}>
-						 <Item>
+				<Grid container alignItems='stretch' justifyContent='center' spacing={3} style={{marginTop: '20px', marginLeft: '5px'}}>
+				
+						 <Item >
 						 <Typography variant="h6" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
 								Ilmoitukset
-							</Typography>
+						</Typography>
 						 {notifications.map(n => 
-								<NotiInfo key={n.headingtext} noti={n} usertype={usertype} />)}
-							{usertype == 'worker_user' ? <><Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
-								<DialogTitle style={{backgroundColor: colorCode}}>Lisää ilmoitus</DialogTitle>
-								<Divider />
-								<DialogContent>
-									<div>
-										<form onSubmit={handleAddNoti}>
-											<TextField style={{margin: '4px'}}
-												label="Ilmoituksen otsikko: "
-												fullWidth
-												value={headingtext}
+							<NotiInfo key={n.headingtext} noti={n} usertype={usertype} />)}
+						{usertype == 'worker_user' ? <><Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
+							<DialogTitle style={{backgroundColor: colorCode}}>Lisää ilmoitus</DialogTitle>
+							<Divider />
+							<DialogContent>
+								<div>
+									<form onSubmit={handleAddNoti}>
+										<TextField style={{margin: '4px'}}
+											label="Ilmoituksen otsikko: "
+											fullWidth
+											value={headingtext}
 												
-												onChange={({ target }) => setHeadingtext(target.value)} />
-											<TextField
-												label="Ilmoituksen sisältö: "
+											onChange={({ target }) => setHeadingtext(target.value)} />
+										<TextField
+											label="Ilmoituksen sisältö: "
 												 style={{margin: '4px'}}
-												fullWidth
-												value={contenttext}
-												onChange={({ target }) => setContenttext(target.value)} />
+											fullWidth
+											value={contenttext}
+											onChange={({ target }) => setContenttext(target.value)} />
 											
-											<Grid container direction='column'>
-												<Grid item > 
-													<Grid container direction='row' alignItems="stretch" marginBottom='20px'>
-														<Grid item >
-															<Typography  style={{  marginLeft: '4px', marginTop: '6px' }}>Näytä vanhemmille: </Typography>
-															<Checkbox 
+										<Grid container direction='column'>
+											<Grid item > 
+												<Grid container direction='row' alignItems="stretch" marginBottom='20px'>
+													<Grid item >
+														<Typography  style={{  marginLeft: '4px', marginTop: '6px' }}>Näytä vanhemmille: </Typography>
+														<Checkbox 
 												
-																checked={toParents}
-																size='medium'
-																onChange={handleCheckParents}
-																inputProps={{ 'aria-label': 'controlled'}}/> </Grid>
+															checked={toParents}
+															size='medium'
+															onChange={handleCheckParents}
+															inputProps={{ 'aria-label': 'controlled'}}/> </Grid>
 
-													</Grid>
-													<Grid item xs={4} >
-														
-														<Typography  style={{  marginLeft: '4px', marginTop: '6px' }}> Valitse ilmoituksen väri:</Typography>
-														<input id='colorpickerinput' type='color' value={colorCode} style={{marginLeft: '4px', marginTop:'10px'}} onChange={handleColorChange}/>
-														
-													</Grid>
 												</Grid>
+												<Grid item xs={4} >
+														
+													<Typography  style={{  marginLeft: '4px', marginTop: '6px' }}> Valitse ilmoituksen väri:</Typography>
+													<input id='colorpickerinput' type='color' value={colorCode} style={{marginLeft: '4px', marginTop:'10px'}} onChange={handleColorChange}/>
+														
+												</Grid>
+											</Grid>
 												
 											
 												
 											
+											<Grid item>
 												<Grid item>
+													<Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
+														onClick={() => handleModalClose()}>
+														Peruuta
+													</Button>
+												</Grid>
+												<Grid item>
+													<Button style={{ float: 'right', }} type="submit" variant="contained"> Tallenna
+													</Button>
+												</Grid>
+											</Grid>
+										</Grid>
+											
+									</form>
+								</div>
+							</DialogContent>
+						</Dialog><Button onClick={handleModalOpen}>Lisää ilmoitus</Button></> : null}
+						 </Item>
+					
+
+					
+					<Item style={{marginLeft: '15px'}}>
+						<Grid container spacing={2} >
+							<Grid item xs={8}>
+								<LocalizationProvider dateAdapter={AdapterDayjs}>
+									<DateCalendar value={calendarValue} onChange={(newValue) => handleDayPick(newValue)} />
+								</LocalizationProvider>
+							</Grid>
+							<Grid item xs={4}>
+								<Item>
+									{moment(calendarValue.$d).format('MMM Do YY')}   
+								</Item>
+								{pickedEvents?.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id.concat(e.name)} usertype={usertype} event={e}/>) : <Item>Ei tapahtumia</Item>}
+								{usertype == 'worker_user' ? <><Dialog fullWidth={true} open={emodalOpen} onClose={() => handleEModalClose()}>
+									<DialogTitle>Lisää tapahtuma</DialogTitle>
+									<Divider />
+									<DialogContent>
+										<div>
+											<form onSubmit={handleAddEvent}>
+												<TextField
+													label="Tapahtuman nimi: "
+													fullWidth
+													value={name}
+													onChange={({ target }) => setName(target.value)} />
+										
+												<LocalizationProvider dateAdapter={AdapterDayjs}>
+													<DateTimePicker label='Päivämäärä: ' value={date} onChange={(newValue) => setDate(newValue)}/>
+												</LocalizationProvider>
+
+												<Select value={event_type} onChange={({ target }) => setEventType(target.value)}>
+													<MenuItem value='W_event'>Työntekijät</MenuItem>
+													<MenuItem value='P_event'>Vanhemmat</MenuItem>
+													<MenuItem value='C_event'>Lapset</MenuItem>
+												</Select>
+												<TextField
+													label="Tapahtuman sisältö: "
+													fullWidth
+													value={info}
+													onChange={({ target }) => setInfo(target.value)} />
+												<TextField
+													label="Ryhmä: "
+													fullWidth
+													value={group}
+													onChange={({ target }) => setGroup(target.value)} />
+											
+												<Grid>
 													<Grid item>
 														<Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
-															onClick={() => handleModalClose()}>
+															onClick={() => handleEModalClose()}>
 														Peruuta
 														</Button>
 													</Grid>
@@ -198,80 +264,16 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 														</Button>
 													</Grid>
 												</Grid>
-											</Grid>
-											
-										</form>
-									</div>
-								</DialogContent>
-							</Dialog><Button onClick={handleModalOpen}>Lisää ilmoitus</Button></> : null}
-						 </Item>
-					</Grid>
-					<Grid style={{padding: '3px'}}> 
-						<Item>
-							<Grid container spacing={2} >
-								<Grid item xs={8}>
-									<LocalizationProvider dateAdapter={AdapterDayjs}>
-										<DateCalendar value={calendarValue} onChange={(newValue) => handleDayPick(newValue)} />
-									</LocalizationProvider>
-								</Grid>
-								<Grid item xs={4}>
-									<Item>
-										{moment(calendarValue.$d).format('MMM Do YY')}   
-									</Item>
-									{pickedEvents?.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id.concat(e.name)} usertype={usertype} event={e}/>) : <Item>Ei tapahtumia</Item>}
-									{usertype == 'worker_user' ? <><Dialog fullWidth={true} open={emodalOpen} onClose={() => handleEModalClose()}>
-										<DialogTitle>Lisää tapahtuma</DialogTitle>
-										<Divider />
-										<DialogContent>
-											<div>
-												<form onSubmit={handleAddEvent}>
-													<TextField
-														label="Tapahtuman nimi: "
-														fullWidth
-														value={name}
-														onChange={({ target }) => setName(target.value)} />
-										
-													<LocalizationProvider dateAdapter={AdapterDayjs}>
-														<DateTimePicker label='Päivämäärä: ' value={date} onChange={(newValue) => setDate(newValue)}/>
-													</LocalizationProvider>
-
-													<Select value={event_type} onChange={({ target }) => setEventType(target.value)}>
-														<MenuItem value='W_event'>Työntekijät</MenuItem>
-														<MenuItem value='P_event'>Vanhemmat</MenuItem>
-														<MenuItem value='C_event'>Lapset</MenuItem>
-													</Select>
-													<TextField
-														label="Tapahtuman sisältö: "
-														fullWidth
-														value={info}
-														onChange={({ target }) => setInfo(target.value)} />
-													<TextField
-														label="Ryhmä: "
-														fullWidth
-														value={group}
-														onChange={({ target }) => setGroup(target.value)} />
-											
-													<Grid>
-														<Grid item>
-															<Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
-																onClick={() => handleEModalClose()}>
-														Peruuta
-															</Button>
-														</Grid>
-														<Grid item>
-															<Button style={{ float: 'right', }} type="submit" variant="contained"> Tallenna
-															</Button>
-														</Grid>
-													</Grid>
-												</form>
-											</div>
-										</DialogContent>
-									</Dialog><Button onClick={handleEModalOpen}>Lisää ilmoitus</Button></> : null}
-								</Grid>
+											</form>
+										</div>
+									</DialogContent>
+								</Dialog><Button onClick={handleEModalOpen}>Lisää ilmoitus</Button></> : null}
 							</Grid>
-						</Item>
-					</Grid>
-					<Item>
+						</Grid>
+					</Item>
+					
+
+					<Item style={{marginLeft: '15px'}}>
 						<Typography variant="h6" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
 								Sää tänään {weather.name}ssa
 						</Typography>
@@ -282,8 +284,8 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 						<Typography variant="p" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
 							Tuuli: {weather.wind.speed} m/s
 						</Typography><br/>
-							
 					</Item>
+
 				</Grid>
 		
 			</>			

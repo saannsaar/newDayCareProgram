@@ -9,11 +9,11 @@ const childrenReducer = createSlice({
 	initialState: [],
 	reducers: {
 		appendChildren(state, action) {
-			state.push(action.payload)
+			return state.push(action.payload)
 		},
 		setParentsChildren(state, action) {
 			state = []
-			state.push(action.payload)
+			return state.push(action.payload)
 		},
 		setChildren(state, action) {
 			return action.payload

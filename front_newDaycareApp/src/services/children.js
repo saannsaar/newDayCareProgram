@@ -4,6 +4,7 @@ const baseUrl = 'http://localhost:3001/api/children'
 let token = null
 
 const setToken = newToken => {
+	console.log('Set token servicesss')
 	token = `bearer ${newToken}`
 }
 const getAll = () => {
@@ -37,7 +38,6 @@ const addCaretime = async (newObject, childid) => {
 	const response = await axios.post(baseUrl.concat('/').concat(childid).concat('/caretimes'), newObject, config)
 	return response.data
 }
-
 
 
 

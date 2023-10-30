@@ -27,7 +27,7 @@ const caretimeReducer = createSlice({
 export const {  setAllCaretime, cleanChildCaretime, appendCaretime } = caretimeReducer.actions
 
 export const initializeCaretimes = (loggedInUser, usertype, kids, currentChild) => {
-	console.log(loggedInUser, usertype, kids)
+	console.log(loggedInUser, usertype, kids, currentChild)
 
 	
 

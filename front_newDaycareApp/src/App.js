@@ -9,12 +9,12 @@ import FrontPage from './components/FrontPage'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeChildren, removeChildren } from './reducers/ChildReducer'
 import {  initializeWorkers } from './reducers/WorkersReducer'
-import  childService from './services/children'
-import parentService from './services/parents'
-import eventService from './services/events'
-import groupService from './services/groups'
-import workerService from './services/workers'
-import notiservice from './services/notiservice'
+// import  childService from './services/children'
+// import parentService from './services/parents'
+// import eventService from './services/events'
+// import groupService from './services/groups'
+// import workerService from './services/workers'
+// import notiservice from './services/notiservice'
 import OwnGroup from './components/workerPage/OwnGroup'
 import {  removeCurrentUser } from './reducers/CurrentUser'
 import axios from 'axios'
@@ -67,7 +67,7 @@ const App = () => {
 			dispatch(initializeDaycare(loggedInUser))
 			
 		}
-		if (loggedInUser && kids) {
+		if (loggedInUser && kids.length != 0 && currentChild != '') {
 			dispatch(initializeCaretimes(loggedInUser, usertype, kids, currentChild))
 		}
 		if (loggedInUser && usertype == 'parent_user') {
@@ -88,19 +88,19 @@ const App = () => {
 			})
 	},[])
 
-	useEffect(() => {
-		const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
-		if (loggedUserJSON) {
-			const user = JSON.parse(loggedUserJSON)
-			childService.setToken(user.token)
-			parentService.setToken(user.token)
-			eventService.setTokenForEvent(user.token)
-			groupService.setToken(user.token)
-			workerService.setToken(user.token)
-			notiservice.setToken(user.token)
-		}
+	// useEffect(() => {
+	// 	const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
+	// 	if (loggedUserJSON) {
+	// 		const user = JSON.parse(loggedUserJSON)
+	// 		childService.setToken(user.token)
+	// 		parentService.setToken(user.token)
+	// 		eventService.setTokenForEvent(user.token)
+	// 		groupService.setToken(user.token)
+	// 		workerService.setToken(user.token)
+	// 		notiservice.setToken(user.token)
+	// 	}
 
-	},[])
+	// },[])
 
 
 	const handlePickedChildChange = (event) => {

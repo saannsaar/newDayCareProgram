@@ -6,6 +6,7 @@ const baseUrl = 'http://localhost:3001/api/events'
 let token = null
 
 const setTokenForEvent = newToken => {
+	console.log('Set token servicesss')
 	token = `bearer ${newToken}`
 }
 

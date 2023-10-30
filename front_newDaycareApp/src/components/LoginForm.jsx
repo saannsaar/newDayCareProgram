@@ -8,7 +8,12 @@ import loginService from '../services/login'
 import { useDispatch } from 'react-redux'
 import { initializeCurrentWorker } from '../reducers/CurrentUser'
 import { initializeUserType } from '../reducers/UserType'
-
+import  childService from '../services/children'
+import parentService from '../services/parents'
+import eventService from '../services/events'
+import groupService from '../services/groups'
+import workerService from '../services/workers'
+import notiservice from '../services/notiservice'
 
 
 const LoginForm = (  ) => {
@@ -37,10 +42,22 @@ const LoginForm = (  ) => {
 				user_type: usertype
 		  })
 	
+		  console.log(user)
 		  window.localStorage.setItem('loggedDaycareAppUser', JSON.stringify(user))
 		
+
+		  if (user){
+				parentService.setToken(user.token)
+				childService.setToken(user.token)
+				eventService.setTokenForEvent(user.token)
+				groupService.setToken(user.token)
+				workerService.setToken(user.token)
+				notiservice.setToken(user.token)
+		  }
+		    
 		  dispatch(initializeUserType(usertype))
 		  dispatch(initializeCurrentWorker(user))
+		  
 		  setuserEmail('')
 		  setPassword('')
 		  setUserType('')

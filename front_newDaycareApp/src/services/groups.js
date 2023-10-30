@@ -4,6 +4,7 @@ const baseUrl = 'http://localhost:3001/api/groups'
 let token = null
 
 const setToken = newToken => {
+	
 	token = `bearer ${newToken}`
 }
 const getAllGroups = async () => {

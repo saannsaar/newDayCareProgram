@@ -20,12 +20,17 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 	console.log(caretimes)
 	console.log(events)
 
+	if (!caretimes) {
+		return (
+			<div> Laoding... </div>
+		)
+	}
 	// console.log(events)
 	console.log( pickedChild, currentUser)
 	const adapter = new AdapterDayjs()
 	const this_worker = useSelector(state => state.currentUser)
 	console.log(this_worker)
-	const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
+	const firstAvailableDay = adapter.date(new Date())
 	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 	const [pickedEvents, setPickedEvents] = useState([])
 	
