@@ -185,23 +185,25 @@ console.log("Child router")
   }
   })
 
-  childRouter.delete('/:id/caretimes', userExtractor, async (request, response) => {
-    console.log('Delete ROUTER')
+  childRouter.delete('/:id1/caretimes/:id2', userExtractor, async (request, response) => {
+    console.log('Delete ROUTER', request.params)
+    console.log(request.get("Authorization"))
+
     if (request.user.user_type === 'parent_user') {
-      console.log(request.params.id)
-      const findmychild = request.user.children.find(c => c.toString() === request.params.id)
+      console.log(request.params.id1)
+      const findmychild = request.user.children.find(c => c.toString() === request.params.id1)
       console.log(findmychild)
       if (!findmychild) {
         console.log("not my")
         response.status(401).json({error: "Not authorized to modify/see this child's info"})
       } else {
         try {
-          const spesific_child = await Child.findById(request.params.id)
+          const spesific_child = await Child.findById(request.params.id1)
           if (spesific_child) {
             console.log("Found a correct child")
-            console.log(spesific_child)
+           
             spesific_child.care_time.forEach((element, index) => {
-              if (element._id == request.body._id) {
+              if (element._id == request.params.id2) {
                 spesific_child.care_time.splice(index, 1)
 
             }})

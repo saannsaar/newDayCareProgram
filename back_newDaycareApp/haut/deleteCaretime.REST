@@ -1,7 +1,10 @@
-PUT http://localhost:3001/api/children/6507f8a77ee5794652673730/caretimes
+DELETE http://localhost:3001/api/children/6507f8a77ee5794652673730/caretimes/653f9b8edb138a7b85d9b0d2
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbm5pbi5zYWhrb3Bvc3RpQGVtYWlsLmNvbSIsImlkIjoiNjRmODA5YzRjZTJiYjI4YzM5MWU4MDRhIiwiaWF0IjoxNjk4NjU4ODE3LCJleHAiOjE2OTg2NjI0MTd9.X4HJ4_-RXwKzneLgLcGGew380eteiDVA383rw3yiPR0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbm5pbi5zYWhrb3Bvc3RpQGVtYWlsLmNvbSIsImlkIjoiNjRmODA5YzRjZTJiYjI4YzM5MWU4MDRhIiwiaWF0IjoxNjk4NjY4MzYyLCJleHAiOjE2OTg2NzE5NjJ9.NVKpac0Dj_ID_qZN3B_EXrjd0aXZ_9c3UNjp3kMGLYg
 
-{
-        "_id": "653f52d96808966021e52247"
-}
+
+
+# GET http://localhost:3001/api/children/6507f8a77ee5794652673730
+# content-type: application/json
+# Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbm5pbi5zYWhrb3Bvc3RpQGVtYWlsLmNvbSIsImlkIjoiNjRmODA5YzRjZTJiYjI4YzM5MWU4MDRhIiwiaWF0IjoxNjk4NjY4MzYyLCJleHAiOjE2OTg2NzE5NjJ9.NVKpac0Dj_ID_qZN3B_EXrjd0aXZ_9c3UNjp3kMGLYg
+

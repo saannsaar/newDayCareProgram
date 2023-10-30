@@ -16,6 +16,7 @@ const childrenReducer = createSlice({
 			return state.push(action.payload)
 		},
 		setChildren(state, action) {
+			console.log(action.payload)
 			return action.payload
 		},
 		// eslint-disable-next-line no-unused-vars
@@ -38,13 +39,18 @@ export const initializeChildren = (loggedinUser, usertype) => {
 
 	if (usertype === 'parent_user' && loggedinUser.children.length > 1) {
 		console.log('More than one child ')
-		const childArray = []
+		let childArray = []
 		
-		loggedinUser.children?.map(async (childId)=>{
+		for (i = 0; i < loggedinUser.children.length; i++) {
+			const addChild = await childService.getSpesificChild(childId)
+		}
+		loggedinUser.children.forEach(async (childId)=>{
 			const addChild = await childService.getSpesificChild(childId)
 			console.log(addChild)
-			childArray.push(addChild)
+			childArray = [...childArray, addChild]
+			console.log(childArray)
 		})
+		console.log(childArray)
 		return async dispatch => {
 			console.log(childArray)
 			dispatch(setChildren(childArray))

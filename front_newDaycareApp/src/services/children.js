@@ -50,7 +50,9 @@ const deleteCaretime = async (caretimeid, childid) => {
 	const config = {
 		headers: { Authorization: token },
 	}
-	const response = await axios.delete(baseUrl.concat('/').concat(childid).concat('/caretimes'), caretimeid, config)
+	console.log('DeleteCaretime ', config)
+	const response = await axios.delete(baseUrl.concat('/').concat(childid).concat('/caretimes/').concat(caretimeid._id), config)
+	console.log(response)
 	return response.data
 }
 

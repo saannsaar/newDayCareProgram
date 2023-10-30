@@ -80,6 +80,7 @@ const App = () => {
 
 	useEffect(() => {
 		console.log(kids.length, currentChild)
+		console.log(kids)
 		if (loggedInUser && kids.length != 0 && currentChild != '') {
 			dispatch(initializeCaretimes(loggedInUser, usertype, kids, currentChild))
 		}

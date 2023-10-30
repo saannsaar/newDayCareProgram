@@ -7,7 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
-import { modifyCaretime } from '../reducers/CaretimeReducer'
+import { deleteSpesificCaretime, modifyCaretime } from '../reducers/CaretimeReducer'
 
 
 // eslint-disable-next-line react/prop-types
@@ -69,6 +69,15 @@ const CareTimeInfo = ({ pickedCareTimes, childId }) => {
 		setmodalOpen(false)
 		
 	}
+
+	const handleDeleteCaretime = () => {
+		
+		const content = {
+			_id: pickedCareTimes[0]._id
+		}
+		dispatch(deleteSpesificCaretime(content, childId))
+		setmodalOpen(false)
+	}
 	
 	return (
 		<><Item  style={{margin:'10px', backgroundColor: defineColor()}} onClick={() => handleModalOpen()}>
@@ -101,6 +110,12 @@ const CareTimeInfo = ({ pickedCareTimes, childId }) => {
 								<Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
 									onClick={() => handleModalClose()}> 
                                             Peruuta 
+								</Button>
+							</Grid>
+							<Grid item>
+								<Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
+									onClick={() => handleDeleteCaretime()}> 
+                                            Poista hoitoaika 
 								</Button>
 							</Grid>
 							<Grid item >
