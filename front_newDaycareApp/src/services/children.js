@@ -39,7 +39,22 @@ const addCaretime = async (newObject, childid) => {
 	return response.data
 }
 
+const editCaretime = async (caretime, childid) => {
+	const config = {
+		headers: { Authorization: token },
+	}
+	const response = await axios.put(baseUrl.concat('/').concat(childid).concat('/caretimes'), caretime, config)
+	return response.data
+}
+const deleteCaretime = async (caretimeid, childid) => {
+	const config = {
+		headers: { Authorization: token },
+	}
+	const response = await axios.delete(baseUrl.concat('/').concat(childid).concat('/caretimes'), caretimeid, config)
+	return response.data
+}
 
 
 
-export default { getAll, create,  getSpesificChild, addCaretime, setToken }
+
+export default { getAll, create,  getSpesificChild, addCaretime, setToken, editCaretime, deleteCaretime }

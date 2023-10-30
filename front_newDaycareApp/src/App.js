@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/react-in-jsx-scope */
@@ -67,18 +68,22 @@ const App = () => {
 			dispatch(initializeDaycare(loggedInUser))
 			
 		}
-		if (loggedInUser && kids.length != 0 && currentChild != '') {
-			dispatch(initializeCaretimes(loggedInUser, usertype, kids, currentChild))
-		}
+		
 		if (loggedInUser && usertype == 'parent_user') {
 			setPickedChild(loggedInUser.children[0])
 			dispatch(initializeCurrentChild(loggedInUser.children[0]))
 		}
-	
+		
 		
 		
 	}, [loggedInUser, kids.length])
 
+	useEffect(() => {
+		console.log(kids.length, currentChild)
+		if (loggedInUser && kids.length != 0 && currentChild != '') {
+			dispatch(initializeCaretimes(loggedInUser, usertype, kids, currentChild))
+		}
+	}, [loggedInUser, currentChild])
 
 	useEffect(() => {
 		axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric`)

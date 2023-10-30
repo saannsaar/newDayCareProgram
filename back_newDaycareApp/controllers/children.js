@@ -92,7 +92,7 @@ console.log("Child router")
       console.log("not my")
       response.status(401).json({error: "Not authorized to see this child's info"})
     } else {
-      const spesific_child = await Child.findById(request.params.id).populate({path: 'care_time', model: 'CareTime'})
+      const spesific_child = await Child.findById(request.params.id)
       if (spesific_child) {
         console.log("Found a correct child")
         
@@ -102,12 +102,7 @@ console.log("Child router")
       }
     }
   }
-    const spesific_child = await Child.findById(request.params.id).populate({path: 'care_time', model: 'CareTime'})
-    if (spesific_child) {
-      response.json(spesific_child)
-    } else {
-      response.status(404).end()
-    }
+
   })
 
   childRouter.post('/:id/caretimes', userExtractor, async (request, response) => {
@@ -150,7 +145,81 @@ console.log("Child router")
 
   }})
 
+  childRouter.put('/:id/caretimes', userExtractor, async (request, response) => {
+    console.log('PUT ROUTER')
+    if (request.user.user_type === 'parent_user') {
+      console.log(request.params.id)
+      const findmychild = request.user.children.find(c => c.toString() === request.params.id)
+      console.log(findmychild)
+      if (!findmychild) {
+        console.log("not my")
+        response.status(401).json({error: "Not authorized to modify/see this child's info"})
+      } else {
+        try {
+          const spesific_child = await Child.findById(request.params.id)
+          if (spesific_child) {
+            console.log("Found a correct child")
+            console.log(spesific_child)
+            let ind = 0
+            spesific_child.care_time.forEach((element, index) => {
+              if (element._id == request.body._id) {
+                ind = index
+                spesific_child.care_time[index] = request.body
+            }})
 
+           console.log(spesific_child.care_time)
+            const updated_times = await Child.findByIdAndUpdate(request.params.id, spesific_child, {
+              new: true,
+            }).exec()
+
+            response.status(201).json(updated_times.care_time[ind])
+          } else {
+            response.status(404).end()
+          }
+        } catch (error) {
+          response.status(400).json(error)
+        }
+      }
+
+
+  }
+  })
+
+  childRouter.delete('/:id/caretimes', userExtractor, async (request, response) => {
+    console.log('Delete ROUTER')
+    if (request.user.user_type === 'parent_user') {
+      console.log(request.params.id)
+      const findmychild = request.user.children.find(c => c.toString() === request.params.id)
+      console.log(findmychild)
+      if (!findmychild) {
+        console.log("not my")
+        response.status(401).json({error: "Not authorized to modify/see this child's info"})
+      } else {
+        try {
+          const spesific_child = await Child.findById(request.params.id)
+          if (spesific_child) {
+            console.log("Found a correct child")
+            console.log(spesific_child)
+            spesific_child.care_time.forEach((element, index) => {
+              if (element._id == request.body._id) {
+                spesific_child.care_time.splice(index, 1)
+
+            }})
+
+           console.log(spesific_child.care_time)
+            const updated_times = await Child.findByIdAndUpdate(request.params.id, spesific_child, {
+              new: true,
+            }).exec()
+
+            response.status(204).end()
+          } else {
+            response.status(404).end()
+          }
+        } catch (error) {
+          response.status(400).json(error)
+        }
+      } }
+  })
 
   
 module.exports = childRouter

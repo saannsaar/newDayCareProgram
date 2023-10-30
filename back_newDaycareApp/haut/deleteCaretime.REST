@@ -1,0 +1,7 @@
+PUT http://localhost:3001/api/children/6507f8a77ee5794652673730/caretimes
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbm5pbi5zYWhrb3Bvc3RpQGVtYWlsLmNvbSIsImlkIjoiNjRmODA5YzRjZTJiYjI4YzM5MWU4MDRhIiwiaWF0IjoxNjk4NjU4ODE3LCJleHAiOjE2OTg2NjI0MTd9.X4HJ4_-RXwKzneLgLcGGew380eteiDVA383rw3yiPR0
+
+{
+        "_id": "653f52d96808966021e52247"
+}

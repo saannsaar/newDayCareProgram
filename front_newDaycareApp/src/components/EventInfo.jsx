@@ -40,7 +40,7 @@ const EventInfo = ({ event, usertype }) => {
 	}
 	
 	return (
-		<><Item style={{backgroundColor: defineColor()}} onClick={() => handleModalOpen()}>
+		<><Item style={{backgroundColor: defineColor(), margin:'10px'}} onClick={() => handleModalOpen()}>
 			{event.name}
 		</Item>
 		<Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>

@@ -15,7 +15,6 @@ import groupService from '../services/groups'
 import workerService from '../services/workers'
 import notiservice from '../services/notiservice'
 
-
 const LoginForm = (  ) => {
 	const [userEmail, setuserEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -29,7 +28,6 @@ const LoginForm = (  ) => {
 		console.log(event.target.value)
 		setUserType(event.target.value)
 	}
-
 	
 
 	const submit = async (event) => {
@@ -56,12 +54,13 @@ const LoginForm = (  ) => {
 		  }
 		    
 		  dispatch(initializeUserType(usertype))
+
 		  dispatch(initializeCurrentWorker(user))
-		  
+		 
+		
 		  setuserEmail('')
 		  setPassword('')
 		  setUserType('')
-		 
 		} catch(exception) {
 			console.log(exception)
 			setError(exception)

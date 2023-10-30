@@ -51,7 +51,7 @@ const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
 	}
 	
 	return (
-		<><Item  onClick={() => handleModalOpen()}>
+		<><Item  onClick={() => handleModalOpen()}  style={{margin: '10px'}}>
 			Lisää hoitoaika
 		</Item>
 		<Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>

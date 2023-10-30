@@ -5,7 +5,7 @@ import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/de'
 import { Container, Typography, Card, Grid } from '@mui/material'
-import { useSelector } from 'react-redux'
+
 import Item from '../Item'
 import moment from 'moment'
 import EventInfo from '../EventInfo'
@@ -15,10 +15,8 @@ import CareTimeInfo from '../CareTimeInfo'
 
 const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChildId }) => {
 	moment.locale('fin')
-	const currentDay = moment(moment().format('yyyy-MM-DD HH:mm'))
-	console.log(currentDay)
-	console.log(caretimes)
-	console.log(events)
+	const adapter = new AdapterDayjs()
+	const firstAvailableDay = adapter.date(new Date())
 
 	if (!caretimes) {
 		return (
@@ -26,11 +24,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 		)
 	}
 	// console.log(events)
-	console.log( pickedChild, currentUser)
-	const adapter = new AdapterDayjs()
-	const this_worker = useSelector(state => state.currentUser)
-	console.log(this_worker)
-	const firstAvailableDay = adapter.date(new Date())
+	console.log(currentUser)
 	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 	const [pickedEvents, setPickedEvents] = useState([])
 	
@@ -44,6 +38,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 
 	useEffect(() => {
 		
+		console.log(calendarValue)
 		const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
 		// console.log(find_events)
 		setPickedEvents(find_events)
@@ -68,7 +63,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 		<>
 			
 			<Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
-			Ilmoita hoitoajat 
+			Max hoitoaika: {pickedChild.monthly_maxtime} tuntia
 			</Typography>
 			{pickedChild &&
 			<Container>
@@ -80,14 +75,14 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 							</LocalizationProvider>
 						</Grid>
 						<Grid item xs={4}>
-							<Item>
+							<Item style={{margin: '10px'}}>
 								{moment(calendarValue.$d).format('MMM Do YY')}
 							</Item>
-							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <><Item>Ei tapahtumia</Item> </>}
+							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <><Item style={{margin: '10px'}} >Ei tapahtumia</Item> </>}
 
-							{selectedCaretime == '' ? <><Item>Ei ilmoitettua hoitoaikaa</Item> 
+							{selectedCaretime == '' ? <><Item  style={{margin: '10px'}}>Ei ilmoitettua hoitoaikaa</Item> 
 								<AddCareTime pickedChildId={pickedChildId} kid={pickedChild} pickedDay={calendarValue.$d}/></> :
-								<CareTimeInfo key={selectedCaretime._id}  pickedCareTimes={selectedCaretime}/> 
+								<CareTimeInfo key={selectedCaretime._id} childId={pickedChildId} pickedCareTimes={selectedCaretime}/> 
 							}
 						</Grid>
 					</Grid>
