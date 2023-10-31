@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import childSercive from '../services/children'
 const initialState = ''
 
 const currentChildSlice = createSlice({
@@ -23,14 +22,7 @@ export const { setCurrentChild, removeCurrentCHild } = currentChildSlice.actions
 export const initializeCurrentChild = (pickedChild) => {
 	console.log('reducerissa', pickedChild)
 	return async dispatch => {
-		try{
-			const child = await childSercive.getSpesificChild(pickedChild)
-			console.log(child)
-			dispatch(setCurrentChild(child))
-		} catch(error) {
-			console.log(error)
-		}
-		
+		dispatch(setCurrentChild(pickedChild))
 	}
 
 }

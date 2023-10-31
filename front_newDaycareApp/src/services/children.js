@@ -12,6 +12,8 @@ const getAll = () => {
 	return request.then(response => response.data)
 }
 
+
+
 const getSpesificChild = async (childid) => {
 	const config = {
 		headers: { Authorization: token },

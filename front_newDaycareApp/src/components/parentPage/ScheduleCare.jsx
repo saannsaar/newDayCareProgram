@@ -18,6 +18,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 	const adapter = new AdapterDayjs()
 	const firstAvailableDay = adapter.date(new Date())
 
+	console.log(pickedChild)
 	if (!caretimes) {
 		return (
 			<div> Laoding... </div>
@@ -54,7 +55,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 		
 		
 		// console.log(find_events.length)
-	}, [calendarValue.$d])
+	}, [calendarValue.$d, pickedChild])
 
 	console.log(selectedCaretime)
 

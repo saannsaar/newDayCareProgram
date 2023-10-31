@@ -8,6 +8,7 @@ const Parent = require('../models/Parent')
 
 // Get all the children from the db
 childRouter.get('/', userExtractor, async (request, response) => {
+  
    const children = await Child.find({})
    console.log(children)
 

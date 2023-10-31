@@ -39,21 +39,11 @@ export const initializeChildren = (loggedinUser, usertype) => {
 
 	if (usertype === 'parent_user' && loggedinUser.children.length > 1) {
 		console.log('More than one child ')
-		let childArray = []
+		console.log(loggedinUser.children)
 		
-		for (i = 0; i < loggedinUser.children.length; i++) {
-			const addChild = await childService.getSpesificChild(childId)
-		}
-		loggedinUser.children.forEach(async (childId)=>{
-			const addChild = await childService.getSpesificChild(childId)
-			console.log(addChild)
-			childArray = [...childArray, addChild]
-			console.log(childArray)
-		})
-		console.log(childArray)
 		return async dispatch => {
-			console.log(childArray)
-			dispatch(setChildren(childArray))
+		
+			dispatch(setChildren(loggedinUser.children))
 		}
 	}
 	if (usertype === 'parent_user' && loggedinUser.children.length === 1) {

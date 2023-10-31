@@ -16,7 +16,7 @@ parentRouter.get('/:id', userExtractor, async (request, response) => {
   if (request.user.user_type == 'parent_user' && findParent.id != request.user.id) {
     response.status(401).json({error: "You are not authorized to view this page"})
   }
-    const sepesific_parent = await Parent.findById(request.params.id)
+    const sepesific_parent = await Parent.findById(request.params.id).populate({path: 'children', model: 'Child'})
     console.log(sepesific_parent.user_type)
     if (sepesific_parent) {
       response.json(sepesific_parent)

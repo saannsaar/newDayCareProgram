@@ -70,7 +70,7 @@ const App = () => {
 		}
 		
 		if (loggedInUser && usertype == 'parent_user') {
-			setPickedChild(loggedInUser.children[0])
+			setPickedChild(loggedInUser.children[0].id)
 			dispatch(initializeCurrentChild(loggedInUser.children[0]))
 		}
 		
@@ -112,8 +112,12 @@ const App = () => {
 	const handlePickedChildChange = (event) => {
 		console.log(event.target.value)
 		setPickedChild(event.target.value)
+		const findChild = loggedInUser.children.find((d) => d.id == event.target.value)
+		console.log(findChild)
 		dispatch(removeCurrentCHild())
-		dispatch(initializeCurrentChild(event.target.value))
+		dispatch(removeCaretimes())
+		dispatch(initializeCurrentChild(findChild))
+		dispatch(initializeCaretimes(loggedInUser, usertype, kids, currentChild))
 	}
 	const logout = (event) => {
 		event.preventDefault()

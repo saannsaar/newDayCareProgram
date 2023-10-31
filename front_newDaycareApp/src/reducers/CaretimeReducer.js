@@ -11,7 +11,7 @@ const caretimeReducer = createSlice({
 	reducers: {
 		setAllCaretime(state, action) {
 			
-			return action.payload
+			return state = action.payload
 		},
 		appendCaretime(state, action) {
 			console.log(state)
