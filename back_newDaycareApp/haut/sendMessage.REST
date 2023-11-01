@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/messages
+content-type: application/json
+Authorization: bearer 
+
+{
+        "content": "Moi, testi viesti",
+        "receiver": "Toinen Työntekijäinen"
+}

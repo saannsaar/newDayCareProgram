@@ -13,7 +13,7 @@ const loginRouter = require('./controllers/login')
 const groupRouter = require('./controllers/groups')
 const eventsRouter = require('./controllers/events')
 const daycareRouter = require('./controllers/daycare')
-
+const messageRouter = require('./controllers/message')
 const notificationRouter = require('./controllers/notificationsController')
 
 //
@@ -51,6 +51,7 @@ mongoose.connect(config.MONGODB_URI)
   app.use('/api/events', middleware.userExtractor, eventsRouter)
   app.use('/api/daycare', daycareRouter)
   app.use('/api/notifications', middleware.userExtractor, notificationRouter)
+  app.use('/api/messages', middleware.userExtractor, messageRouter)
  
   
   app.use(middleware.unknownEndpoint)

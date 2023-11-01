@@ -32,6 +32,10 @@ const schema = new mongoose.Schema({
     value: 'worker_user',
     required: true
   },
+  messages: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Message'
+  }],
   passwordHash: String,
 })
 

@@ -29,7 +29,12 @@ const schema = new mongoose.Schema({
     value: 'parent_user',
     required: true
   },
+  messages: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Message'
+  }],
   passwordHash: String,
+
 })
 
 schema.plugin(uniqueValidator)
