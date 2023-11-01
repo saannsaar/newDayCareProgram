@@ -10,11 +10,11 @@ const schema = new mongoose.Schema({
   },
   sender: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'DaycareWorker'
+    ref: 'DaycareWorker' || 'Parent'
   }, 
  receiver: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Parent'
+    ref: 'Parent' || 'DaycareWorker'
  },
 
 },  {timestamps: true})

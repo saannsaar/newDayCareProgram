@@ -10,6 +10,8 @@ import userTypeReducer from './reducers/UserType'
 import caretimeReducer from './reducers/CaretimeReducer'
 import currentChildReducer from './reducers/CurrentChild'
 import NotificationReducer from './reducers/NotificationReducer'
+import messageReducer from './reducers/MessageReducer'
+import conversationsReducer from './reducers/ConversationsReducer'
 
 const store = configureStore({
 	reducer: {
@@ -22,8 +24,9 @@ const store = configureStore({
 		usertype: userTypeReducer,
 		caretimes: caretimeReducer,
 		currentChild: currentChildReducer,
-		notifications: NotificationReducer
-
+		notifications: NotificationReducer,
+		messages: messageReducer,
+		conversations: conversationsReducer,
 	}
 })
 console.log(store)

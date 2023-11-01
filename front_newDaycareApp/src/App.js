@@ -235,7 +235,7 @@ const App = () => {
 					<Routes>
 						<Route path="/" element={<FrontPage weather={weather} notifications={allNotifications} events={events}  kids={currentChild} usertype={usertype}/>}/>
 						<Route path="/own-family" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
-						<Route path="/messages" element={<Messages/>}/>
+						<Route path="/messages" element={<Messages usertype={usertype} currentUser={loggedInUser}/>}/>
 						<Route path="/caretimes" element={<ScheduleCare events={events} currentUser={loggedInUser} caretimes={caretimes} pickedChildId={currentChild.id} pickedChild={currentChild}/>}/>
 					</Routes>
 

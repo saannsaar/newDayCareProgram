@@ -14,6 +14,7 @@ import eventService from '../services/events'
 import groupService from '../services/groups'
 import workerService from '../services/workers'
 import notiservice from '../services/notiservice'
+import messageService from '../services/message'
 
 const LoginForm = (  ) => {
 	const [userEmail, setuserEmail] = useState('')
@@ -51,6 +52,7 @@ const LoginForm = (  ) => {
 				groupService.setToken(user.token)
 				workerService.setToken(user.token)
 				notiservice.setToken(user.token)
+				messageService.setToken(user.token)
 		  }
 		    
 		  dispatch(initializeUserType(usertype))
