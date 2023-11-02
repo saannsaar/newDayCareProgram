@@ -21,6 +21,7 @@ const messageReducer = createSlice({
 export const { setMessages, removeMessages, appendMessage } = messageReducer.actions
 
 export const initializeMessages = (receiver) => {
+	console.log(receiver)
 	return async (dispatch) => {
 		const conversation = await messageService.getConversation(receiver)
 		dispatch(setMessages(conversation))

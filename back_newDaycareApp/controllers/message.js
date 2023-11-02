@@ -7,12 +7,12 @@ const {userExtractor } = require('../utils/middleware')
 const DaycareWorker = require('../models/DaycareWorker')
 const Parent = require('../models/Parent')
 
-messageRouter.get('/', userExtractor, async (request, response) => {
+messageRouter.get('/:receiver', userExtractor, async (request, response) => {
    
-    if (request.body.receiver) {
-         const findReceiver = await Parent.findOne({ name: request.body.receiver })
+    if (request.params.receiver) {
+         const findReceiver = await Parent.findById(request.params.receiver)
          if (!findReceiver) {
-            const finddReceiver = await DaycareWorker.findOne({ name: request.body.receiver })
+            const finddReceiver = await DaycareWorker.findById(request.params.receiver)
             console.log(finddReceiver._id)
             console.log(request.user._id)
             const conversations = await Message.find({ $or: [
@@ -37,7 +37,7 @@ messageRouter.get('/', userExtractor, async (request, response) => {
          }
          
     } else {
-        const conversations = await Message.find({ $or: [ { sender: request.user.id }, {receiver: request.user.id }]})
+        const conversations = await Message.find({ $or: [ { sender: request.user._id }, {receiver: request.user._id }]})
         response.status(200).json(conversations)
     }
     

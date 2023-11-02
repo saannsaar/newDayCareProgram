@@ -24,8 +24,9 @@ export const initializeConversation = (user_type) => {
 	return async (dispatch) => {
 		if (user_type == 'parent_user') {
 			const workers = await workerService.getAll()
+			console.log(workers)
 			dispatch(setPeople(workers))
-		} else {
+		} else if (user_type =='worker_user') {
 			const parents = await parentService.getAllParents()
 			const workers = await workerService.getAll()
 			const people = parents.concat(workers)

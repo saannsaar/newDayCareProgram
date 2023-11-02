@@ -31,6 +31,7 @@ import { initializeCaretimes, removeCaretimes } from './reducers/CaretimeReducer
 import { removeType } from './reducers/UserType'
 import { initializeCurrentChild, removeCurrentCHild } from './reducers/CurrentChild'
 import { emptyNotifications, initializeNotifications } from './reducers/NotificationReducer'
+import { initializeConversation } from './reducers/ConversationsReducer'
 
 
 const App = () => {
@@ -51,6 +52,8 @@ const App = () => {
 	const usertype = useSelector(state => state.usertype)
 	const currentChild = useSelector(state => state.currentChild)
 	const allNotifications = useSelector(state => state.notifications)
+	const conversations = useSelector(state => state.conversations)
+	const conversation = useSelector(state => state.messages)
 
 	const [pickedChild, setPickedChild] = useState('')
 	const loggedInUser = useSelector(state => state.currentUser)
@@ -66,6 +69,8 @@ const App = () => {
 			dispatch(initializeGroups())
 			dispatch(initializeNotifications())
 			dispatch(initializeDaycare(loggedInUser))
+			dispatch(initializeConversation(usertype))
+			
 			
 		}
 		
@@ -185,7 +190,7 @@ const App = () => {
 					<Routes>
 						<Route path="/" element={<FrontPage weather={weather} notifications={allNotifications} events={events} kids={kids} usertype={usertype}/>}/>
 						<Route path="/own-group" element={<OwnGroup worker={loggedInUser} workers={workers}/>}/>
-						<Route path="/messages" element={<Messages/>}/>
+						<Route path="/messages" element={<Messages usertype={usertype} currentUser={loggedInUser}/>}/>
 						<Route path="/daycare" element={<Daycare caretimes={caretimes} workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
 					</Routes>
 
@@ -206,6 +211,7 @@ const App = () => {
 
 	if (loggedInUser && daycare && typeof kids === 'object' && currentChild && usertype === 'parent_user') {
 		console.log(typeof kids)
+		console.log(loggedInUser)
 		
 		return (
 			<div>

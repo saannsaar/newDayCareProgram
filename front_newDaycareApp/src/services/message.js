@@ -12,7 +12,8 @@ const getConversation = async (receiver) => {
 	const config = {
 		headers: { Authorization: token },
 	}
-	const response =  await axios.get(baseUrl.concat('/'), receiver, config)
+	console.log(config, receiver)
+	const response =  await axios.get(baseUrl.concat('/').concat(receiver), config)
 	return response.data
 }
 
