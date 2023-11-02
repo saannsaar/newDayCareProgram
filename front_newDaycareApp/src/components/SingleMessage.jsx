@@ -12,7 +12,7 @@ const SingleMessage = ({message, index,  currentUserID}) => {
 
 	if(message.sender == currentUserID) {
 		return (
-			<ListItem  key={index+1} sx={{ height: '22vh'}}>
+			<ListItem  key={index+1} >
 				<Grid container>
 					<Grid item xs={8}></Grid>
 					<Grid item xs={4} align="right">
@@ -38,7 +38,7 @@ const SingleMessage = ({message, index,  currentUserID}) => {
 				<Grid container>
 					<Grid item xs={4}>
 						<ListItemText 
-							
+							primaryTypographyProps={{fontSize: '14px'}} 
 							align="left" primary={message.content}>
 						</ListItemText></Grid>
 

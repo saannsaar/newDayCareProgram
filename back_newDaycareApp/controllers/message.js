@@ -78,7 +78,8 @@ messageRouter.post('/', userExtractor, async (request, response) => {
             response.status(400).json(error)
         }
         
-    }
+    } else {
+
         try {
             console.log('MOI')
             console.log('receiver', findReceiver._id)
@@ -100,6 +101,7 @@ messageRouter.post('/', userExtractor, async (request, response) => {
         } catch(error) {
             response.status(400).json(error)
         }
+    }
   
     
    

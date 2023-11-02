@@ -1,21 +1,53 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
-import {List,  Grid } from '@mui/material'
+import {List,  Grid, Divider, TextField, Fab, Typography } from '@mui/material'
 import SingleMessage from './SingleMessage'
+import SendIcon from '@mui/icons-material/Send'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { sendNewMessage } from '../reducers/MessageReducer'
 
-const ConversationArea = ({ messages, currentUser }) => {
+const ConversationArea = ({ messages, receiver, currentUser }) => {
 
 	console.log(messages)
 	console.log(currentUser)
-	console.log(messages[0].sender, currentUser.id)
+	console.log(messages[0]?.sender, currentUser.id)
+	const dispatch = useDispatch()
+	const [content, setMessageContent] = useState('')
+
+	console.log(content)
+	const handleSendMessage = () => {
+		
+		console.log(content, receiver)
+		const message ={
+			content: content,
+			receiver: receiver
+		}
+		console.log(message)
+		dispatch(sendNewMessage(message))
+
+
+	}
 	return (
 		<Grid xs={9}>
-			<List style={{ margin: '10px' , overflowY: 'hidden' }}>
+			<Typography sx={{padding: '6px', backgroundColor: '#89b0a0'}}>{receiver}</Typography>
+			<Divider />
+			<List style={{ height:'42vh' , overflowY: 'auto' }}>
 				
 
-				{messages.map((m, index) => 
+				{messages?.map((m, index) => 
 					(<SingleMessage key={index}message={m} index={index} currentUserID={currentUser.id}/>)
 				)} </List>
+			<Divider />
+			<Grid container style={{padding: '20px'}}>
+				<Grid item xs={11}>
+					<TextField sx={{width:'97%'}} value={content} onChange={({ target }) => setMessageContent(target.value)} label='Kirjoita viesti'/>
+				</Grid>
+                    
+				<Grid item xs={1}>
+					<Fab color='primary' type='button' onClick={handleSendMessage}><SendIcon></SendIcon> </Fab>
+				</Grid>
+			</Grid>
 		</Grid>
 	)
 }

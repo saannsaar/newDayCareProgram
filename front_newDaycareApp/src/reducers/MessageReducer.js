@@ -13,7 +13,8 @@ const messageReducer = createSlice({
 			return []
 		},
 		appendMessage(state,action) {
-			return state.push(action.payload)
+			console.log(action.payload)
+			state.push(action.payload)
 		}
 	}
 })
@@ -35,6 +36,7 @@ export const emptyMessages = () => {
 }
 
 export const sendNewMessage = (message) => {
+	console.log(message)
 	return async (dispatch) => {
 		const conversation = await messageService.sendMessage(message)
 		dispatch(appendMessage(conversation))

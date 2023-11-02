@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeConversation } from '../reducers/ConversationsReducer'
 import { initializeMessages } from '../reducers/MessageReducer'
-import { Button, Container, Grid, List, ListItem, ListItemText, Paper, Select, Typography } from '@mui/material'
+import { Button, Container, TextField, Divider, Grid, List, ListItem, ListItemText, Paper, Select, Typography } from '@mui/material'
 import Item from './Item'
 import { FormControl } from '@mui/base'
 import ConversationArea from './ConversationArea'
@@ -21,10 +21,10 @@ const Messages = ({usertype, currentUser }) => {
 	
 	const [selectedPerson, setSeleectedPerson] = useState('')
 	console.log(selectedPerson)
-	const handleChangeConversation = (id) => {
-		console.log(id)
-		setSeleectedPerson(id)
-		dispatch(initializeMessages(id))
+	const handleChangeConversation = (c) => {
+		console.log(c.id)
+		setSeleectedPerson(c.name)
+		dispatch(initializeMessages(c.id))
 
 	}
 	const dispatch = useDispatch()
@@ -46,7 +46,7 @@ const Messages = ({usertype, currentUser }) => {
 	}
 	console.log(conversations)
 	console.log(conversation)
-
+	const [listcolor, setListColor] = useState('#FFFFFF')
 	
 	return (
 		<div>
@@ -55,12 +55,22 @@ const Messages = ({usertype, currentUser }) => {
 			<Typography variant='h3'>Viestit</Typography>
 			<Grid container component={Paper} style={{margin: '10px', width: '98%', height: '64vh'}}>
 				<Grid item xs={3} sx={{ borderRight: '1px solid #e0e0e0'}}>
+					 <Grid item xs={12} style={{padding: '10px'}}>
+						<TextField label="Hae" variant="outlined" fullWidth />
+					</Grid>
 					<List>
 						{conversations.map((c) => {
 							return (
-								<ListItem>
-									<ListItemText onClick={() => handleChangeConversation(c.id)} primary={c.name}></ListItemText>
-								</ListItem>
+								<><ListItem>
+									<ListItemText  sx={[
+										{
+											'&:hover': {
+												color: '#a7c4ad',
+												backgroundColor: 'white',
+											},
+										},
+									]} onClick={() => handleChangeConversation(c)} primary={c.name} ></ListItemText>
+								</ListItem><Divider /></>
 
 							)
 						})}
@@ -71,8 +81,8 @@ const Messages = ({usertype, currentUser }) => {
 
 				
 					
-				{conversation && conversation.length > 0 ? 
-					<ConversationArea messages={conversation} currentUser={currentUser}/> : null }
+				
+				<ConversationArea receiver={selectedPerson} messages={conversation} currentUser={currentUser}/> 
 			</Grid>
 				
 			
