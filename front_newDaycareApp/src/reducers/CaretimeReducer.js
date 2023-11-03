@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 import childService from '../services/children'
+import { initializeError } from './errorReducer'
 
 
 
@@ -62,8 +63,13 @@ export const createCaretime = (content, childid) => {
 	console.log(content)
 	console.log(childid)
 	return async dispatch => {
-		const newTime = await childService.addCaretime(content, childid)
-		dispatch(appendCaretime(newTime))
+		try{
+			const newTime = await childService.addCaretime(content, childid)
+			dispatch(appendCaretime(newTime))
+		} catch(error) {
+			console.log(error)
+			dispatch(initializeError(error.response.data.error))
+		}
 	}
 
 }

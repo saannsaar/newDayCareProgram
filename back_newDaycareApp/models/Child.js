@@ -20,7 +20,7 @@ const schema = new mongoose.Schema({
         ref: 'Group'
     },
     monthly_maxtime: {
-        type: String,
+        type: Number,
         required: true,
     },
     care_time: [

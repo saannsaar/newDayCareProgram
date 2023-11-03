@@ -5,9 +5,8 @@ import Item from './Item'
 import { useState } from 'react'
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { useDispatch} from 'react-redux'
+import { useDispatch, useSelector} from 'react-redux'
 import moment from 'moment'
-import dayjs from 'dayjs'
 import { createCaretime } from '../reducers/CaretimeReducer'
 
 // Element which renders an form where the user can add 
@@ -17,20 +16,16 @@ import { createCaretime } from '../reducers/CaretimeReducer'
 const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
 	moment.locale('fin')
 	
-
 	const yy = new Date(pickedDay).getFullYear()
 	const mm = new Date(pickedDay).getMonth()
 	const dd = new Date(pickedDay).getDate()
 	const pickeddateString = moment(new Date(pickedDay)).format('MMM Do YY')
-	//console.log(moment(new Date(yy, mm, dd, 7, 20)).format())
-	// const adapter = new AdapterDayjs()
+
 	const[start_time, setStartTime] = useState(moment(new Date(yy, mm, dd, 5, 45)))
 	const[end_time, setEndTime] = useState(moment(new Date(yy, mm, dd, 17, 0)))
 	const [modalOpen, setmodalOpen] = useState(false)
-	// console.log(new Date(pickedDay).getFullYear())
-	// console.log(start_time)
-	// console.log(kid)
-	console.log(dayjs(moment(new Date(yy, mm, dd, 7, 20)).format()))
+	const error = useSelector(state => state.error)
+	
 	const dispatch = useDispatch()
 	const handleModalOpen = () => {
 		setmodalOpen(true)
@@ -46,10 +41,12 @@ const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
 		
 		// console.log(child_id)
 		console.log({start_time: moment(new Date(start_time)).format(),end_time: moment(new Date(end_time)).format(), child_id })
+
 		dispatch(createCaretime({start_time: moment(new Date(start_time)).format(), end_time: moment(new Date(end_time)).format()}, child_id))
 		setmodalOpen(false)
 	}
 	
+	console.log(error)
 	return (
 		<><Item  onClick={() => handleModalOpen()}  style={{margin: '10px'}}>
 			Lisää hoitoaika

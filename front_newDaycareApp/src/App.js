@@ -52,8 +52,7 @@ const App = () => {
 	const usertype = useSelector(state => state.usertype)
 	const currentChild = useSelector(state => state.currentChild)
 	const allNotifications = useSelector(state => state.notifications)
-	const conversations = useSelector(state => state.conversations)
-	const conversation = useSelector(state => state.messages)
+	const error = useSelector(state => state.error)
 
 	// const navigate = useNavigate()
 	const [pickedChild, setPickedChild] = useState('')
@@ -199,7 +198,7 @@ const App = () => {
 						<Route path="/" element={<FrontPage weather={weather} notifications={allNotifications} events={events} kids={kids} usertype={usertype}/>}/>
 						<Route path="/own-group" element={<OwnGroup worker={loggedInUser} workers={workers}/>}/>
 						<Route path="/own-family" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
-						<Route path="/caretimes" element={<ScheduleCare events={events} currentUser={loggedInUser} caretimes={caretimes} pickedChildId={currentChild.id} pickedChild={currentChild}/>}/>
+						<Route path="/caretimes" element={<ScheduleCare events={events}  currentUser={loggedInUser} caretimes={caretimes} pickedChildId={currentChild.id} pickedChild={currentChild}/>}/>
 						<Route path="/messages" element={<Messages usertype={usertype} currentUser={loggedInUser}/>}/>
 						<Route path="/daycare" element={<Daycare caretimes={caretimes} workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
 					</Routes>

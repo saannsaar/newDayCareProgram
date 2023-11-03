@@ -4,17 +4,20 @@ import {  useEffect, useState } from 'react'
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/de'
-import { Container, Typography, Card, Grid } from '@mui/material'
+import { Container,  Typography, Card, Grid } from '@mui/material'
 
 import Item from '../Item'
 import moment from 'moment'
 import EventInfo from '../EventInfo'
 import AddCareTime from '../AddCaretime'
 import CareTimeInfo from '../CareTimeInfo'
+import ErrorAlert from '../ErrorAlert'
+
 
 
 const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChildId }) => {
 	moment.locale('fin')
+
 	const adapter = new AdapterDayjs()
 	const firstAvailableDay = adapter.date(new Date())
 
@@ -55,7 +58,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 		
 		
 		// console.log(find_events.length)
-	}, [calendarValue.$d, pickedChild])
+	}, [calendarValue.$d, pickedChild, caretimes])
 
 	console.log(selectedCaretime)
 
@@ -66,6 +69,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 			<Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
 			Max hoitoaika: {pickedChild.monthly_maxtime} tuntia
 			</Typography>
+			<ErrorAlert />
 			{pickedChild &&
 			<Container>
 				<Card>
@@ -82,7 +86,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <><Item style={{margin: '10px'}} >Ei tapahtumia</Item> </>}
 
 							{selectedCaretime == '' ? <><Item  style={{margin: '10px'}}>Ei ilmoitettua hoitoaikaa</Item> 
-								<AddCareTime pickedChildId={pickedChildId} kid={pickedChild} pickedDay={calendarValue.$d}/></> :
+								<AddCareTime  pickedChildId={pickedChildId} kid={pickedChild} pickedDay={calendarValue.$d}/></> :
 								<CareTimeInfo key={selectedCaretime._id} childId={pickedChildId} pickedCareTimes={selectedCaretime}/> 
 							}
 						</Grid>

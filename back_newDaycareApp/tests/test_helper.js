@@ -9,7 +9,7 @@ const initialChildren = [
       _id: "6526595cd5caab3108c41444",
       name: "Weston Kirk",
       born: "13.02.2021",
-      monthly_maxtime: '130h',
+      monthly_maxtime: 130,
       parents: [],
       __v: 0
     },
@@ -17,7 +17,7 @@ const initialChildren = [
       _id: "6526596b1d5a33124b6d3273",
       name: "Mary Lee",
       born: "02.05.2021",
-      monthly_maxtime: '130h',
+      monthly_maxtime: 130,
       parents: [],
       __v: 0
     },
@@ -25,7 +25,7 @@ const initialChildren = [
         _id: "65265971ed5419ae19531d5c",
         name: "Mindy Gilbert",
         born: "27.08.2020",
-        monthly_maxtime: '130h',
+        monthly_maxtime: 130,
         parents: [],
         __v: 0
       },
