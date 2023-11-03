@@ -38,10 +38,10 @@ const MyFamily = ({ user, kids }) => {
 					</Grid>
 					<Grid item xs={8}>
 						<Item>
-							{showPage == 'Lapsetsivu' ? <Grid container spacing={2}>{kids.map(k=> <><Grid item xs={4}>
+							{showPage == 'Lapsetsivu' ? <Grid container spacing={2}>{kids.map((k)=> <><Grid key={k.name}item xs={4}>
 								<Item>KUVA </Item>
 							</Grid><Grid item xs={8}>
-								<Item>{kids[0].name}</Item>
+								<Item>{k.name}</Item>
 							</Grid></>)}</Grid> : showPage == 'Omattiedotsivu' ? <Grid container spacing={2}>
 								<Grid item xs={4}>
 									<Item>Nimi: </Item>

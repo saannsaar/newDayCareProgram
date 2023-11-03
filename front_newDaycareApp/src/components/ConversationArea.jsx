@@ -25,6 +25,7 @@ const ConversationArea = ({ messages, receiver, currentUser }) => {
 		}
 		console.log(message)
 		dispatch(sendNewMessage(message))
+		setMessageContent('')
 
 
 	}

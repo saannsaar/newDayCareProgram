@@ -21,7 +21,7 @@ const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
 	const yy = new Date(pickedDay).getFullYear()
 	const mm = new Date(pickedDay).getMonth()
 	const dd = new Date(pickedDay).getDate()
-	const pickeddateString = moment(pickedDay).format('MMM Do YY')
+	const pickeddateString = moment(new Date(pickedDay)).format('MMM Do YY')
 	//console.log(moment(new Date(yy, mm, dd, 7, 20)).format())
 	// const adapter = new AdapterDayjs()
 	const[start_time, setStartTime] = useState(moment(new Date(yy, mm, dd, 5, 45)))
@@ -45,8 +45,8 @@ const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
 		const child_id = pickedChildId
 		
 		// console.log(child_id)
-		console.log({start_time: moment(start_time).format(),end_time: moment(end_time).format(), child_id })
-		dispatch(createCaretime({start_time: moment(start_time).format(), end_time: moment(end_time).format()}, child_id))
+		console.log({start_time: moment(new Date(start_time)).format(),end_time: moment(new Date(end_time)).format(), child_id })
+		dispatch(createCaretime({start_time: moment(new Date(start_time)).format(), end_time: moment(new Date(end_time)).format()}, child_id))
 		setmodalOpen(false)
 	}
 	

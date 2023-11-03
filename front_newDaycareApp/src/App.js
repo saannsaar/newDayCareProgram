@@ -4,7 +4,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {  useEffect, useState } from 'react'
 import { AppBar, Toolbar, Select, Button, MenuItem } from '@mui/material'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 import FrontPage from './components/FrontPage'
 import { useDispatch, useSelector } from 'react-redux'
@@ -39,7 +39,7 @@ const App = () => {
 	const dispatch = useDispatch()
 	const [weather, setWeather] = useState(null)
 	const api_key = process.env.REACT_APP_WEATHER_API_KEY
-
+	
 
 	const lat = '62.24147'
 	const lon = '25.72088'
@@ -55,6 +55,7 @@ const App = () => {
 	const conversations = useSelector(state => state.conversations)
 	const conversation = useSelector(state => state.messages)
 
+	// const navigate = useNavigate()
 	const [pickedChild, setPickedChild] = useState('')
 	const loggedInUser = useSelector(state => state.currentUser)
 	
@@ -125,6 +126,7 @@ const App = () => {
 		dispatch(initializeCaretimes(loggedInUser, usertype, kids, currentChild))
 	}
 	const logout = (event) => {
+
 		event.preventDefault()
 		window.localStorage.removeItem('loggedDaycareAppUser')
 		dispatch(removeCurrentUser())
@@ -136,8 +138,9 @@ const App = () => {
 		dispatch(removeEvents())
 		dispatch(emptyNotifications())
 
-	
+		
 		console.log(loggedInUser)
+		
 	  }
 
 
@@ -149,47 +152,54 @@ const App = () => {
 		
 	}
 	
+	return(
+		<div>
+			{!loggedInUser && 
+			<LoginForm  />
+			}
 
-	if(!loggedInUser) {
-		return (
-			<BrowserRouter>
-				
-				<Routes>
-					<Route path="/" element={<LoginForm  />}/>
-				</Routes>
-				<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-					<Toolbar>
-						<div>
-								@ NewDayCareApp 0.1
-						</div>
-					</Toolbar>
-				</AppBar>
-			</BrowserRouter>
-			
-		)
-	}
-	if (loggedInUser && usertype === 'worker_user') {
-		
-		return (
-			<div>
+			{loggedInUser &&
 				<BrowserRouter>
 					<AppBar sx={{ bgcolor: 'primary.dark'}} position='static'>
 						<Toolbar>
+							{usertype == 'parent_user' && <Select value={pickedChild}
+								label="Käyttäjätyyppi"
+								onChange={handlePickedChildChange}
+							>
+								<MenuItem disabled value="">
+									<em>Valitse lapsi</em>
+								</MenuItem>
+								{Object.values(kids).map((k) => 
+			
+									<MenuItem key={k.name.concat('key')}value={k.id}> {k.name}</MenuItem>
+								)}
+							</Select>}
 							<Button color="inherit" component={Link} to="/">Koti</Button>
-							<Button color="inherit" component={Link} to="/daycare">Päiväkoti</Button>
-							<Button color="inherit" component={Link} to="/messages">Viestit</Button>
-							<Button color="inherit" component={Link} to="/own-group">Omat tiedot</Button>
-							<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
+
+							{usertype == 'worker_user' &&
+							<Button color="inherit" component={Link} to="/daycare">Päiväkoti</Button>}
 							
+							<Button color="inherit" component={Link} to="/messages">Viestit</Button>
+
+							{usertype== 'worker_user' &&
+							<Button color="inherit" component={Link} to="/own-group">Omat tiedot</Button>
+							}
+							{usertype == 'parent_user' &&
+													<><Button color="inherit" component={Link} to="/caretimes">Hoitoajat</Button><Button color="inherit" component={Link} to="/own-family">Oma perhe</Button></>}
+							
+							<Button color="inherit"  onClick={logout}>Kirjaudu ulos</Button>
+						
 						</Toolbar>
 					</AppBar>
-     
-     
-    
+ 
+ 
+
 
 					<Routes>
 						<Route path="/" element={<FrontPage weather={weather} notifications={allNotifications} events={events} kids={kids} usertype={usertype}/>}/>
 						<Route path="/own-group" element={<OwnGroup worker={loggedInUser} workers={workers}/>}/>
+						<Route path="/own-family" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
+						<Route path="/caretimes" element={<ScheduleCare events={events} currentUser={loggedInUser} caretimes={caretimes} pickedChildId={currentChild.id} pickedChild={currentChild}/>}/>
 						<Route path="/messages" element={<Messages usertype={usertype} currentUser={loggedInUser}/>}/>
 						<Route path="/daycare" element={<Daycare caretimes={caretimes} workers={workers} groups={groups} kids={kids} daycare={daycare}/>}/>
 					</Routes>
@@ -197,74 +207,17 @@ const App = () => {
 					<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
 						<Toolbar>
 							<div>
-								@ NewDayCareApp 0.1
+							@ NewDayCareApp 0.1
 							</div>
 						</Toolbar>
 					</AppBar>
 				</BrowserRouter>
-
-      
-      
-			</div>
-		)
-	} 
-
-	if (loggedInUser && daycare && typeof kids === 'object' && currentChild && usertype === 'parent_user') {
-		console.log(typeof kids)
-		console.log(loggedInUser)
-		
-		return (
-			<div>
-				<BrowserRouter>
-					<AppBar sx={{ bgcolor: 'primary.dark'}} position='static'>
-						<Toolbar><Select value={pickedChild}
-							label="Käyttäjätyyppi"
-							onChange={handlePickedChildChange}
-						>
-							<MenuItem disabled value="">
-								<em>Valitse lapsi</em>
-							</MenuItem>
-							{Object.values(kids).map((k) => 
-			
-								<MenuItem key={k.name.concat('key')}value={k.id}> {k.name}</MenuItem>
-							)}
-						</Select>
-						<Button color="inherit" component={Link} to="/">Koti</Button>
-						<Button color="inherit" component={Link} to="/messages">Viestit</Button>
-						<Button color="inherit" component={Link} to="/caretimes">Hoitoajat</Button>
-						<Button color="inherit" component={Link} to="/own-family">Oma perhe</Button>
-						<Button color="inherit" component="button" onClick={logout}>Kirjaudu ulos</Button>
-						</Toolbar>
-					</AppBar>
-     
-
-					<Routes>
-						<Route path="/" element={<FrontPage weather={weather} notifications={allNotifications} events={events}  kids={currentChild} usertype={usertype}/>}/>
-						<Route path="/own-family" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
-						<Route path="/messages" element={<Messages usertype={usertype} currentUser={loggedInUser}/>}/>
-						<Route path="/caretimes" element={<ScheduleCare events={events} currentUser={loggedInUser} caretimes={caretimes} pickedChildId={currentChild.id} pickedChild={currentChild}/>}/>
-					</Routes>
-
-					<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-						<Toolbar>
-							<div>
-								@ NewDayCareApp 0.1
-							</div>
-						</Toolbar>
-					</AppBar>
-				</BrowserRouter>
-			</div>
-		)
-	}
-	
-
-
-	else return (
-		
-		<div>
-    Loading... 
+			}
 		</div>
 	)
+
+
+
  
 }
 

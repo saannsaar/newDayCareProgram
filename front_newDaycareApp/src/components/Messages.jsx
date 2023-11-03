@@ -118,7 +118,7 @@ const Messages = ({usertype, currentUser }) => {
 					<List style={{overflowY: 'auto', height: '41vh'}}>
 						{filterConversations.map((c) => {
 							return (
-								<><ListItem>
+								<><ListItem key={c.name}>
 									<ListItemText  sx={[
 										{
 											'&:hover': {

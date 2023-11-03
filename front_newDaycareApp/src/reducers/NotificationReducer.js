@@ -14,7 +14,7 @@ const notificationReducer = createSlice({
 			return []
 		}, 
 		appendNotification(state, action) {
-			return state.push(action.payload)
+			state.push(action.payload)
 		},
 		removeNotification(state, action) {
 			console.log(state,action)

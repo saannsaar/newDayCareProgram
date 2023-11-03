@@ -18,7 +18,7 @@ const eventReducer = createSlice({
 			return state.filter(e => e.id !== action.payload)
 		},
 		appendEvent: (state, action) => {
-			return state.push(action.payload)
+			state.push(action.payload)
 		}
 	}
 })

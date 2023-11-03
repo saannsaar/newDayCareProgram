@@ -40,7 +40,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 	useEffect(() => {
 		
 		console.log(calendarValue)
-		const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
+		const find_events = events.filter((e) => moment(new Date(e.date)).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
 		// console.log(find_events)
 		setPickedEvents(find_events)
 		console.log(caretimes[0])

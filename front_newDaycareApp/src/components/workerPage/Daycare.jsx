@@ -88,7 +88,7 @@ const Daycare = ( { workers, groups, kids, daycare, caretimes } ) => {
 					{todaysCaretimes.map((tCT) => (
 						
 						<>
-							<Item style={{color: '#000000', backgroundColor: '#a4f5af', marginBottom: '4px'}}> {tCT.kid}: {moment(tCT.start_time).format('HH:MM')} - {moment(tCT.end_time).format('HH:MM')} </Item> 
+							<Item  key={tCT.kid.concat('c')}style={{color: '#000000', backgroundColor: '#a4f5af', marginBottom: '4px'}}> {tCT.kid}: {moment(tCT.start_time).format('HH:MM')} - {moment(tCT.end_time).format('HH:MM')} </Item> 
 						</>
 					))}
 				</Item>
