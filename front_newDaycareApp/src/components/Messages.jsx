@@ -6,15 +6,23 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeConversation } from '../reducers/ConversationsReducer'
-import { initializeMessages } from '../reducers/MessageReducer'
-import { Button, Container, TextField, Divider, Grid, List, ListItem, ListItemText, Paper, Select, Typography } from '@mui/material'
+import { initializeMessages, sendNewMessage } from '../reducers/MessageReducer'
+import { Button, DialogTitle,DialogContent, Dialog, TextField, Divider, Grid, List, ListItem, ListItemText, Paper, Select, Typography } from '@mui/material'
 import Item from './Item'
 import { FormControl } from '@mui/base'
 import ConversationArea from './ConversationArea'
 import CreateNewConversation from './CreateNewConversation'
 
 const Messages = ({usertype, currentUser }) => {
-
+	const [modalOpen, setmodalOpen] = useState(false)
+	const [content, setContent] = useState('')
+	
+	const handleModalOpen = () => {
+		setmodalOpen(true)
+	}
+	const handleModalClose = () => {
+		setmodalOpen(false)
+	}
 	
 	console.log('HEI')
 	console.log(currentUser)
@@ -29,6 +37,7 @@ const Messages = ({usertype, currentUser }) => {
 	}
 	const dispatch = useDispatch()
 	
+
 	const conversations = useSelector(state => state.conversations)
 	const conversation = useSelector(state => state.messages)
 	useEffect(() => {
@@ -37,17 +46,37 @@ const Messages = ({usertype, currentUser }) => {
 		
 		
 	}, [])
-
+	
 	
 	if (!conversations || !currentUser) {
 		return (
 			<div>Loading</div>
 		)
 	}
+	const [filterConversations, setFilterConversation] = useState(conversations)
 	console.log(conversations)
 	console.log(conversation)
-	const [listcolor, setListColor] = useState('#FFFFFF')
 	
+	
+	
+	const sendToAll = (e) => {
+		e.preventDefault()
+		console.log(content)
+		
+		conversations.map((c) => dispatch(sendNewMessage({content, receiver: c.name})))
+		setmodalOpen(false)
+	}
+
+	const handleFilter = (e) => {
+		console.log(e.target.value)
+		const filtersearch = conversations.filter((c) => {
+			return c.name.toLowerCase().includes(e.target.value.toLowerCase())
+		})
+		setFilterConversation(filtersearch)
+
+		console.log(filtersearch)
+		
+	}
 	return (
 		<div>
 
@@ -56,10 +85,38 @@ const Messages = ({usertype, currentUser }) => {
 			<Grid container component={Paper} style={{margin: '10px', width: '98%', height: '64vh'}}>
 				<Grid item xs={3} sx={{ borderRight: '1px solid #e0e0e0'}}>
 					 <Grid item xs={12} style={{padding: '10px'}}>
-						<TextField label="Hae" variant="outlined" fullWidth />
+						<TextField onChange={handleFilter}  label="Hae" variant="outlined" fullWidth />
+						{ usertype == 'worker_user' ? <><Button onClick={() => handleModalOpen()}>Lähetä viesti kaikille vanhemmille</Button>
+							<Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
+								<DialogTitle > Lähetä viesti kaikille vanhemmille </DialogTitle>
+								<Divider />
+								<DialogContent>
+									<form onSubmit={sendToAll}>
+										<TextField
+											label="Viestin sisältö: "
+											fullWidth
+											value={content}
+											onChange={({ target }) => setContent(target.value)} />
+										<Grid>
+											<Grid item>
+												<Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
+													onClick={() => handleModalClose()}>
+														Peruuta
+												</Button>
+											</Grid>
+											<Grid item>
+												<Button style={{ float: 'right', }} type="submit" variant="contained"> Lähetä
+												</Button>
+											</Grid>
+										</Grid>
+									</form>
+								</DialogContent>
+							</Dialog></>
+							: null }
+						
 					</Grid>
-					<List>
-						{conversations.map((c) => {
+					<List style={{overflowY: 'auto', height: '41vh'}}>
+						{filterConversations.map((c) => {
 							return (
 								<><ListItem>
 									<ListItemText  sx={[

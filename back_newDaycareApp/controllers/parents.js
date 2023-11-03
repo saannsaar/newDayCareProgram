@@ -4,8 +4,8 @@ const Parent = require('../models/Parent')
 const {userExtractor } = require('../utils/middleware')
 
 // Get all the parents from the db
-parentRouter.get('/', async (request, response) => {
-    const parents = await Parent.find({}).populate({path: 'children', model: 'Child', populate :{path: 'group', model: 'Group', populate: {path: 'workers_in_charge', model: 'DaycareWorker'}}})
+parentRouter.get('/',userExtractor, async (request, response) => {
+    const parents = await Parent.find({}).populate({path: 'children', model: 'Child'})
     console.log(parents)
     response.json(parents)
 })

@@ -22,7 +22,7 @@ const sendMessage = async (messageInfo) => {
 		headers: { Authorization: token },
 	}
 
-	const response =  await axios.post(baseUrl.concat('/'), messageInfo, config)
+	const response =  await axios.post(baseUrl, messageInfo, config)
 	return response.data
 
 }

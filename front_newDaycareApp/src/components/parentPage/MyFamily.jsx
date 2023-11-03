@@ -13,7 +13,7 @@ const MyFamily = ({ user, kids }) => {
 	console.log(user, kids)
 	console.log(kids.map(k=>k.name))
 
-	const [showPage, setShowPage] = useState('')
+	const [showPage, setShowPage] = useState('Lapsetsivu')
 	console.log(showPage)
 	const handleKidPage = () => {
 		console.log('Lapset')

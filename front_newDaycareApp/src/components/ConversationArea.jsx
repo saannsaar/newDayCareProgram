@@ -29,7 +29,7 @@ const ConversationArea = ({ messages, receiver, currentUser }) => {
 
 	}
 	return (
-		<Grid xs={9}>
+		<Grid item xs={9}>
 			<Typography sx={{padding: '6px', backgroundColor: '#89b0a0'}}>{receiver}</Typography>
 			<Divider />
 			<List style={{ height:'42vh' , overflowY: 'auto' }}>
