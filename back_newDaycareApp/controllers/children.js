@@ -97,11 +97,14 @@ console.log("Child router")
       if (spesific_child) {
         console.log("Found a correct child")
         
-        response.status(200).json(spesific_child)
+        return response.status(200).json(spesific_child)
       } else {
-        response.status(404).end()
+        return response.status(404).end()
       }
     }
+  } else if (request.user.user_type === 'worker_user') {
+    const findChild = await Child.findById(request.params.id)
+    return response.status(200).json(findChild)
   }
 
   })
@@ -117,30 +120,40 @@ console.log("Child router")
         console.log("not my")
         response.status(401).json({error: "Not authorized to see this child's info"})
       } else {
-        try {
+       
+
           const spesific_child = await Child.findById(request.params.id)
-          if (spesific_child) {
+          console.log(spesific_child)
+          const date = new Date(request.body.start_time)
+          const findsame = spesific_child.care_time.filter((c) => new Date(c.start_time).toString().substring(0,10) == date.toString().substring(0,10))
+            console.log(findsame) 
+            if (findsame.length >= 1) {
+              return response.status(401).json({error: 'Cant add multiple caretimes for one day'})
+            }
+          if (spesific_child && findsame.length == 0 || !findsame) {
+            try {
             console.log("Found a correct child")
-            console.log(spesific_child)
-            spesific_child.care_time.push({
-              start_time: request.body.start_time,
-              end_time: request.body.end_time,
-              kid_name: spesific_child.name
-            })
-            console.log(spesific_child)
-
-            const updated_times = await Child.findByIdAndUpdate(request.params.id, spesific_child, {
-              new: true,
-            }).exec()
-
-            response.status(201).json(updated_times.care_time[updated_times.care_time.length -1])
-          } else {
-            response.status(404).end()
-          }
+           
+                spesific_child.care_time.push({
+                  start_time: request.body.start_time,
+                  end_time: request.body.end_time,
+                  kid_name: spesific_child.name
+                })
+               
+    
+                const updated_times = await Child.findByIdAndUpdate(request.params.id, spesific_child, {
+                  new: true,
+                }).exec()
+    
+                response.status(201).json(updated_times.care_time[updated_times.care_time.length -1])
+              
+            
+           
+         
         } catch (error) {
-          response.status(400).json(error)
+          response.status(400).json({error: error})
         }
-      
+      } 
       }
 
 

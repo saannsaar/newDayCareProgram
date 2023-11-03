@@ -63,7 +63,7 @@ const initializeWorkers = [
         born: "19.11.1989",
         email: "clairedundret@emailaddress.com",
         phone: "+358123123123123",
-        group: "3v422s851b54a676234d17f0",
+        user_type: 'worker_user',
         __v: 0
       },
       {
@@ -72,7 +72,7 @@ const initializeWorkers = [
         born: "09.12.1994",
         email: "haileybeebee@emailaddress.com",
         phone: "+3581211111111",
-        group: "7v411s851b54a676234d17p9",
+        user_type: 'worker_user',
         __v: 0
       },
 ]

@@ -19,7 +19,6 @@ eventsRouter.delete('/:id', userExtractor, async (request, response) => {
     }
 
     const event = await Event.deleteOne({_id: request.params.id })
-    console.log(event)
     response.status(204).end()
 
 })
@@ -62,13 +61,6 @@ eventsRouter.get('/:id', async (request, response) => {
           })
       
           const saved_event = await new_event.save()
-  
-          if (group) {
-              group.events = group.events.concat(saved_event._id)
-              await group.save()
-          }
-  
-          console.log(group)
   
           response.status(201).json(saved_event)
           }

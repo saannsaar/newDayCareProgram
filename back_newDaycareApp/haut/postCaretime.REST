@@ -1,9 +1,8 @@
-POST http://localhost:3001/api/children/6507f8a77ee5794652673730/caretime
+POST http://localhost:3001/api/children/6507f8a77ee5794652673730/caretimes
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvaW5lbi50eW9udGVraWphQGVtYWlsLmZpIiwiaWQiOiI2NGVlZGUyNjQ0MTQ5M2QwYzczN2I0N2QiLCJpYXQiOjE2OTU5Nzk3ODMsImV4cCI6MTY5NTk4MzM4M30.RdECjUJ_g6kvX_MP0aY9JOzWM7-ZyMLYjnMiHUtkJpY
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbm5pbi5zYWhrb3Bvc3RpQGVtYWlsLmNvbSIsImlkIjoiNjRmODA5YzRjZTJiYjI4YzM5MWU4MDRhIiwiaWF0IjoxNjk5MDAzMjc5LCJleHAiOjE2OTkwMDY4Nzl9.ryYGNamo4wKjoFaijlgktyqt84sT1O3pToBXEnHQnA8
 
 {
-        "start_time": "2023-09-22T07:15:00.00+03:00",
-        "end_time": "2023-09-22T15:00:00.00+03:00",
-        "child_id": "6507f8a77ee5794652673730"   
+        "start_time": "2023-12-04T03:15:00.000+00:00",
+        "end_time": "2023-12-04T12:15:00.000+00:00"
 }

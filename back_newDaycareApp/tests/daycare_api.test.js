@@ -81,26 +81,6 @@ describe('Parent account logged in', () => {
         expect(parentsAfter[0].email).toContain(modifiedInfo.email)
     })
 
-    // test('new parent account creation fails with given statuscode and message if the email is already taken', async () => {
-    //     const parentsAtStart = await Parent.find({})
-    //     console.log(parentsAtStart)
-    //     const newUser = {
-    //         name: "Toinen testi",
-    //         email: "caroline.forbeskirk@emailaddress.com",
-    //         phone: "032111809022",
-    //         password: "salasana",
-    //         user_type: "parent_user"
-    //     }
-
-    //     const result = await api.post('/api/parents').set("Authorization", authorization).send(newUser).expect(400).expect('Content-Type', /application\/json/)
-
-    //     console.log(result.body.message)
-    //     expect(result.body.message).toContain('Error, expected `email` to be unique.')
-
-    //     const parentsAtEnd = await Parent.find({})
-    //     expect(parentsAtEnd).toHaveLength(parentsAtStart.length)
-    // })
-
     test('logged in user can get their own childrens info', async () => {
         const parentsAtStart = await Parent.findOne({name: "Caroline Forbes-Kirk"})
         // console.log(parentsAtStart.children[0].toString())
@@ -126,13 +106,38 @@ describe('Parent account logged in', () => {
         const newCaretime = {
             start_time: "2023-09-22T07:15:00.00+03:00",
             end_time: "2023-09-22T15:00:00.00+03:00",
-            child_id: "Weston Kirk"   
+        }
+        const parentsAtStart = await Parent.findOne({name: "Caroline Forbes-Kirk"})
+        const id = parentsAtStart.children[0].toString()
+
+        const response = await api.post(`/api/children/${id}/caretimes`).set("Authorization", authorization).send(newCaretime).expect(201).expect('Content-Type', /application\/json/)
+        console.log(response.body)
+        expect(response.body.kid_name).toContain('Weston Kirk')
+
+    })
+
+    test('logged in parentuser can send a message to worker and find conversation', async () => {
+        await Worker.deleteMany({})
+        await Worker.insertMany(helper.initializeWorkers)
+        const workers = await Worker.find({})
+        console.log(workers)
+        const parentsAtStart = await Parent.findOne({name: "Caroline Forbes-Kirk"})
+        const id = parentsAtStart.children[0].toString()
+
+
+        const newMessage = {
+            content: "Test message content",
+            receiver: "Claire Dundret",
         }
 
-        const response = await api.post('/api/caretimes').set("Authorization", authorization).send(newCaretime).expect(201).expect('Content-Type', /application\/json/)
-        console.log(response)
-        expect(response.body.name).toContain('Weston Kirk')
+        const response = await api.post(`/api/messages`).set("Authorization", authorization).send(newMessage).expect(201).expect('Content-Type', /application\/json/)
+        console.log(response.body)
+        expect(response.body.content).toContain('Test message content')
 
+        
+        const response2 = await api.get(`/api/messages/${workers[0].id}`).set("Authorization", authorization).expect(200).expect('Content-Type', /application\/json/)
+        console.log(response2.body)
+        expect(response2.body[0].content).toContain('Test message content')
     })
 })
 
@@ -335,12 +340,6 @@ test('logged in user can create events', async () => {
     
     const response = await api.post('/api/events').set("Authorization", authorization).send(newEvent).expect(201).expect('Content-Type', /application\/json/)
     expect(JSON.stringify(response.body)).toContain("Metsäretki")
-    const addedEvent = await Event.find({})
-    console.log(addedEvent[0])
-    const event_id = addedEvent[0]._id
-    const groupsAtEnd = await Group.find({})
-    console.log(groupsAtEnd)
-    expect(groupsAtEnd.toString()).toContain(event_id.toString())
 })
 
 test('logged in user can delete event', async () => {
@@ -349,11 +348,9 @@ test('logged in user can delete event', async () => {
     await Event.insertMany(helper.initialEvents)
     
     const events = await Event.find({})
-    console.log(events[0])
     const event_id = events[0]._id.toString()
-    console.log(event_id)
-    const deleteresponse = await api.delete(`/api/events/${event_id}`).set("Authorization", authorization).expect(204).expect('Content-Type', /application\/json/)
-    console.log(deleteresponse)
+    const deleteresponse = await api.delete(`/api/events/${event_id}`).set("Authorization", authorization).expect(204)
+
 })
 
 })
