@@ -162,8 +162,7 @@ console.log("Child router")
         response.status(401).json({error: "Not authorized to see this child's info"})
       } else {
          
-       const startDate = moment(request.body.start_time)
-       const endDate = moment(request.body.end_time)
+      
           const spesific_child = await Child.findById(request.params.id)
           
          

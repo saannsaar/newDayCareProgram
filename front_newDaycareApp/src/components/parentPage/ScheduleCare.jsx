@@ -15,20 +15,20 @@ import ErrorAlert from '../ErrorAlert'
 
 
 
-const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChildId }) => {
+const ScheduleCare = ({ events, pickedChild, caretimes, pickedChildId }) => {
 	moment.locale('fin')
 
 	const adapter = new AdapterDayjs()
 	const firstAvailableDay = adapter.date(new Date())
 
-	console.log(pickedChild)
+
 	if (!caretimes) {
 		return (
 			<div> Laoding... </div>
 		)
 	}
 	// console.log(events)
-	console.log(currentUser)
+	
 	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 	const [pickedEvents, setPickedEvents] = useState([])
 	
@@ -42,11 +42,11 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 
 	useEffect(() => {
 		
-		console.log(calendarValue)
+		
 		const find_events = events.filter((e) => moment(new Date(e.date)).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
 		// console.log(find_events)
 		setPickedEvents(find_events)
-		console.log(caretimes[0])
+
 	
 		const find_caretime = caretimes.filter((c) => moment(c.start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
 		console.log(find_caretime)
@@ -60,7 +60,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, currentUser, pickedChild
 		// console.log(find_events.length)
 	}, [calendarValue.$d, pickedChild, caretimes])
 
-	console.log(selectedCaretime)
+
 
 
 	return (

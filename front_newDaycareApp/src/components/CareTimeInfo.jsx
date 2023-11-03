@@ -13,6 +13,7 @@ import { deleteSpesificCaretime, modifyCaretime } from '../reducers/CaretimeRedu
 // eslint-disable-next-line react/prop-types
 const CareTimeInfo = ({ pickedCareTimes, childId }) => {
 
+	console.log(pickedCareTimes)
 
 	const [inDayCare, setInDayCare] = useState('No')
 
