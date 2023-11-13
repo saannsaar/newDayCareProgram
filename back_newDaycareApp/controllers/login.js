@@ -8,12 +8,11 @@ loginRouter.post('/', async (request, response) => {
    
     const {email, password, user_type} = request.body
     
-    // Etsitään pyynnön mukana olevaa "email"ia vastaavaa käyttäjää tietokannasta
     if (user_type === 'worker_user') {
         const user = await DaycareWorker.findOne({email})
         // Tsekataan onko pyynnön mukana oleva "password" oikea, koska
-    //tietokantaan ei ole talletettu salasanaa vaan hash, tehdään bcrypt.compare metodilla vertailu
-    const passwordCorrect = user === null ? false : await bcrypt.compare(password, user.passwordHash)
+        //tietokantaan ei ole talletettu salasanaa vaan hash, tehdään bcrypt.compare metodilla vertailu
+        const passwordCorrect = user === null ? false : await bcrypt.compare(password, user.passwordHash)
 
     // Jos väärä käyttäjä tai ei ole olemassa vastataan 401 unauthorized
     if (!(user && passwordCorrect)) {

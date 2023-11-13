@@ -1,0 +1,10 @@
+PUT http://localhost:3001/api/children/6507f8a77ee5794652673730/caretimes
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbm5pbi5zYWhrb3Bvc3RpQGVtYWlsLmNvbSIsImlkIjoiNjRmODA5YzRjZTJiYjI4YzM5MWU4MDRhIiwiaWF0IjoxNjk4NjU4MjQ1LCJleHAiOjE2OTg2NjE4NDV9.aBEbDcVV9TMfmap4dJZJI9nwzuLdxRsSc0k3WdFTEoo
+
+{
+        "start_time": "2023-10-08T03:55:00.000+00:00",
+        "end_time": "2023-10-08T20:53:00.000+00:00",
+        "kid_name": "Lapsi Vepsalainen",
+        "_id": "653f52d96808966021e52247"
+}

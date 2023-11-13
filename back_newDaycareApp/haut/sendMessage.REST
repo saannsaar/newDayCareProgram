@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/messages
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbm5pbi5zYWhrb3Bvc3RpQGVtYWlsLmNvbSIsImlkIjoiNjRmODA5YzRjZTJiYjI4YzM5MWU4MDRhIiwiaWF0IjoxNjk4ODMyNzgzLCJleHAiOjE2OTg4MzYzODN9.MkAP2HHY5xEsWlN9cAYuBJuVIxUekpJBhhLXtZ7m-Ts
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbm5pbi5zYWhrb3Bvc3RpQGVtYWlsLmNvbSIsImlkIjoiNjRmODA5YzRjZTJiYjI4YzM5MWU4MDRhIiwiaWF0IjoxNjk4OTA3NTMxLCJleHAiOjE2OTg5MTExMzF9.i3Iy8FscvHTMGnXQRFT-Lb2h3T1zxyq2jO5O5E9vGvo
 
 {
         "content": "No Moi vaan!",

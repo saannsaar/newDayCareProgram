@@ -284,6 +284,9 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 						<Typography variant="p" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
 							Tuuli: {weather.wind.speed} m/s
 						</Typography><br/>
+						<Typography variant="p" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
+							Tuntuu kuin: {weather.wind.speed} m/s
+						</Typography><br/>
 					</Item>
 
 				</Grid>

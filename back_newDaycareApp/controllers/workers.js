@@ -7,9 +7,8 @@ const {userExtractor } = require('../utils/middleware')
 
 
 // Haetaan kaikki työntekijät tietokannasta
-workerRouter.get('/', async (request, response) => {
+workerRouter.get('/', userExtractor, async (request, response) => {
    const workers = await DaycareWorker.find({}).populate({path: 'group', model: 'Group', populate: {path: 'workers_in_charge', model: 'DaycareWorker'}})
-   console.log(workers)
    response.json(workers)
 })
 
@@ -36,16 +35,22 @@ workerRouter.post('/', userExtractor,  async (request, response) => {
 })
 
 
-workerRouter.get('/:id', async (request, response) => {
-    const spesific_worker = await DaycareWorker.findById(request.params.id).populate('group').populate('user_type')
-    if (spesific_worker) {
-      response.json(spesific_worker)
-    } else {
-      response.status(404).end()
-    }
-  })
+workerRouter.get('/:id', userExtractor, async (request, response) => {
 
-  workerRouter.put('/:id', async(request, response, next) => {
+  if (!request.user) {
+    return response.status(403).send("You are not logged in")
+  } else {
+    try {
+      const spesific_worker = await DaycareWorker.findById(request.params.id).populate('group').populate('user_type')
+        response.json(spesific_worker)
+    } catch(error) {
+      next(error)
+    }
+  }
+})
+ 
+
+  workerRouter.put('/:id', userExtractor, async(request, response, next) => {
     try {
         const worker = await DaycareWorker.findByIdAndUpdate(request.params.id, request.body, {
             new: true,

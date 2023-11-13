@@ -47,7 +47,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, pickedChildId }) => {
 		// console.log(find_events)
 		setPickedEvents(find_events)
 
-	
+		
 		const find_caretime = caretimes.filter((c) => moment(c.start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
 		console.log(find_caretime)
 		if (!find_caretime) {

@@ -52,7 +52,7 @@ const App = () => {
 	const usertype = useSelector(state => state.usertype)
 	const currentChild = useSelector(state => state.currentChild)
 	const allNotifications = useSelector(state => state.notifications)
-	const error = useSelector(state => state.error)
+	
 
 	// const navigate = useNavigate()
 	const [pickedChild, setPickedChild] = useState('')

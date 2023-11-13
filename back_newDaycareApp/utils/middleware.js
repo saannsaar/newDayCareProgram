@@ -50,18 +50,12 @@ const tokenExtractor = ( request, response, next ) => {
 
 const userExtractor = async ( request, response, next ) => {
     const token = getTokenFrom(request)
-    // console.log(request.get("Authorization"))
-
-
     if (token) {
-        //console.log(token)
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-       // console.log(decodedToken)
         if (!decodedToken.id) {
             return response.status(401).json({ error: "token is invalid"})
         }
         const find = await DaycareWorker.findById(decodedToken.id)
-
         if (find) {
             console.log('Found')
             request.user = find

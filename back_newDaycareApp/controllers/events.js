@@ -5,9 +5,8 @@ const Group = require('../models/Group')
 const { userExtractor } = require('../utils/middleware')
 
 // Get all the events from the db
-eventsRouter.get('/', async (request, response) => {
+eventsRouter.get('/', userExtractor, async (request, response) => {
     const events = await Event.find({})
-    console.log(events)
     response.json(events)
 })
 
@@ -15,9 +14,8 @@ eventsRouter.delete('/:id', userExtractor, async (request, response) => {
    
     const user = request.user
     if( !user || user.user_type == "parent_user") {
-      return response(401).json({error: "You are not aaouthorized to delete an event"})
+      return response(401).json({error: "You are not authorized to delete an event"})
     }
-
     const event = await Event.deleteOne({_id: request.params.id })
     response.status(204).end()
 
@@ -34,11 +32,8 @@ eventsRouter.get('/:id', async (request, response) => {
 
   eventsRouter.post('/', userExtractor, async (request, response) => {
         const body = request.body
-        console.log(body)
         const user = request.user 
         const group = await Group.findOne({name: body.group})
-        console.log(group)
-        console.log(user)
 
         if(!user) {
             return response.status(401).json({error: "You cant do that"})
@@ -69,9 +64,6 @@ eventsRouter.get('/:id', async (request, response) => {
             response.status(401).json(error)
           }
           }
-
-
-      
 
   })
 
