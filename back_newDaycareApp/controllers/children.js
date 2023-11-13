@@ -90,6 +90,8 @@ childRouter.get('/:id', userExtractor, async (request, response) => {
   }
 
   })
+
+
   // Function that takes child's maxtime, all the caretimes as an array, start_time and end_time of the new
   // caretime that is added/modified and sums caretimes from that month
   // Returns how much times child has left for the specific month and also if the maxtime
@@ -245,7 +247,7 @@ childRouter.get('/:id', userExtractor, async (request, response) => {
               new: true,
             }).exec()
 
-            response.status(201).json(updated_times.care_time[ind])
+            response.status(201).json(updated_times)
           } else {
             response.status(404).end()
           }
@@ -269,34 +271,39 @@ childRouter.get('/:id', userExtractor, async (request, response) => {
           const spesific_child = await Child.findById(request.params.id1)
           if (spesific_child) {
            
+            let addThisTime = 0
             spesific_child.care_time.forEach((element, index) => {
               if (element._id == request.params.id2) {
-                const minusThisTime = moment(element.end_time).diff(moment(element.start_time), 'minutes')
                 
-                spesific_child.caretimes_added_monthlysum.forEach((newElem, index) => {
-                  console.log(newElem)
-                  if (newElem.month == moment(element.start_time).format('MM')) {
-                    ind = index
-                    console.log(ind)
-                    const newTime = spesific_child.caretimes_added_monthlysum[ind].timeLeft - parseInt(minusThisTime)
-                    const changetime = {
-                      month: spesific_child.caretimes_added_monthlysum[ind].month,
-                      timeLeft: newTime,
-                      _id: spesific_child.caretimes_added_monthlysum[ind].month_id
-                    }
-                    spesific_child.caretimes_added_monthlysum[ind] = changetime
-                   }})
-                
-
                 spesific_child.care_time.splice(index, 1)
+                addThisTime = parseInt(moment(element.end_time).diff(moment(element.start_time), 'minutes'))
+    
+                console.log(spesific_child)
 
             }})
+            
+            spesific_child.caretimes_added_monthlysum.forEach((element, index) => {
+              console.log(element)
+              if (element.month == moment(element.start_time).format('MM')) {
+                ind = index
+                console.log(ind)
+                const newTime = spesific_child.caretimes_added_monthlysum[ind].timeLeft + addThisTime
+                const changetime = {
+                  month: spesific_child.caretimes_added_monthlysum[ind].month,
+                  timeLeft: newTime,
+                  _id: spesific_child.caretimes_added_monthlysum[ind].month_id
+                }
+                spesific_child.caretimes_added_monthlysum[ind] = changetime
+               }})
+
+              console.log("SPESIFIC", spesific_child)
            
-            const updated_times = await Child.findByIdAndUpdate(request.params.id, spesific_child, {
+            const updated_times = await Child.findByIdAndUpdate(request.params.id1, spesific_child, {
               new: true,
             }).exec()
 
-            response.status(204).end()
+            console.log("PÄIVITETTY POISTON JÄLKEEN", updated_times)
+            response.status(201).json(updated_times)
           } else {
             response.status(404).end()
           }

@@ -15,7 +15,10 @@ const getAll = async () => {
 }
 
 const getWorkerById = async (worker) => {
-	const response = await axios.get(baseUrl.concat('/').concat(worker.id))
+	const config = {
+		headers: { Authorization: token },
+	}
+	const response = await axios.get(baseUrl.concat('/').concat(worker.id), config)
 	return response.data
 }
 

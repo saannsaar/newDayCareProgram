@@ -4,7 +4,7 @@ import { useState } from 'react'
 import WorkerInfo from './WorkerInfo'
 
 
-const GroupInfo = ({group, kids }) => {
+const GroupInfo = ({group }) => {
 
 	const [groupModalOpen, setGmodalOpen] = useState(false)	
 	const handleGroupModalOpen = () => {

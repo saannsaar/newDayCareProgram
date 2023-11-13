@@ -11,7 +11,7 @@ const conversationsReducer = createSlice({
 		setPeople(state, action) {
 			return action.payload
 		},
-		removePeople(state, action) {
+		removePeople() {
 			return []
 		},
 

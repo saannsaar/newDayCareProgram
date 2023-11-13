@@ -9,7 +9,7 @@ import EventInfo from './EventInfo'
 import { createNotification } from '../reducers/NotificationReducer'
 import { useDispatch } from 'react-redux'
 import NotiInfo from './NotiInfo'
-import dayjs, { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import { createEvent } from '../reducers/EventReducer'
 
 
@@ -60,8 +60,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 
 		const handleColorChange = (newValue) => {
 			setColorCode(newValue.target.value)
-			
-		  }
+		}
 
 
 		moment.locale('fin')
@@ -123,11 +122,11 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 		
 				<Grid container alignItems='stretch' justifyContent='center' spacing={3} style={{marginTop: '20px', marginLeft: '5px'}}>
 				
-						 <Item >
-						 <Typography variant="h6" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
+					<Item >
+						<Typography variant="h6" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
 								Ilmoitukset
 						</Typography>
-						 {notifications.map(n => 
+						{notifications.map(n => 
 							<NotiInfo key={n.headingtext} noti={n} usertype={usertype} />)}
 						{usertype == 'worker_user' ? <><Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
 							<DialogTitle style={{backgroundColor: colorCode}}>Lisää ilmoitus</DialogTitle>
@@ -143,7 +142,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 											onChange={({ target }) => setHeadingtext(target.value)} />
 										<TextField
 											label="Ilmoituksen sisältö: "
-												 style={{margin: '4px'}}
+											style={{margin: '4px'}}
 											fullWidth
 											value={contenttext}
 											onChange={({ target }) => setContenttext(target.value)} />
@@ -190,7 +189,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 								</div>
 							</DialogContent>
 						</Dialog><Button onClick={handleModalOpen}>Lisää ilmoitus</Button></> : null}
-						 </Item>
+					</Item>
 					
 
 					

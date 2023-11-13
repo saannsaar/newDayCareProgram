@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeConversation } from '../reducers/ConversationsReducer'
 import { initializeMessages, sendNewMessage } from '../reducers/MessageReducer'
-import { Button, DialogTitle,DialogContent, Dialog, TextField, Divider, Grid, List, ListItem, ListItemText, Paper, Select, Typography } from '@mui/material'
+import { Button, DialogTitle,DialogContent, Dialog, TextField, Divider, Grid, List, ListItem, ListItemText, Paper, Typography } from '@mui/material'
 import ConversationArea from './ConversationArea'
 
 
@@ -66,7 +66,7 @@ const Messages = ({usertype, currentUser }) => {
 			<Typography variant='h3'>Viestit</Typography>
 			<Grid container component={Paper} style={{margin: '10px', width: '98%', height: '64vh'}}>
 				<Grid item xs={3} sx={{ borderRight: '1px solid #e0e0e0'}}>
-					 <Grid item xs={12} style={{padding: '10px'}}>
+					<Grid item xs={12} style={{padding: '10px'}}>
 						<TextField onChange={handleFilter}  label="Hae" variant="outlined" fullWidth />
 						{ usertype == 'worker_user' ? <><Button onClick={() => handleModalOpen()}>Lähetä viesti kaikille vanhemmille</Button>
 							<Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>

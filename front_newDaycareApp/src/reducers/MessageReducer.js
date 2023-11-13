@@ -10,7 +10,7 @@ const messageReducer = createSlice({
 		setMessages(state, action) {
 			return action.payload
 		},
-		removeMessages(state, action) {
+		removeMessages() {
 			return []
 		},
 		appendMessage(state,action) {

@@ -10,7 +10,7 @@ const notificationReducer = createSlice({
 		setNotifications(state, action) {
 			return action.payload
 		},
-		removeNotifications(state, action) {
+		removeNotifications() {
 			return []
 		}, 
 		appendNotification(state, action) {
@@ -24,7 +24,7 @@ const notificationReducer = createSlice({
 })
 
 export const { appendNotification, setNotifications, removeNotification, removeNotifications} = notificationReducer.actions
-export const initializeNotifications = (loggedInUser) => {    
+export const initializeNotifications = () => {    
 	return async dispatch => {
 		const allnotifications = await notiservice.getAllNotifications()
 		dispatch(setNotifications(allnotifications))
@@ -46,7 +46,8 @@ export const emptyNotifications = () => {
 
 export const deleteNotification = (id) => {
 	return async dispatch => {
-		const edited_noti = await notiservice.deleteNotification(id)
+		await notiservice.deleteNotification(id)
+
 		dispatch(removeNotification(id))
 	}
 }

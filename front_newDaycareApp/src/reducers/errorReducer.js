@@ -9,7 +9,7 @@ const errorReducer = createSlice({
 		setError(state, action) {
 			return action.payload
 		},
-		removeError(state, action) {
+		removeError() {
 			return []
 		},
 

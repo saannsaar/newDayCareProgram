@@ -49,14 +49,14 @@ const EventInfo = ({ event, usertype }) => {
 				<Item>
 					{event.info}
 				</Item>
-{event.group ? <Item>
+				{event.group ? <Item>
 					{event.group.name}
 				</Item> : null}
 			</DialogContent>
 			{usertype == 'worker_user' ? <Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
-					onClick={() => handleDeleteEvent()}> 
+				onClick={() => handleDeleteEvent()}> 
                                                 Poista tapahtuma 
-				</Button> : null }
+			</Button> : null }
 		</Dialog></>
 	)
 }

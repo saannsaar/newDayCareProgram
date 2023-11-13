@@ -12,7 +12,7 @@ const daycareReducer = createSlice({
 			return action.payload
 		},
 
-		cleanDaycareState(state) {
+		cleanDaycareState() {
 			return []
 		}
 	}

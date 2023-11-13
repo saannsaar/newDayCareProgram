@@ -11,7 +11,7 @@ const groupReducer = createSlice({
 			return action.payload
 		},
 
-		cleanGroupSlice: (state) => {
+		cleanGroupSlice: () => {
 			return []
 		},
 		editGroupInfo: (state, action) => {

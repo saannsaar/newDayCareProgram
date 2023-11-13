@@ -2,7 +2,7 @@ POST http://localhost:3001/api/login
 content-type: application/json
 
 {
-        "email": "sannin.sahkoposti@email.com",
-        "password": "Salasanani1",
-        "user_type": "parent_user" 
+        "email": "toinen.tyontekija@email.fi",
+        "password": "Salasanani",
+        "user_type": "worker_user" 
 }

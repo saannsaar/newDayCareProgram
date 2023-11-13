@@ -57,7 +57,7 @@ const App = () => {
 	const loggedInUser = useSelector(state => state.currentUser)
 	
 	const caretimes = useSelector(state => state.caretimes)
-
+	console.log(caretimes)
 	
 	useEffect(() => {
 		if (loggedInUser) {

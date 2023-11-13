@@ -29,16 +29,16 @@ const LoginForm = (  ) => {
 		event.preventDefault()
 
 		try {
- 	  const user = await loginService.login({
+			const user = await loginService.login({
 				email: userEmail,
 				password,
 				user_type: usertype
-		  })
+			})
 	
-		  window.localStorage.setItem('loggedDaycareAppUser', JSON.stringify(user))
+			window.localStorage.setItem('loggedDaycareAppUser', JSON.stringify(user))
 		
 
-		  if (user){
+			if (user){
 				parentService.setToken(user.token)
 				childService.setToken(user.token)
 				eventService.setTokenForEvent(user.token)
@@ -46,16 +46,13 @@ const LoginForm = (  ) => {
 				workerService.setToken(user.token)
 				notiservice.setToken(user.token)
 				messageService.setToken(user.token)
-		  }
-		    
-		  dispatch(initializeUserType(usertype))
-
-		  dispatch(initializeCurrentWorker(user))
-		 
-		
-		  setuserEmail('')
-		  setPassword('')
-		  setUserType('')
+			}
+ 
+			dispatch(initializeUserType(usertype))
+			dispatch(initializeCurrentWorker(user))
+			setuserEmail('')
+			setPassword('')
+			setUserType('')
 		} catch(exception) {
 			setError(exception)
 			setTimeout(() => {

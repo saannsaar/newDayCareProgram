@@ -1,7 +1,7 @@
 import {  useEffect, useState } from 'react'
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import 'dayjs/locale/de'
+
 import { Container,  Typography, Card, Grid } from '@mui/material'
 
 import Item from '../Item'
@@ -16,8 +16,9 @@ import ErrorAlert from '../ErrorAlert'
 
 const ScheduleCare = ({ events, pickedChild, caretimes, pickedChildId }) => {
 	moment.locale('fin')
-
+	
 	const adapter = new AdapterDayjs()
+
 	const firstAvailableDay = adapter.date(new Date())
 
 	if (!caretimes || !pickedChild) {
@@ -26,6 +27,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, pickedChildId }) => {
 		)
 	}
 	
+	console.log(caretimes)
 	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 	const [pickedEvents, setPickedEvents] = useState([])
 	const [pickedMonth, setPickedMonth] = useState('')
@@ -33,13 +35,14 @@ const ScheduleCare = ({ events, pickedChild, caretimes, pickedChildId }) => {
 	useEffect(() => {
 		const monthNumber = calendarValue.$M +1
 		console.log(monthNumber.toString())
-		console.log('PÄIVITÄ TÄTÄ')
-		const findTimeLeft = pickedChild.caretimes_added_monthlysum.find((m) => m.month == monthNumber.toString())
-		if (!findTimeLeft) {
+		console.log('PÄIVITÄ TÄTÄ', caretimes[1])
+		const findTimeLeft = caretimes[1].filter((m) => m.month == monthNumber.toString())
+		console.log(findTimeLeft)
+		if (findTimeLeft.length == 0) {
 			setPickedMonth(pickedChild.monthly_maxtime.toString().concat(' tuntia'))
 		} else {
 			console.log(findTimeLeft)
-			const hoursLeftThisMonth = Math.floor(findTimeLeft.timeLeft / 60) + ' tuntia, ' + findTimeLeft.timeLeft % 60 + ' minuuttia'
+			const hoursLeftThisMonth = Math.floor(findTimeLeft[0].timeLeft / 60) + ' tuntia, ' + findTimeLeft[0].timeLeft % 60 + ' minuuttia'
 			setPickedMonth(hoursLeftThisMonth)
 		}
 
@@ -47,14 +50,14 @@ const ScheduleCare = ({ events, pickedChild, caretimes, pickedChildId }) => {
 		setPickedEvents(find_events)
 
 		
-		const find_caretime = caretimes.filter((c) => moment(c.start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
+		const find_caretime = caretimes[0].filter((c) => moment(c.start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
 		if (!find_caretime) {
 			setSelectedCaretime('')
 		} else {
 			setSelectedCaretime(find_caretime)
 		}
 		
-	}, [calendarValue.$d, pickedChild, caretimes])
+	}, [calendarValue.$d, pickedChild, caretimes[0]])
 
 
 	return (
@@ -73,7 +76,7 @@ const ScheduleCare = ({ events, pickedChild, caretimes, pickedChildId }) => {
 					<Grid container spacing={2}>
 						<Grid item xs={8}>
 							<LocalizationProvider dateAdapter={AdapterDayjs}>
-								<DateCalendar value={calendarValue} onChange={(newValue) => setCalendarValue(newValue)} />
+								<DateCalendar displayWeekNumber value={calendarValue} onChange={(newValue) => setCalendarValue(newValue)} />
 							</LocalizationProvider>
 						</Grid>
 						<Grid item xs={4}>

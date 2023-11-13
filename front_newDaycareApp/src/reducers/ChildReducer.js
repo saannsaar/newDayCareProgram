@@ -19,7 +19,7 @@ const childrenReducer = createSlice({
 			console.log(action.payload)
 			return action.payload
 		},
-		cleanChildrenState(state) {
+		cleanChildrenState() {
 			return []
 		}
 	}

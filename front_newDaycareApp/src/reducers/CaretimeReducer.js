@@ -15,8 +15,7 @@ const caretimeReducer = createSlice({
 			return state = action.payload
 		},
 		appendCaretime(state, action) {
-			console.log(state)
-			return [...state, action.payload]
+			return state = action.payload
 		},
 		changedCaretime(state, action) {
 			return state.map(caretime => caretime._id == action.payload._id ? action.payload : caretime)
@@ -33,21 +32,26 @@ const caretimeReducer = createSlice({
 export const {  setAllCaretime, cleanChildCaretime, appendCaretime, changedCaretime, spliceDeletedCaretime } = caretimeReducer.actions
 
 export const initializeCaretimes = (loggedInUser, usertype, kids, currentChild) => {
+	const apuarr = []
 
 	if (usertype == 'parent_user' && currentChild) {
 		
 		return async dispatch => {
-			dispatch(setAllCaretime(currentChild.care_time))
+
+			dispatch(setAllCaretime([currentChild.care_time, currentChild.caretimes_added_monthlysum]))
 		}	
+
 	} else {
 		return async dispatch => {
-			const apuarr = []
+	
 			for (let i = 0; i < kids.length; i++) {
 				const caretimes = Object.values(kids[i].care_time)
 				apuarr.push(caretimes)
+
 			}
+			console.log(apuarr)
 				
-			dispatch(setAllCaretime(apuarr[0]))
+			dispatch(setAllCaretime(apuarr))
 		}	
 	}
 	
@@ -59,7 +63,7 @@ export const createCaretime = (content, childid) => {
 		try{
 			const newTime = await childService.addCaretime(content, childid)
 			console.log(newTime)
-			dispatch(appendCaretime(newTime))
+			dispatch(appendCaretime([newTime.care_time, newTime.caretimes_added_monthlysum]))
 		} catch(error) {
 			console.log(error)
 			dispatch(initializeError(error.response.data.error))
@@ -71,14 +75,16 @@ export const modifyCaretime = (content, childid) => {
 
 	return async dispatch => {
 		const modifiedCaretime = await childService.editCaretime(content, childid)
-		dispatch(changedCaretime(modifiedCaretime))
+		dispatch(appendCaretime([modifiedCaretime.care_time, modifiedCaretime.caretimes_added_monthlysum]))
+		
 	}
 }
 export const deleteSpesificCaretime = (ctid, childid) => {
 
 	return async dispatch => {
-		await childService.deleteCaretime(ctid, childid)
-		dispatch(spliceDeletedCaretime(ctid))
+		const modifiedCaretimes = await childService.deleteCaretime(ctid, childid)
+		console.log(modifiedCaretimes)
+		dispatch(appendCaretime([modifiedCaretimes.care_time, modifiedCaretimes.caretimes_added_monthlysum]))
 	}
 }
 

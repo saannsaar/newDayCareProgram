@@ -11,7 +11,7 @@ const currentUserSlice = createSlice({
 			return action.payload
 		},
 
-		removeUser: (state) => {
+		removeUser: () => {
 			return ''
 		},
 		editUserInfo: (state, action) => {
