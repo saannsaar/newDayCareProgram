@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import childService from '../services/children'
 const initialState = ''
 
 const currentChildSlice = createSlice({
@@ -8,8 +9,8 @@ const currentChildSlice = createSlice({
 		setCurrentChild: (state, action) => {
 			return action.payload
 		},
-		// eslint-disable-next-line no-unused-vars
-		removeCurrentCHild: (state) => {
+
+		removeCurrentCHild: () => {
 			return ''
 		},
 	}
@@ -20,9 +21,11 @@ export const { setCurrentChild, removeCurrentCHild } = currentChildSlice.actions
 
 
 export const initializeCurrentChild = (pickedChild) => {
-	console.log('reducerissa', pickedChild)
+	console.log(pickedChild)
 	return async dispatch => {
-		dispatch(setCurrentChild(pickedChild))
+		const findCHild = await childService.getSpesificChild(pickedChild.id)
+		console.log(findCHild)
+		dispatch(setCurrentChild(findCHild))
 	}
 
 }

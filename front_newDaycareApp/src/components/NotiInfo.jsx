@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
 import {   Dialog, Button, DialogContent, DialogTitle, Divider } from '@mui/material'
 import Item from './Item'
 import { useDispatch } from 'react-redux'
@@ -7,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { deleteNotification } from '../reducers/NotificationReducer'
 
-// eslint-disable-next-line react/prop-types
+
 const NotiInfo = ({ noti, usertype }) => {
 	const [modalOpen, setmodalOpen] = useState(false)
 	const handleModalOpen = () => {

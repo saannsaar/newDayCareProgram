@@ -1,17 +1,10 @@
-/* eslint-disable react/jsx-key */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable react/react-in-jsx-scope */
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeConversation } from '../reducers/ConversationsReducer'
 import { initializeMessages, sendNewMessage } from '../reducers/MessageReducer'
 import { Button, DialogTitle,DialogContent, Dialog, TextField, Divider, Grid, List, ListItem, ListItemText, Paper, Select, Typography } from '@mui/material'
-import Item from './Item'
-import { FormControl } from '@mui/base'
 import ConversationArea from './ConversationArea'
-import CreateNewConversation from './CreateNewConversation'
+
 
 const Messages = ({usertype, currentUser }) => {
 	const [modalOpen, setmodalOpen] = useState(false)
@@ -24,11 +17,8 @@ const Messages = ({usertype, currentUser }) => {
 		setmodalOpen(false)
 	}
 	
-	console.log('HEI')
-	console.log(currentUser)
 	
 	const [selectedPerson, setSeleectedPerson] = useState('')
-	console.log(selectedPerson)
 	const handleChangeConversation = (c) => {
 		console.log(c.id)
 		setSeleectedPerson(c.name)
@@ -54,27 +44,19 @@ const Messages = ({usertype, currentUser }) => {
 		)
 	}
 	const [filterConversations, setFilterConversation] = useState(conversations)
-	console.log(conversations)
-	console.log(conversation)
-	
-	
 	
 	const sendToAll = (e) => {
 		e.preventDefault()
-		console.log(content)
 		
 		conversations.map((c) => dispatch(sendNewMessage({content, receiver: c.name})))
 		setmodalOpen(false)
 	}
 
 	const handleFilter = (e) => {
-		console.log(e.target.value)
 		const filtersearch = conversations.filter((c) => {
 			return c.name.toLowerCase().includes(e.target.value.toLowerCase())
 		})
 		setFilterConversation(filtersearch)
-
-		console.log(filtersearch)
 		
 	}
 	return (

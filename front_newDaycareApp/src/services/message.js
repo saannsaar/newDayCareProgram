@@ -4,7 +4,6 @@ const baseUrl = 'http://localhost:3001/api/messages'
 let token = null
 
 const setToken = newToken => {
-	console.log('Set token servicesss')
 	token = `bearer ${newToken}`
 }
 
@@ -12,7 +11,6 @@ const getConversation = async (receiver) => {
 	const config = {
 		headers: { Authorization: token },
 	}
-	console.log(config, receiver)
 	const response =  await axios.get(baseUrl.concat('/').concat(receiver), config)
 	return response.data
 }

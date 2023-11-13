@@ -11,7 +11,7 @@ const daycareReducer = createSlice({
 		setDaycare(state, action) {
 			return action.payload
 		},
-		// eslint-disable-next-line no-unused-vars
+
 		cleanDaycareState(state) {
 			return []
 		}
@@ -21,7 +21,7 @@ const daycareReducer = createSlice({
 export const {  setDaycare, cleanDaycareState } = daycareReducer.actions
 
 export const initializeDaycare = (worker) => {
-	console.log(worker)
+
 	return async dispatch => {
 		const daycare = await daycareService.getDaycare(worker)
 		dispatch(setDaycare(daycare))

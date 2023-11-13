@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
 import {   Dialog, TextField, Grid, Button, DialogContent, DialogTitle, Divider } from '@mui/material'
 import Item from './Item'
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
@@ -13,23 +11,20 @@ import { deleteSpesificCaretime, modifyCaretime } from '../reducers/CaretimeRedu
 // eslint-disable-next-line react/prop-types
 const CareTimeInfo = ({ pickedCareTimes, childId }) => {
 
-	console.log(pickedCareTimes)
-
 	const [inDayCare, setInDayCare] = useState('No')
 
 	const dispatch = useDispatch()
 	const pickeddateString = moment(pickedCareTimes[0].start_time).format('MMM Do YY')
 	const startTime = moment(pickedCareTimes[0].start_time).format('HH:mm')
 	const endTime = moment(pickedCareTimes[0].end_time).format('HH:mm')
-	const currentTime = moment(moment().format('HH:mm'))
 	const [start_time, setStartTime] = useState(moment(new Date(pickedCareTimes[0].start_time)))
 	const [end_time, setEndTime] = useState(moment(new Date(pickedCareTimes[0].end_time)))
 
 	
 
 	useEffect(() => {
-
-		if (moment(currentTime).isBetween(startTime, endTime) == true) {
+		
+		if (moment(moment(), 'YYYY-MM-DD h:mm').isBetween(moment(start_time, 'YYYY-MM-DD h:mm'), moment(end_time, 'YYYY-MM-DD h:mm')) == true) {
 			setInDayCare('Yes')
 		} else {
 			setInDayCare('No')
@@ -50,21 +45,19 @@ const CareTimeInfo = ({ pickedCareTimes, childId }) => {
 			return '#bbf0d0'
 		case 'No':
 			return '#d4a5ac'
-		case 'Soon Home':
-			return '#e0cc9d'
 		}
 	}
+
 	const handleEditCaretime = (e) => {
 		e.preventDefault()
-		console.log('edit')
-		console.log(pickedCareTimes[0]._id)
-		console.log(moment(start_time).format(), moment(end_time).format())
+
 		const content = {
 			start_time: moment(start_time).format(),
 			end_time: moment(end_time).format(),
 			kid_name: pickedCareTimes[0].kid_name,
 			_id: pickedCareTimes[0]._id
 		}
+		
 		dispatch(modifyCaretime(content, childId))
 
 		setmodalOpen(false)

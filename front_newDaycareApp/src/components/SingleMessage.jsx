@@ -1,14 +1,7 @@
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable react/prop-types */
 import { ListItem, Grid, ListItemText } from '@mui/material'
 import moment from 'moment'
 
 const SingleMessage = ({message, index,  currentUserID}) => {
-
-
-	console.log(message)
-
-	console.log(moment(message.createdAt).format('DD.MM.YYYY HH:MM'))
 
 	if(message.sender == currentUserID) {
 		return (

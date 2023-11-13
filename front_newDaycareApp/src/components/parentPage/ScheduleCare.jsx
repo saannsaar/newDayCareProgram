@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
 import {  useEffect, useState } from 'react'
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -15,52 +13,48 @@ import ErrorAlert from '../ErrorAlert'
 
 
 
+
 const ScheduleCare = ({ events, pickedChild, caretimes, pickedChildId }) => {
 	moment.locale('fin')
 
 	const adapter = new AdapterDayjs()
 	const firstAvailableDay = adapter.date(new Date())
 
-
-	if (!caretimes) {
+	if (!caretimes || !pickedChild) {
 		return (
 			<div> Laoding... </div>
 		)
 	}
-	// console.log(events)
 	
 	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
 	const [pickedEvents, setPickedEvents] = useState([])
-	
+	const [pickedMonth, setPickedMonth] = useState('')
 	const [selectedCaretime, setSelectedCaretime] = useState('')
-
-	// console.log(calendarValue.$d)
-	
-	// console.log(moment(events[0].date).format('MMM Do YY'))
-	// console.log(moment(calendarValue.$d).format('MMM Do YY'))
-
-
 	useEffect(() => {
-		
-		
+		const monthNumber = calendarValue.$M +1
+		console.log(monthNumber.toString())
+		console.log('PÄIVITÄ TÄTÄ')
+		const findTimeLeft = pickedChild.caretimes_added_monthlysum.find((m) => m.month == monthNumber.toString())
+		if (!findTimeLeft) {
+			setPickedMonth(pickedChild.monthly_maxtime.toString().concat(' tuntia'))
+		} else {
+			console.log(findTimeLeft)
+			const hoursLeftThisMonth = Math.floor(findTimeLeft.timeLeft / 60) + ' tuntia, ' + findTimeLeft.timeLeft % 60 + ' minuuttia'
+			setPickedMonth(hoursLeftThisMonth)
+		}
+
 		const find_events = events.filter((e) => moment(new Date(e.date)).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
-		// console.log(find_events)
 		setPickedEvents(find_events)
 
 		
 		const find_caretime = caretimes.filter((c) => moment(c.start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
-		console.log(find_caretime)
 		if (!find_caretime) {
 			setSelectedCaretime('')
 		} else {
 			setSelectedCaretime(find_caretime)
 		}
 		
-		
-		// console.log(find_events.length)
 	}, [calendarValue.$d, pickedChild, caretimes])
-
-
 
 
 	return (
@@ -68,6 +62,9 @@ const ScheduleCare = ({ events, pickedChild, caretimes, pickedChildId }) => {
 			
 			<Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
 			Max hoitoaika: {pickedChild.monthly_maxtime} tuntia
+			</Typography>
+			<Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
+			Jäljellä hoitoaika kuukaudelle: {pickedMonth} tuntia
 			</Typography>
 			<ErrorAlert />
 			{pickedChild &&

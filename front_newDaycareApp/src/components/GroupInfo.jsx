@@ -1,17 +1,10 @@
-/* eslint-disable react/jsx-key */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
 import { Typography, Dialog, DialogTitle, Divider, Button,  Grid } from '@mui/material'
 import Item from './Item'
 import { useState } from 'react'
-// import { editGroup } from '../reducers/GroupReducer'
-//import { useDispatch } from 'react-redux'
 import WorkerInfo from './WorkerInfo'
 
-const GroupInfo = ({group, kids }) => {
-	// const dispatch = useDispatch()
 
-	console.log(kids)
+const GroupInfo = ({group, kids }) => {
 
 	const [groupModalOpen, setGmodalOpen] = useState(false)	
 	const handleGroupModalOpen = () => {

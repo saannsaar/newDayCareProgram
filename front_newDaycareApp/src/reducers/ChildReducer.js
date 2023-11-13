@@ -19,7 +19,6 @@ const childrenReducer = createSlice({
 			console.log(action.payload)
 			return action.payload
 		},
-		// eslint-disable-next-line no-unused-vars
 		cleanChildrenState(state) {
 			return []
 		}
@@ -29,7 +28,7 @@ const childrenReducer = createSlice({
 export const {  appendChildren, setChildren,setParentsChildren, cleanChildrenState } = childrenReducer.actions
 
 export const initializeChildren = (loggedinUser, usertype) => {
-	console.log(loggedinUser, usertype)
+	
 	if (usertype === 'worker_user') {
 		return async dispatch => {
 			const children = await childService.getAll()
@@ -38,9 +37,7 @@ export const initializeChildren = (loggedinUser, usertype) => {
 	}
 
 	if (usertype === 'parent_user' && loggedinUser.children.length > 1) {
-		console.log('More than one child ')
-		console.log(loggedinUser.children)
-		
+
 		return async dispatch => {
 		
 			dispatch(setChildren(loggedinUser.children))
@@ -59,7 +56,7 @@ export const initializeChildren = (loggedinUser, usertype) => {
 
 
 export const createChild = content => {
-	console.log('REDUCERISSA')
+
 	return async dispatch => {
 		const newChild = await childService.create(content)
 		dispatch(appendChildren(newChild))

@@ -21,8 +21,7 @@ const caretimeReducer = createSlice({
 		changedCaretime(state, action) {
 			return state.map(caretime => caretime._id == action.payload._id ? action.payload : caretime)
 		},
-		// eslint-disable-next-line no-unused-vars
-		cleanChildCaretime(state) {
+		cleanChildCaretime() {
 			return ''
 		},
 		spliceDeletedCaretime(state, action) {
@@ -34,9 +33,6 @@ const caretimeReducer = createSlice({
 export const {  setAllCaretime, cleanChildCaretime, appendCaretime, changedCaretime, spliceDeletedCaretime } = caretimeReducer.actions
 
 export const initializeCaretimes = (loggedInUser, usertype, kids, currentChild) => {
-	console.log(loggedInUser, usertype, kids, currentChild)
-
-	
 
 	if (usertype == 'parent_user' && currentChild) {
 		
@@ -59,12 +55,10 @@ export const initializeCaretimes = (loggedInUser, usertype, kids, currentChild) 
 }
 
 export const createCaretime = (content, childid) => {
-	console.log('REDUCERISSA')
-	console.log(content)
-	console.log(childid)
 	return async dispatch => {
 		try{
 			const newTime = await childService.addCaretime(content, childid)
+			console.log(newTime)
 			dispatch(appendCaretime(newTime))
 		} catch(error) {
 			console.log(error)
@@ -74,9 +68,6 @@ export const createCaretime = (content, childid) => {
 
 }
 export const modifyCaretime = (content, childid) => {
-	console.log('Muokkaus reducer')
-	console.log(content)
-	console.log(childid)
 
 	return async dispatch => {
 		const modifiedCaretime = await childService.editCaretime(content, childid)
@@ -84,7 +75,7 @@ export const modifyCaretime = (content, childid) => {
 	}
 }
 export const deleteSpesificCaretime = (ctid, childid) => {
-	console.log(ctid)
+
 	return async dispatch => {
 		await childService.deleteCaretime(ctid, childid)
 		dispatch(spliceDeletedCaretime(ctid))

@@ -1,8 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable for-direction */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
 import {  useState } from 'react'
 import { DateCalendar, DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -14,7 +9,6 @@ import EventInfo from './EventInfo'
 import { createNotification } from '../reducers/NotificationReducer'
 import { useDispatch } from 'react-redux'
 import NotiInfo from './NotiInfo'
-// eslint-disable-next-line no-unused-vars
 import dayjs, { Dayjs } from 'dayjs'
 import { createEvent } from '../reducers/EventReducer'
 
@@ -27,6 +21,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 	
 	
 	const dispatch = useDispatch()
+
 	if(!events || !notifications || !weather) {
 		return (
 			<div>
@@ -47,7 +42,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 			</div>
 		)
 	} else {
-		console.log(kids)
+
 		const adapter = new AdapterDayjs()
 		const firstAvailableDay = adapter.date(new Date())
 		const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
@@ -64,29 +59,22 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 		const [group, setGroup] = useState('')
 
 		const handleColorChange = (newValue) => {
-			console.log('change', newValue.target.value)
-			
 			setColorCode(newValue.target.value)
 			
 		  }
 
 
 		moment.locale('fin')
-		  console.log(kids)
 	
-
-
 		const handleDayPick = (event) => {
-			console.log(event)
+
 			setCalendarValue(event)
 			if (usertype == 'parent_user') {
 				const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(event.$d).format('MMM Do YY'))
-				console.log(find_events)
 				setPickedEvents(find_events)
 				setDate(event)
 			} else {
 				const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(event.$d).format('MMM Do YY'))
-				console.log(find_events)
 				setPickedEvents(find_events)
 				setDate(event)
 			}
@@ -110,7 +98,6 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 		const handleAddNoti = (e) => {
 			e.preventDefault()
 
-			console.log({headingtext, contenttext, toParents, colorCode})
 			dispatch(createNotification({headingtext, contenttext, toParents, colorCode}))
 			setHeadingtext('')
 			setContenttext('')
@@ -122,7 +109,6 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 		const handleAddEvent = (e) => {
 			e.preventDefault()
 
-			console.log({name, date, event_type, info, group})
 			dispatch(createEvent({name, date: date.$d, event_type, info, group}))
 			setemodalOpen(false)
 		}
@@ -130,7 +116,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 		const handleCheckParents = (event) => {
 			setToparents(event.target.checked)
 		}
-		console.log(toParents)
+
 		return (
 			<>
 		

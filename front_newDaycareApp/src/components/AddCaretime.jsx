@@ -1,18 +1,18 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
+
 import {   Dialog, DialogContent, DialogTitle, Grid, Button, Divider, TextField } from '@mui/material'
 import Item from './Item'
 import { useState } from 'react'
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { useDispatch, useSelector} from 'react-redux'
+import { useDispatch} from 'react-redux'
 import moment from 'moment'
 import { createCaretime } from '../reducers/CaretimeReducer'
+import { initializeCurrentChild } from '../reducers/CurrentChild'
 
 // Element which renders an form where the user can add 
 // new caretimes for their child 
 
-// eslint-disable-next-line react/prop-types
+
 const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
 	moment.locale('fin')
 	
@@ -24,7 +24,7 @@ const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
 	const[start_time, setStartTime] = useState(moment(new Date(yy, mm, dd, 5, 45)))
 	const[end_time, setEndTime] = useState(moment(new Date(yy, mm, dd, 17, 0)))
 	const [modalOpen, setmodalOpen] = useState(false)
-	const error = useSelector(state => state.error)
+
 	
 	const dispatch = useDispatch()
 	const handleModalOpen = () => {
@@ -39,14 +39,13 @@ const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
 		e.preventDefault()
 		const child_id = pickedChildId
 		
-		// console.log(child_id)
-		console.log({start_time: moment(new Date(start_time)).format(),end_time: moment(new Date(end_time)).format(), child_id })
 
 		dispatch(createCaretime({start_time: moment(new Date(start_time)).format(), end_time: moment(new Date(end_time)).format()}, child_id))
+		dispatch(initializeCurrentChild(kid))
 		setmodalOpen(false)
 	}
 	
-	console.log(error)
+
 	return (
 		<><Item  onClick={() => handleModalOpen()}  style={{margin: '10px'}}>
 			Lisää hoitoaika

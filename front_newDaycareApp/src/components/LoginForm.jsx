@@ -1,10 +1,6 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
 import {  useState } from 'react'
 import { Button, TextField, Select, MenuItem, Typography} from '@mui/material'
 import loginService from '../services/login'
-// import childService from '../services/children'
 import { useDispatch } from 'react-redux'
 import { initializeCurrentWorker } from '../reducers/CurrentUser'
 import { initializeUserType } from '../reducers/UserType'
@@ -19,14 +15,12 @@ import messageService from '../services/message'
 const LoginForm = (  ) => {
 	const [userEmail, setuserEmail] = useState('')
 	const [password, setPassword] = useState('')
-	// eslint-disable-next-line no-unused-vars
 	const [error, setError] = useState('')
 	const [usertype, setUserType] = useState('parent_user')
 
 	const dispatch = useDispatch()
 
 	const handleUsertypeChange = (event) => {
-		console.log(event.target.value)
 		setUserType(event.target.value)
 	}
 	
@@ -41,7 +35,6 @@ const LoginForm = (  ) => {
 				user_type: usertype
 		  })
 	
-		  console.log(user)
 		  window.localStorage.setItem('loggedDaycareAppUser', JSON.stringify(user))
 		
 
@@ -64,7 +57,6 @@ const LoginForm = (  ) => {
 		  setPassword('')
 		  setUserType('')
 		} catch(exception) {
-			console.log(exception)
 			setError(exception)
 			setTimeout(() => {
 				setError(null)
@@ -78,17 +70,17 @@ const LoginForm = (  ) => {
 			<div style={{textAlign: 'center'}}>
 				<Typography variant="h4" marginBottom={2} marginTop={2}>Kirjaudu sisään</Typography>
 				{error ? <h3 style={{width: '30%', color: '#f0562b'}}>{error.response.data.error}</h3> : null}
+				<div style={{marginBottom: '10px'}}>
+					<Select
+						value={usertype}
+						label="Kirjautumistyyppi"
+						onChange={handleUsertypeChange}
+					>
+						<MenuItem value={'parent_user'}>Vanhempi</MenuItem>
+						<MenuItem value={'worker_user'}>Työntekijä</MenuItem>
+					</Select>
+				</div>
 				<form onSubmit={submit} style={{border: '10px inset #89b0a0',borderRadius: '5px', padding: '20px', display: 'inline-block', backgroundImage: 'linear-gradient(to bottom right, #cbb6e3, #adedd2)'}}> 
-					<div style={{marginBottom: '10px'}}>
-						<Select
-							value={usertype}
-							label="Kirjautumistyyppi"
-							onChange={handleUsertypeChange}
-						>
-							<MenuItem value={'parent_user'}>Vanhempi</MenuItem>
-							<MenuItem value={'worker_user'}>Työntekijä</MenuItem>
-						</Select>
-					</div>
 					<div style={{marginBottom: '10px'}}>
 						<TextField label="email" value={userEmail} onChange={({ target }) => setuserEmail(target.value)} />
 					</div>

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import messageService from '../services/message'
 import { initializeError } from './errorReducer'
-/* eslint-disable no-unused-vars */
+
 
 const messageReducer = createSlice({
 	name: 'messages',
@@ -23,7 +23,7 @@ const messageReducer = createSlice({
 export const { setMessages, removeMessages, appendMessage } = messageReducer.actions
 
 export const initializeMessages = (receiver) => {
-	console.log(receiver)
+
 	return async (dispatch) => {
 		const conversation = await messageService.getConversation(receiver)
 		dispatch(setMessages(conversation))
@@ -37,7 +37,7 @@ export const emptyMessages = () => {
 }
 
 export const sendNewMessage = (message) => {
-	console.log(message)
+
 	return async (dispatch) => {
 		try {
 			
@@ -45,7 +45,6 @@ export const sendNewMessage = (message) => {
 			dispatch(appendMessage(conversation))
 			
 		} catch (error) {
-			console.log(error)
 			dispatch(initializeError(error))
 		}
 

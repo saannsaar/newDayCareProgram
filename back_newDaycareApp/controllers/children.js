@@ -70,7 +70,9 @@ childRouter.post('/', userExtractor,  async (request, response) => {
 
 // Get one spesific child's information from the db with id
 childRouter.get('/:id', userExtractor, async (request, response) => {
+  console.log(request.user)
   if (request.user.user_type === 'parent_user') {
+    console.log('parent router')
     const findmychild = request.user.children.find(c => c.toString() === request.params.id)
     if (!findmychild) {
       response.status(401).json({error: "Not authorized to see this child's info"})
@@ -115,14 +117,12 @@ childRouter.get('/:id', userExtractor, async (request, response) => {
     if (doesItGoOver <= maxtimeMinutes) {
 
       const whatsleft = maxtimeMinutes - doesItGoOver
-      const usedTime = Math.floor(whatsleft / 60) + ':' + whatsleft % 60
-      return [true, usedTime]
+      return [true, whatsleft, monthAddingTo]
 
     } else if (doesItGoOver >  maxtimeMinutes) {
 
       const whatsleft = maxtimeMinutes - count
-      const usedTime = Math.floor(whatsleft / 60) + ':' + whatsleft % 60
-      return [false, usedTime]
+      return [false, whatsleft]
 
     }
 
@@ -158,9 +158,10 @@ childRouter.get('/:id', userExtractor, async (request, response) => {
             
             if( checkk[0] == false ) {
               console.log('Goes over maxtime', checkk[1])
+              const timeLeftAsString = Math.floor(checkk[1] / 60) + ':' + checkk[1] % 60
               // ! These kind of error responses are probably not the most best idea
               // considering security issues
-              return response.status(401).json({error: `${spesific_child.name}'s monthly maxtime is ${spesific_child.monthly_maxtime} hours and it goes over with this addition, child has ${checkk[1]} hours left for this month`})
+              return response.status(401).json({error: `${spesific_child.name}'s monthly maxtime is ${spesific_child.monthly_maxtime} hours and it goes over with this addition, child has ${timeLeftAsString} hours left for this month`})
             }
            
                 spesific_child.care_time.push({
@@ -168,12 +169,43 @@ childRouter.get('/:id', userExtractor, async (request, response) => {
                   end_time: request.body.end_time,
                   kid_name: spesific_child.name
                 })
+                console.log("MONTH", checkk[2])
+                console.log(checkk[1])
+                const findMonth = spesific_child.caretimes_added_monthlysum.filter((m)=> m.month == checkk[2])
+                console.log(findMonth)
+                const timeLeftAsString = Math.floor(checkk[1] / 60) + ':' + checkk[1] % 60
+                console.log(timeLeftAsString)
+
+                if (findMonth.length == 0) {
+                  console.log("EI OLLU")
+                  spesific_child.caretimes_added_monthlysum.push({
+                    month: checkk[2],
+                    timeLeft: checkk[1],
+                  })
+                  console.log(spesific_child.caretimes_added_monthlysum)
+
+                } else {
+                  spesific_child.caretimes_added_monthlysum.forEach((element, index) => {
+                    console.log(element)
+                    if (element.month == checkk[2]) {
+                      ind = index
+                      console.log(ind)
+                      const changetime = {
+                        month: spesific_child.caretimes_added_monthlysum[ind].month,
+                        timeLeft: checkk[1],
+                        _id: spesific_child.caretimes_added_monthlysum[ind].month_id
+                      }
+                      console.log("TÄMÄ", spesific_child.caretimes_added_monthlysum[ind])
+                      spesific_child.caretimes_added_monthlysum[ind] = changetime
+                  }})
+                  console.log("MUUTTUKO", spesific_child.caretimes_added_monthlysum)
+                }
 
                 const updated_times = await Child.findByIdAndUpdate(request.params.id, spesific_child, {
                   new: true,
                 }).exec()
-    
-                response.status(201).json(updated_times.care_time[updated_times.care_time.length -1])
+                console.log(" PÄIVITETTY", updated_times)
+                response.status(201).json(updated_times)
 
         } catch (error) {
           response.status(400).json({error: error})
@@ -239,9 +271,27 @@ childRouter.get('/:id', userExtractor, async (request, response) => {
            
             spesific_child.care_time.forEach((element, index) => {
               if (element._id == request.params.id2) {
+                const minusThisTime = moment(element.end_time).diff(moment(element.start_time), 'minutes')
+                
+                spesific_child.caretimes_added_monthlysum.forEach((newElem, index) => {
+                  console.log(newElem)
+                  if (newElem.month == moment(element.start_time).format('MM')) {
+                    ind = index
+                    console.log(ind)
+                    const newTime = spesific_child.caretimes_added_monthlysum[ind].timeLeft - parseInt(minusThisTime)
+                    const changetime = {
+                      month: spesific_child.caretimes_added_monthlysum[ind].month,
+                      timeLeft: newTime,
+                      _id: spesific_child.caretimes_added_monthlysum[ind].month_id
+                    }
+                    spesific_child.caretimes_added_monthlysum[ind] = changetime
+                   }})
+                
+
                 spesific_child.care_time.splice(index, 1)
 
             }})
+           
             const updated_times = await Child.findByIdAndUpdate(request.params.id, spesific_child, {
               new: true,
             }).exec()

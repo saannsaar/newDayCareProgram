@@ -18,12 +18,13 @@ const getSpesificChild = async (childid) => {
 	const config = {
 		headers: { Authorization: token },
 	}
+	console.log(childid)
 	const response =  await axios.get(baseUrl.concat('/').concat(childid), config)
 	return response.data
 }
 
 const create = async newObject => {
-	console.log('children.js')
+
 	const config = {
 		headers: { Authorization: token },
 	}
@@ -32,7 +33,7 @@ const create = async newObject => {
 }
 
 const addCaretime = async (newObject, childid) => {
-	console.log('children.js')
+
 	const config = {
 		headers: { Authorization: token },
 	}
@@ -48,13 +49,12 @@ const editCaretime = async (caretime, childid) => {
 	const response = await axios.put(baseUrl.concat('/').concat(childid).concat('/caretimes'), caretime, config)
 	return response.data
 }
+
 const deleteCaretime = async (caretimeid, childid) => {
 	const config = {
 		headers: { Authorization: token },
 	}
-	console.log('DeleteCaretime ', config)
 	const response = await axios.delete(baseUrl.concat('/').concat(childid).concat('/caretimes/').concat(caretimeid._id), config)
-	console.log(response)
 	return response.data
 }
 

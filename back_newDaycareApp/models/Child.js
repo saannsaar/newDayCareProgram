@@ -35,6 +35,17 @@ const schema = new mongoose.Schema({
             required: true,
         }}
     ],
+    caretimes_added_monthlysum: [
+        {month: { 
+            type: String,
+            required: true,
+            unique: true},
+        timeLeft: {
+            type: Number,
+            required: true
+
+        }}
+    ]
     
 })
 

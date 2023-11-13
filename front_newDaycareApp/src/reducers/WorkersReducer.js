@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import workerService from '../services/workers'
+
 const initialState = ''
 
 const usersSlice = createSlice({

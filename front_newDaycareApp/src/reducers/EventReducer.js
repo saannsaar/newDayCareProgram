@@ -9,7 +9,7 @@ const eventReducer = createSlice({
 		setEvents: (state, action) => {
 			return action.payload
 		},
-		// eslint-disable-next-line no-unused-vars
+
 		cleanEvent: (state) => {
 			return []
 		},
@@ -39,8 +39,7 @@ export const removeEvents = () => {
 }
 
 export const createEvent = (newEvent) => {
-	console.log('Create new event')
-	console.log(newEvent)
+
 	return async dispatch => {
 		const newww = await eventService.createEvent(newEvent)
 		dispatch(appendEvent(newww))

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import workerService from '../services/workers'
 import parentService from '../services/parents'
-/* eslint-disable no-unused-vars */
+
 
 const conversationsReducer = createSlice({
 	name: 'conversations',
@@ -24,7 +24,6 @@ export const initializeConversation = (user_type) => {
 	return async (dispatch) => {
 		if (user_type == 'parent_user') {
 			const workers = await workerService.getAll()
-			console.log(workers)
 			dispatch(setPeople(workers))
 		} else if (user_type =='worker_user') {
 			const parents = await parentService.getAllParents()

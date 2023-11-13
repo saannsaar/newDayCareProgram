@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
 import {List,  Grid, Divider, TextField, Fab, Typography } from '@mui/material'
 import SingleMessage from './SingleMessage'
 import SendIcon from '@mui/icons-material/Send'
@@ -9,21 +7,15 @@ import { sendNewMessage } from '../reducers/MessageReducer'
 
 const ConversationArea = ({ messages, receiver, currentUser }) => {
 
-	console.log(messages)
-	console.log(currentUser)
-	console.log(messages[0]?.sender, currentUser.id)
 	const dispatch = useDispatch()
 	const [content, setMessageContent] = useState('')
 
-	console.log(content)
 	const handleSendMessage = () => {
 		
-		console.log(content, receiver)
 		const message ={
 			content: content,
 			receiver: receiver
 		}
-		console.log(message)
 		dispatch(sendNewMessage(message))
 		setMessageContent('')
 

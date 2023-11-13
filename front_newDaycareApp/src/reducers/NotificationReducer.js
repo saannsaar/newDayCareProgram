@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 import { createSlice } from '@reduxjs/toolkit'
 
 import notiservice from '../services/notiservice'
@@ -24,9 +24,7 @@ const notificationReducer = createSlice({
 })
 
 export const { appendNotification, setNotifications, removeNotification, removeNotifications} = notificationReducer.actions
-export const initializeNotifications = (loggedInUser) => {
-	console.log('initialize notifications')
-    
+export const initializeNotifications = (loggedInUser) => {    
 	return async dispatch => {
 		const allnotifications = await notiservice.getAllNotifications()
 		dispatch(setNotifications(allnotifications))
@@ -34,7 +32,6 @@ export const initializeNotifications = (loggedInUser) => {
 }
 
 export const createNotification = newNoti => {
-	console.log('Create noti')
 	return async dispatch => {
 		const newNotification = await notiservice.postNotification(newNoti)
 		dispatch(appendNotification(newNotification))

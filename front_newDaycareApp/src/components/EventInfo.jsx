@@ -1,6 +1,3 @@
-/* eslint-disable indent */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
 import {   Dialog, DialogContent, DialogTitle, Divider, Button } from '@mui/material'
 import Item from './Item'
 import moment from 'moment'
@@ -8,10 +5,9 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { deleteEvent } from '../reducers/EventReducer'
 
-// eslint-disable-next-line react/prop-types
+
 const EventInfo = ({ event, usertype }) => {
 
-	console.log(event)
 	const [modalOpen, setmodalOpen] = useState(false)
 	const dispatch = useDispatch()
 	const handleModalOpen = () => {

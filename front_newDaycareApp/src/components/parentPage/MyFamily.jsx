@@ -1,27 +1,15 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
-import { Container, Divider, DialogContent, DialogTitle,  Dialog, Grid, TextField, Paper, Card, Typography, Button } from '@mui/material'
-import { styled } from '@mui/material/styles'
-import { useDispatch, useSelector } from 'react-redux'
+import { Container, Grid, Typography, Button } from '@mui/material'
 import { useState } from 'react'
-import { editUser } from '../../reducers/CurrentUser'
 import Item from '../Item'
 
 const MyFamily = ({ user, kids }) => {
 
-	console.log(user, kids)
-	console.log(kids.map(k=>k.name))
-
 	const [showPage, setShowPage] = useState('Lapsetsivu')
-	console.log(showPage)
 	const handleKidPage = () => {
-		console.log('Lapset')
 		setShowPage('Lapsetsivu')
 	}
 
 	const handleOwnInfoPage = () => {
-		console.log('Omat tiedot')
 		setShowPage('Omattiedotsivu')
 	}
 	return (

@@ -53,8 +53,6 @@ const App = () => {
 	const currentChild = useSelector(state => state.currentChild)
 	const allNotifications = useSelector(state => state.notifications)
 	
-
-	// const navigate = useNavigate()
 	const [pickedChild, setPickedChild] = useState('')
 	const loggedInUser = useSelector(state => state.currentUser)
 	
@@ -84,8 +82,6 @@ const App = () => {
 	}, [loggedInUser, kids.length])
 
 	useEffect(() => {
-		console.log(kids.length, currentChild)
-		console.log(kids)
 		if (loggedInUser && kids.length != 0 && currentChild != '') {
 			dispatch(initializeCaretimes(loggedInUser, usertype, kids, currentChild))
 		}
@@ -99,26 +95,9 @@ const App = () => {
 			})
 	},[])
 
-	// useEffect(() => {
-	// 	const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
-	// 	if (loggedUserJSON) {
-	// 		const user = JSON.parse(loggedUserJSON)
-	// 		childService.setToken(user.token)
-	// 		parentService.setToken(user.token)
-	// 		eventService.setTokenForEvent(user.token)
-	// 		groupService.setToken(user.token)
-	// 		workerService.setToken(user.token)
-	// 		notiservice.setToken(user.token)
-	// 	}
-
-	// },[])
-
-
 	const handlePickedChildChange = (event) => {
-		console.log(event.target.value)
 		setPickedChild(event.target.value)
 		const findChild = loggedInUser.children.find((d) => d.id == event.target.value)
-		console.log(findChild)
 		dispatch(removeCurrentCHild())
 		dispatch(removeCaretimes())
 		dispatch(initializeCurrentChild(findChild))
