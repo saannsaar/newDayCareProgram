@@ -1,35 +1,31 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
-import { Container, Divider, DialogContent, DialogTitle,  Dialog, Grid, TextField, Paper, Card, Typography, Button } from '@mui/material'
-import { styled } from '@mui/material/styles'
+
+import { Container, Divider, DialogContent, DialogTitle,  Dialog, Grid, TextField, Card, Typography, Button } from '@mui/material'
+
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import { editUser } from '../../reducers/CurrentUser'
 import Item from '../Item'
 
-const OwnGroup = ({ worker, workers }) => {
+const OwnGroup = ( ) => {
 
 	const [modalOpen, setmodalOpen] = useState(false)
-
+	const this_worker = useSelector(state => state.currentUser)
 	const dispatch = useDispatch()
 
 	const handleEditUser = (e) => {
 		e.preventDefault()
 
 		console.log({name, email, phone})
-		dispatch(editUser({name, email, phone, born}, this_worker.id))
+		dispatch(editUser({name, email, phone, worker: this_worker.born}, this_worker.id))
 		setmodalOpen(false)
 	}
-	console.log(worker)
-	console.log(workers)
-	const this_worker = useSelector(state => state.currentUser)
-	console.log(this_worker)
+
+
 
 	const [name, setName] = useState(this_worker.name)
 	const [email, setEmail] = useState(this_worker.email)
 	const [phone, setPhone] = useState(this_worker.phone)
-	const [born, setBorn] = useState(this_worker.born)
+
 	const handleModalOpen = () => {
 		setmodalOpen(true)
 	}
@@ -98,7 +94,7 @@ const OwnGroup = ({ worker, workers }) => {
 									<TextField  style={{margin: '4px'}}
 										label="Syntymäaika: "
 										fullWidth
-										value={born}
+										value={this_worker.born}
 									/>
 
 									<Grid>

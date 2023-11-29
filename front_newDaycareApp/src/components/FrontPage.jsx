@@ -11,18 +11,18 @@ import { useDispatch } from 'react-redux'
 import NotiInfo from './NotiInfo'
 import dayjs from 'dayjs'
 import { createEvent } from '../reducers/EventReducer'
+import ArrowUpward from '@mui/icons-material/ArrowUpward'
+import ArrowDownward from '@mui/icons-material/ArrowDownward'
+import Air from '@mui/icons-material/Air'
 
 
-
-
-const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
+const FrontPage = ({ events, kids, usertype, notifications, weather , groups}) => {
 	const [modalOpen, setmodalOpen] = useState(false)
 	const [emodalOpen, setemodalOpen] = useState(false)
 	
-	
 	const dispatch = useDispatch()
 
-	if(!events || !notifications || !weather) {
+	if(!events || !notifications || !weather || !groups) {
 		return (
 			<div>
 					Loading....
@@ -56,7 +56,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 		const [date, setDate] = useState(dayjs('2023-10-24T07:30'))
 		const [event_type, setEventType] = useState('W_event')
 		const [info, setInfo] = useState('')
-		const [group, setGroup] = useState('')
+		const [group, setGroup] = useState(groups[0].name)
 
 		const handleColorChange = (newValue) => {
 			setColorCode(newValue.target.value)
@@ -69,7 +69,8 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 
 			setCalendarValue(event)
 			if (usertype == 'parent_user') {
-				const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(event.$d).format('MMM Do YY'))
+				console.log(events)
+				const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(event.$d).format('MMM Do YY') && e.event_type !== 'W_event')
 				setPickedEvents(find_events)
 				setDate(event)
 			} else {
@@ -120,7 +121,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 			<>
 		
 		
-				<Grid container alignItems='stretch' justifyContent='center' spacing={3} style={{marginTop: '20px', marginLeft: '5px'}}>
+				<Grid rowSpacing={2}container alignItems='stretch' justifyContent='center' spacing={3} style={{marginTop: '20px', marginLeft: '5px'}}>
 				
 					<Item >
 						<Typography variant="h6" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
@@ -231,11 +232,11 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 													fullWidth
 													value={info}
 													onChange={({ target }) => setInfo(target.value)} />
-												<TextField
-													label="Ryhmä: "
-													fullWidth
-													value={group}
-													onChange={({ target }) => setGroup(target.value)} />
+												<Select value={group} onChange={({ target }) => setGroup(target.value)}>
+													{groups.map((g) => (
+														<MenuItem key={g.id} value={g.name}>{g.name}</MenuItem>
+													))}
+												</Select>
 											
 												<Grid>
 													<Grid item>
@@ -258,20 +259,34 @@ const FrontPage = ({ events, kids, usertype, notifications, weather }) => {
 					</Item>
 					
 
-					<Item style={{marginLeft: '15px'}}>
-						<Typography variant="h6" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
-								Sää tänään {weather.name}ssa
-						</Typography>
-						<img style={{width: '50px'}} src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} /><br/>
-						<Typography variant="p" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
-							Lämpötila: {weather.main.temp} astetta
-						</Typography> <br/>
-						<Typography variant="p" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
-							Tuuli: {weather.wind.speed} m/s
-						</Typography><br/>
-						<Typography variant="p" style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>
-							Tuntuu kuin: {weather.wind.speed} m/s
-						</Typography><br/>
+					<Item style={{marginLeft: '15px', width:'25%'}}>
+						<Grid container spacing={1} rowSpacing={1}>
+							<Grid item xs={8}>
+								<Typography style={{paddingTop: '5px'}}variant='h5'>{weather.name}</Typography>
+							</Grid>
+							<Grid item xs={4}>
+								<img style={{width: '50px'}} src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} />
+							</Grid>
+							<Grid item xs={12}>
+								<Divider> Sää tänään</Divider>
+							</Grid>
+							<Grid item xs={4} >
+								<Item>
+									<ArrowUpward></ArrowUpward>
+									<Typography>{weather.main.temp_max} °C</Typography></Item>
+							</Grid>
+						
+							<Grid item xs={4}  >
+								<Item>
+									<ArrowDownward></ArrowDownward>
+									<Typography>{weather.main.temp_min} °C</Typography></Item>
+							</Grid>
+							<Grid item xs={4}  >
+								<Item>
+									<Air></Air>
+									<Typography>{weather.wind.speed} m/s</Typography></Item>
+							</Grid>
+						</Grid>
 					</Item>
 
 				</Grid>

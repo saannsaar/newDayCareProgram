@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import workerService from '../services/workers'
 import parentService from '../services/parents'
-const initialState = ''
+const initialState = null
 
 const currentUserSlice = createSlice({
 	name: 'currentuser',
@@ -12,7 +12,7 @@ const currentUserSlice = createSlice({
 		},
 
 		removeUser: () => {
-			return ''
+			return null
 		},
 		editUserInfo: (state, action) => {
 			return action.payload

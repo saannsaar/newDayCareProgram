@@ -8,9 +8,8 @@ const childrenReducer = createSlice({
 	name: 'children',
 	initialState: [],
 	reducers: {
-		appendChildren(state, action) {
-			return state.push(action.payload)
-		},
+		appendChildren: (state, action) => {state = state.push(action.payload)}
+		,
 		setParentsChildren(state, action) {
 			state = []
 			return state.push(action.payload)
@@ -53,6 +52,8 @@ export const initializeChildren = (loggedinUser, usertype) => {
 	}
 
 }
+
+
 
 
 export const createChild = content => {

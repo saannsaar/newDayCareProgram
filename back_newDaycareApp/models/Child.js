@@ -45,7 +45,13 @@ const schema = new mongoose.Schema({
             required: true
 
         }}
-    ]
+    ],
+    diapers: {
+        type: String,
+        enum: ["FULL", "HALF", "EMPTY"],
+        default: "FULL",
+        required: true,
+    }
     
 })
 

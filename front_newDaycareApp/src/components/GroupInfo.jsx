@@ -26,7 +26,7 @@ const GroupInfo = ({group }) => {
 			<Divider />
 			<div style={{margin: '15px'}}>
 				<Typography>Vastuussa: </Typography>
-				{group.workers_in_charge.map((w) => <WorkerInfo key={w.name} worker={w} group={group}/>)}
+				{group.workers_in_charge.map((w, index) => <WorkerInfo key={index} worker={w} group={group}/>)}
 				<form style={{marginBottom: '10px'}} onSubmit={handleGroupSaveChanges}>
 					<Typography>Ryhmän lapset</Typography>
 					{group.children.map((cc) => <Item key={cc.name.concat('select')}>{cc.name}</Item>)}

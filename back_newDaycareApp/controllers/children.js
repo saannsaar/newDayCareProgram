@@ -3,7 +3,8 @@ const Child = require('../models/Child')
 const {userExtractor } = require('../utils/middleware')
 const Parent = require('../models/Parent')
 const moment = require('moment')
-
+const Group = require('../models/Group')
+const Daycare = require('../models/Daycare')
 // Get all the children from the db
 childRouter.get('/', userExtractor, async (request, response) => {
    const children = await Child.find({})
@@ -40,11 +41,19 @@ childRouter.post('/', userExtractor,  async (request, response) => {
    
     try {
       // New child-object
+      const findGroup = await Group.findById(body.group)
+      console.log(findGroup)
+      const findDaycare = await Daycare.findById(body.daycare)
+      console.log(findDaycare)
       const new_child = new Child({
         name: body.name,
         born: body.born,
         parents: helpArray,
         monthly_maxtime: body.monthly_maxtime,
+        diapers: "FULL",
+        care_time: [],
+        caretimes_added_monthlysum: [],
+        group: findGroup
     })
        
     // Save 
@@ -54,6 +63,10 @@ childRouter.post('/', userExtractor,  async (request, response) => {
      try {
        const updateParent = await Parent.findByIdAndUpdate(helpArray[i], {$push: {"children": saved_child._id}}, {new: true})
        await updateParent.save()
+       findDaycare.children.push(saved_child._id)
+       await findDaycare.save()
+       findGroup.children.push(saved_child._id)
+       await findGroup.save()
      } catch (exc) {
        console.log(exc)
        response.status(400).json({error: "Could not add child to parents children"})
@@ -67,6 +80,27 @@ childRouter.post('/', userExtractor,  async (request, response) => {
       
     }
 })
+
+childRouter.put('/:id', userExtractor,  async (request, response) => {
+  const user = request.user
+  if (!user) {
+    return response.status(401).json({error: "You cant do that"})
+  }
+ 
+  try {
+
+  const updatedChild = await Child.findByIdAndUpdate(request.params.id, request.body, {
+    new: true,
+  }).exec()
+  response.status(201).json(updatedChild)
+     
+  } catch (error) {
+    console.log(error)
+    response.status(400).json(error)
+    
+  }
+})
+
 
 // Get one spesific child's information from the db with id
 childRouter.get('/:id', userExtractor, async (request, response) => {
@@ -230,19 +264,48 @@ childRouter.get('/:id', userExtractor, async (request, response) => {
 
         try {
           const spesific_child = await Child.findById(request.params.id)
+
           if (spesific_child) {
-            const checkk = countMaxTime(spesific_child.monthly_maxtime, spesific_child.care_time, request.body.start_time, request.body.end_time)
+            spesific_child.care_time.forEach((elem, index) => {
+              if (elem._id == request.body._id) {
+                const copy = Array.from(spesific_child.care_time)
+                copy.splice(index, 1)
+                const checkk = countMaxTime(spesific_child.monthly_maxtime, copy, request.body.start_time, request.body.end_time)
+                if( checkk[0] == false ) {
+                  return response.status(401).json({error: `${spesific_child.name}'s monthly maxtime is ${spesific_child.monthly_maxtime} hours and it goes over with this addition, child has ${checkk[1]} hours left for this month`})
+                } else {
+                  spesific_child.care_time[index] = request.body
 
-            if( checkk[0] == false ) {
-              return response.status(401).json({error: `${spesific_child.name}'s monthly maxtime is ${spesific_child.monthly_maxtime} hours and it goes over with this addition, child has ${checkk[1]} hours left for this month`})
-            }
+                  spesific_child.caretimes_added_monthlysum.forEach((element, index) => {
+                    console.log(element)
+                    if (element.month == checkk[2]) {
+                      ind = index
+                      console.log(ind)
+                      const changetime = {
+                        month: spesific_child.caretimes_added_monthlysum[ind].month,
+                        timeLeft: checkk[1],
+                        _id: spesific_child.caretimes_added_monthlysum[ind].month_id
+                      }
+                      console.log("TÄMÄ", spesific_child.caretimes_added_monthlysum[ind])
+                      spesific_child.caretimes_added_monthlysum[ind] = changetime
+                  }})
+                  console.log("MUUTTUKO", spesific_child.caretimes_added_monthlysum)
 
-            let ind = 0
-            spesific_child.care_time.forEach((element, index) => {
-              if (element._id == request.body._id) {
-                ind = index
-                spesific_child.care_time[index] = request.body
-            }})
+                }
+              }
+            })
+            // const checkk = countMaxTime(spesific_child.monthly_maxtime, copy, request.body.start_time, request.body.end_time)
+
+            // if( checkk[0] == false ) {
+            //   return response.status(401).json({error: `${spesific_child.name}'s monthly maxtime is ${spesific_child.monthly_maxtime} hours and it goes over with this addition, child has ${checkk[1]} hours left for this month`})
+            // }
+
+            // let ind = 0
+            // spesific_child.care_time.forEach((element, index) => {
+            //   if (element._id == request.body._id) {
+            //     ind = index
+            //     spesific_child.care_time[index] = request.body
+            // }})
             const updated_times = await Child.findByIdAndUpdate(request.params.id, spesific_child, {
               new: true,
             }).exec()
@@ -268,13 +331,14 @@ childRouter.get('/:id', userExtractor, async (request, response) => {
         response.status(401).json({error: "Not authorized to modify/see this child's info"})
       } else {
         try {
+          let monthFrom = ''
           const spesific_child = await Child.findById(request.params.id1)
           if (spesific_child) {
            
             let addThisTime = 0
             spesific_child.care_time.forEach((element, index) => {
               if (element._id == request.params.id2) {
-                
+                monthFrom = moment(element.start_time).format('MM')
                 spesific_child.care_time.splice(index, 1)
                 addThisTime = parseInt(moment(element.end_time).diff(moment(element.start_time), 'minutes'))
     
@@ -284,7 +348,7 @@ childRouter.get('/:id', userExtractor, async (request, response) => {
             
             spesific_child.caretimes_added_monthlysum.forEach((element, index) => {
               console.log(element)
-              if (element.month == moment(element.start_time).format('MM')) {
+              if (element.month == monthFrom) {
                 ind = index
                 console.log(ind)
                 const newTime = spesific_child.caretimes_added_monthlysum[ind].timeLeft + addThisTime

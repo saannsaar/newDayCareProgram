@@ -1,0 +1,12 @@
+POST http://localhost:3001/api/workers
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvaW5lbi50eW9udGVraWphQGVtYWlsLmZpIiwiaWQiOiI2NGVlZGUyNjQ0MTQ5M2QwYzczN2I0N2QiLCJpYXQiOjE2OTgzMDE5MjQsImV4cCI6MTY5ODMwNTUyNH0.ormsyYAoBhwpbPjZVaixK16vGLPf7Q3oLGeDRWsq40M
+
+{
+        "email": "venninsapo@email.fi",
+        "name": "Venni Venninen",
+        "born": "05.23.1989",
+        "phone": "0411100000000",
+        "password": "Salasana",
+        "user_type": "worker_user"
+}

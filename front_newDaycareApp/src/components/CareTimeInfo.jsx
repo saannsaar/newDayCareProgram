@@ -6,13 +6,14 @@ import { useEffect, useState } from 'react'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { deleteSpesificCaretime, modifyCaretime } from '../reducers/CaretimeReducer'
+import { initializeCurrentChild } from '../reducers/CurrentChild'
 
 
-// eslint-disable-next-line react/prop-types
-const CareTimeInfo = ({ pickedCareTimes, childId }) => {
+
+const CareTimeInfo = ({ pickedCareTimes, childId, kid }) => {
 
 	const [inDayCare, setInDayCare] = useState('No')
-
+	console.log(kid)
 	const dispatch = useDispatch()
 	const pickeddateString = moment(pickedCareTimes[0].start_time).format('MMM Do YY')
 	const startTime = moment(pickedCareTimes[0].start_time).format('HH:mm')
@@ -48,7 +49,7 @@ const CareTimeInfo = ({ pickedCareTimes, childId }) => {
 		}
 	}
 
-	const handleEditCaretime = (e) => {
+	const handleEditCaretime = async (e) => {
 		e.preventDefault()
 
 		const content = {
@@ -58,18 +59,20 @@ const CareTimeInfo = ({ pickedCareTimes, childId }) => {
 			_id: pickedCareTimes[0]._id
 		}
 		
-		dispatch(modifyCaretime(content, childId))
+		await dispatch(modifyCaretime(content, childId))
+		await dispatch(initializeCurrentChild(kid))
 
 		setmodalOpen(false)
 		
 	}
 
-	const handleDeleteCaretime = () => {
+	const handleDeleteCaretime = async () => {
 		
 		const content = {
 			_id: pickedCareTimes[0]._id
 		}
-		dispatch(deleteSpesificCaretime(content, childId))
+		await dispatch(deleteSpesificCaretime(content, childId))
+		await dispatch(initializeCurrentChild(kid))
 		setmodalOpen(false)
 	}
 	

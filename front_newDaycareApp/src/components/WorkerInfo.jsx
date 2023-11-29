@@ -20,7 +20,7 @@ const WorkerInfo = ({worker, group}) => {
 	}
 
 	return ( 
-		<Item style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}key={worker.name.concat('s')}>{worker.name} <Button onClick={() => handleDeleteWorkerInCharge()}><DeleteOutlineIcon></DeleteOutlineIcon></Button></Item>
+		<Item style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>{worker.name} <Button onClick={() => handleDeleteWorkerInCharge()}><DeleteOutlineIcon></DeleteOutlineIcon></Button></Item>
 	)
 
 }

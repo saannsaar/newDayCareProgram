@@ -1,6 +1,6 @@
 import axios from 'axios'
-const baseUrl =  'http://localhost:3001/api/notifications' 
-// const baseUrl = '/api/notifications'
+//const baseUrl =  'http://localhost:3001/api/notifications' 
+const baseUrl = '/api/notifications'
 
 let token = null
 

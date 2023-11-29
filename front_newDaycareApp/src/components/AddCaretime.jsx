@@ -13,24 +13,18 @@ import { initializeCurrentChild } from '../reducers/CurrentChild'
 
 // Element which renders an form where the user can add 
 // new caretimes for their child 
-
-
-const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
+const AddCareTime = ({ kid, pickedChildId, pickedDay, changed, setChanged}) => {
 	moment.locale('fin')
 	console.log(pickedDay)
 
 	const[start_time, setStartTime] = useState(moment(pickedDay))
 	const[end_time, setEndTime] = useState(moment(pickedDay))
-	
 
-	const dd = new Date(pickedDay).getDate()
-	console.log(dd)
 	const pickeddateString = moment(pickedDay).format('MMM Do YY')
 
 	
 	const [modalOpen, setmodalOpen] = useState(false)
 
-	console.log(start_time, end_time)
 	
 	useEffect(() => {
 		setStartTime(moment(pickedDay))
@@ -55,13 +49,15 @@ const AddCareTime = ({ kid, pickedChildId, pickedDay }) => {
 		setEndTime(newValue)
 	}
 	
-	const handleAddCaretime = (e) => {
+	const handleAddCaretime = async (e) => {
 		e.preventDefault()
 		const child_id = pickedChildId
-		console.log(moment(start_time).format())
-		dispatch(createCaretime({start_time: moment(start_time).format(), end_time: moment(end_time).format()}, child_id))
-		dispatch(initializeCurrentChild(kid))
+		await dispatch(createCaretime({start_time: moment(start_time).format(), end_time: moment(end_time).format()}, child_id))
+		await dispatch(initializeCurrentChild(kid))
 		setmodalOpen(false)
+		console.log(changed, !changed)
+		setChanged(!changed)
+		
 	}
 	
 

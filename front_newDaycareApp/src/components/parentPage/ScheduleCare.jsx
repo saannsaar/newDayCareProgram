@@ -14,63 +14,63 @@ import ErrorAlert from '../ErrorAlert'
 
 
 
-const ScheduleCare = ({ events, pickedChild, caretimes, pickedChildId }) => {
+const ScheduleCare = ({ events, pickedChild, pickedChildId }) => {
 	moment.locale('fin')
-	
+	console.log(pickedChild)
 	const adapter = new AdapterDayjs()
 
 	const firstAvailableDay = adapter.date(new Date())
 
-	if (!caretimes || !pickedChild) {
+	if ( !pickedChild || pickedChild == null) {
 		return (
 			<div> Laoding... </div>
 		)
-	}
+	} else {
+
+		const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
+		const [pickedEvents, setPickedEvents] = useState([])
+		const [pickedMonth, setPickedMonth] = useState('')
+		const [selectedCaretime, setSelectedCaretime] = useState('')
+		const [changed, setChanged] = useState(true)
 	
-	console.log(caretimes)
-	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
-	const [pickedEvents, setPickedEvents] = useState([])
-	const [pickedMonth, setPickedMonth] = useState('')
-	const [selectedCaretime, setSelectedCaretime] = useState('')
-	useEffect(() => {
-		const monthNumber = calendarValue.$M +1
-		console.log(monthNumber.toString())
-		console.log('PÄIVITÄ TÄTÄ', caretimes[1])
-		const findTimeLeft = caretimes[1].filter((m) => m.month == monthNumber.toString())
-		console.log(findTimeLeft)
-		if (findTimeLeft.length == 0) {
-			setPickedMonth(pickedChild.monthly_maxtime.toString().concat(' tuntia'))
-		} else {
-			console.log(findTimeLeft)
-			const hoursLeftThisMonth = Math.floor(findTimeLeft[0].timeLeft / 60) + ' tuntia, ' + findTimeLeft[0].timeLeft % 60 + ' minuuttia'
-			setPickedMonth(hoursLeftThisMonth)
-		}
 
-		const find_events = events.filter((e) => moment(new Date(e.date)).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
-		setPickedEvents(find_events)
+		useEffect(() => {
+			console.log(changed)
+			const findTimeLeft = pickedChild.caretimes_added_monthlysum.filter((m) => m.month == moment(calendarValue.$d).format('MM'))
+
+			if (findTimeLeft.length == 0) {
+				setPickedMonth(pickedChild.monthly_maxtime.toString().concat(' tuntia'))
+			} else {
+
+				const hoursLeftThisMonth = Math.floor(findTimeLeft[0].timeLeft / 60) + ' tuntia, ' + findTimeLeft[0].timeLeft % 60 + ' minuuttia'
+				setPickedMonth(hoursLeftThisMonth)
+			}
+
+			const find_events = events.filter((e) => moment(new Date(e.date)).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
+			setPickedEvents(find_events)
 
 		
-		const find_caretime = caretimes[0].filter((c) => moment(c.start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
-		if (!find_caretime) {
-			setSelectedCaretime('')
-		} else {
-			setSelectedCaretime(find_caretime)
-		}
+			const find_caretime = pickedChild.care_time.filter((c) => moment(c.start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
+			if (!find_caretime) {
+				setSelectedCaretime('')
+			} else {
+				setSelectedCaretime(find_caretime)
+			}
 		
-	}, [calendarValue.$d, pickedChild, caretimes[0]])
+		}, [calendarValue.$d, pickedChild.care_time.length, changed, pickedChild])
 
 
-	return (
-		<>
+		return (
+			<>
 			
-			<Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
+				<Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
 			Max hoitoaika: {pickedChild.monthly_maxtime} tuntia
-			</Typography>
-			<Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
+				</Typography>
+				<Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
 			Jäljellä hoitoaika kuukaudelle: {pickedMonth} tuntia
-			</Typography>
-			<ErrorAlert />
-			{pickedChild &&
+				</Typography>
+				<ErrorAlert />
+				{pickedChild &&
 			<Container>
 				<Card>
 					<Grid container spacing={2}>
@@ -86,8 +86,8 @@ const ScheduleCare = ({ events, pickedChild, caretimes, pickedChildId }) => {
 							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <><Item style={{margin: '10px'}} >Ei tapahtumia</Item> </>}
 
 							{selectedCaretime == '' ? <><Item  style={{margin: '10px'}}>Ei ilmoitettua hoitoaikaa</Item> 
-								<AddCareTime  pickedChildId={pickedChildId} kid={pickedChild} pickedDay={calendarValue.$d}/></> :
-								<CareTimeInfo key={selectedCaretime._id} childId={pickedChildId} pickedCareTimes={selectedCaretime}/> 
+								<AddCareTime  pickedChildId={pickedChildId} kid={pickedChild} pickedDay={calendarValue.$d} setChanged={setChanged} changed={changed}/></> :
+								<CareTimeInfo key={selectedCaretime._id} kid={pickedChild} childId={pickedChildId} pickedCareTimes={selectedCaretime} /> 
 							}
 						</Grid>
 					</Grid>
@@ -96,9 +96,12 @@ const ScheduleCare = ({ events, pickedChild, caretimes, pickedChildId }) => {
 	
 				</Container>
 			</Container>}
-		</>
+			</>
 			
-	)
+		)
+	}
+	
+
 }
 
 export default ScheduleCare

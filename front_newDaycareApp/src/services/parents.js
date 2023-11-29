@@ -1,6 +1,6 @@
 import axios from 'axios'
-const baseUrl =  'http://localhost:3001/api/parents' 
-// const baseUrl = '/api/parents'
+// const baseUrl =  'http://localhost:3001/api/parents' 
+const baseUrl = '/api/parents'
 
 let token = null
 

@@ -6,13 +6,14 @@ import { Button, DialogTitle,DialogContent, Dialog, TextField, Divider, Grid, Li
 import ConversationArea from './ConversationArea'
 
 
-const Messages = ({usertype, currentUser }) => {
+const Messages = ({usertype, currentUser }) => { 
 	const [modalOpen, setmodalOpen] = useState(false)
 	const [content, setContent] = useState('')
 	
 	const handleModalOpen = () => {
 		setmodalOpen(true)
 	}
+
 	const handleModalClose = () => {
 		setmodalOpen(false)
 	}
@@ -20,7 +21,7 @@ const Messages = ({usertype, currentUser }) => {
 	
 	const [selectedPerson, setSeleectedPerson] = useState('')
 	const handleChangeConversation = (c) => {
-		console.log(c.id)
+
 		setSeleectedPerson(c.name)
 		dispatch(initializeMessages(c.id))
 
@@ -32,9 +33,7 @@ const Messages = ({usertype, currentUser }) => {
 	const conversation = useSelector(state => state.messages)
 	useEffect(() => {
 		dispatch(initializeConversation(usertype))
-		dispatch(initializeMessages(conversations[0].id))
-		
-		
+
 	}, [])
 	
 	
@@ -42,13 +41,14 @@ const Messages = ({usertype, currentUser }) => {
 		return (
 			<div>Loading</div>
 		)
-	}
+	} 
 	const [filterConversations, setFilterConversation] = useState(conversations)
 	
 	const sendToAll = (e) => {
 		e.preventDefault()
-		
-		conversations.map((c) => dispatch(sendNewMessage({content, receiver: c.name})))
+		console.log(conversations)
+		const parents = conversations.filter((p) => p.user_type == 'parent_user')
+		parents.map((c) => dispatch(sendNewMessage({content, receiver: c.name})))
 		setmodalOpen(false)
 	}
 
@@ -98,21 +98,21 @@ const Messages = ({usertype, currentUser }) => {
 						
 					</Grid>
 					<List style={{overflowY: 'auto', height: '41vh'}}>
-						{filterConversations.map((c) => {
-							return (
-								<><ListItem key={c.name}>
-									<ListItemText  sx={[
-										{
-											'&:hover': {
-												color: '#a7c4ad',
-												backgroundColor: 'white',
-											},
+						{filterConversations.map((c, index) => 
+							
+							<ListItem key={index}>
+								<ListItemText sx={[
+									{
+										'&:hover': {
+											color: '#a7c4ad',
+											backgroundColor: 'white',
 										},
-									]} onClick={() => handleChangeConversation(c)} primary={c.name} ></ListItemText>
-								</ListItem><Divider /></>
+									},
+								]} onClick={() => handleChangeConversation(c)} primary={c.name}></ListItemText>
+							</ListItem>
 
-							)
-						})}
+							
+						)}
 					</List>
 					
 

@@ -2,8 +2,8 @@ import {  useState } from 'react'
 import { Button, TextField, Select, MenuItem, Typography} from '@mui/material'
 import loginService from '../services/login'
 import { useDispatch } from 'react-redux'
-import { initializeCurrentWorker } from '../reducers/CurrentUser'
-import { initializeUserType } from '../reducers/UserType'
+import { initializeCurrentWorker, removeCurrentUser } from '../reducers/CurrentUser'
+import { initializeUserType, removeType } from '../reducers/UserType'
 import  childService from '../services/children'
 import parentService from '../services/parents'
 import eventService from '../services/events'
@@ -11,19 +11,27 @@ import groupService from '../services/groups'
 import workerService from '../services/workers'
 import notiservice from '../services/notiservice'
 import messageService from '../services/message'
+import { removeCaretimes } from '../reducers/CaretimeReducer'
+import { removeDaycare } from '../reducers/DaycareReducer'
+import { removeChildren } from '../reducers/ChildReducer'
+import { removeGroups } from '../reducers/GroupReducer'
+import { removeEvents } from '../reducers/EventReducer'
+import { removeCurrentCHild } from '../reducers/CurrentChild'
+import { emptyMessages } from '../reducers/MessageReducer'
 
-const LoginForm = (  ) => {
+
+const LoginForm = ( {setLoggedIn} ) => {
 	const [userEmail, setuserEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [error, setError] = useState('')
 	const [usertype, setUserType] = useState('parent_user')
-
 	const dispatch = useDispatch()
+
 
 	const handleUsertypeChange = (event) => {
 		setUserType(event.target.value)
 	}
-	
+
 
 	const submit = async (event) => {
 		event.preventDefault()
@@ -35,8 +43,21 @@ const LoginForm = (  ) => {
 				user_type: usertype
 			})
 	
+			
 			window.localStorage.setItem('loggedDaycareAppUser', JSON.stringify(user))
-		
+			setTimeout(() => {
+				window.localStorage.removeItem('loggedDaycareAppUser')
+				dispatch(removeCurrentUser())
+				dispatch(removeCaretimes())
+				dispatch(removeDaycare())
+				dispatch(removeType())
+				dispatch(removeChildren())
+				dispatch(removeGroups())
+				dispatch(removeEvents())
+				dispatch(emptyMessages())
+				dispatch(removeCurrentCHild())
+
+			}, [600000])
 
 			if (user){
 				parentService.setToken(user.token)
@@ -47,7 +68,7 @@ const LoginForm = (  ) => {
 				notiservice.setToken(user.token)
 				messageService.setToken(user.token)
 			}
- 
+			setLoggedIn(true)
 			dispatch(initializeUserType(usertype))
 			dispatch(initializeCurrentWorker(user))
 			setuserEmail('')
@@ -61,6 +82,7 @@ const LoginForm = (  ) => {
 	
 		}
 	}
+
 
 	return (
 		<>
@@ -82,7 +104,7 @@ const LoginForm = (  ) => {
 						<TextField label="email" value={userEmail} onChange={({ target }) => setuserEmail(target.value)} />
 					</div>
 					<div style={{marginBottom: '10px'}}>
-						<TextField label="password" value={password} onChange={({ target }) => setPassword(target.value)} />
+						<TextField type="password" label="password" value={password} onChange={({ target }) => setPassword(target.value)} />
 					</div>
 					<div>
 						<Button variant="contained" color="primary" type="submit">
@@ -90,6 +112,8 @@ const LoginForm = (  ) => {
 						</Button>
 					</div>
 				</form>
+
+			
 			</div>
 		
 		</>
