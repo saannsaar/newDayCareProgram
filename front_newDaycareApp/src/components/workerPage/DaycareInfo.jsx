@@ -13,5 +13,6 @@ const DaycareInfo = ({ daycare }) => {
 			<Typography style={{ color: '#000000', marginTop: '1px', marginBottom: '0.5em' }}>{daycare.phone}</Typography></Item>
 	)
 }
+ 
 
 export default DaycareInfo
