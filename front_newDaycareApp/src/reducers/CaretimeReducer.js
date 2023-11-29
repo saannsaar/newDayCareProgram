@@ -35,6 +35,7 @@ export const initializeCaretimes = (kids) => {
 	const apuarr = []
 	console.log(kids)
 
+	
 	return async dispatch => {
 
 		for (let i = 0; i < kids.length; i++) {
