@@ -2,12 +2,11 @@ import Item from '../Item'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import {  Grid, List, ListItem, ListItemText, Container, Box } from '@mui/material'
-
 import GroupInfo from '../GroupInfo'
-
 import DaycareInfo from './DaycareInfo'
 import ChildInfo from '../parentPage/ChildInfo'
 import AddNewChild from './AddNewCHild'
+
 const Daycare = ( {  groups, kids, daycare, usertype } ) => {
 	const [selectedChild, setSelectedChild] = useState({})
 

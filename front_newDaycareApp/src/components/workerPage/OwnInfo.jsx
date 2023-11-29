@@ -1,12 +1,11 @@
 
 import { Container, Divider, DialogContent, DialogTitle,  Dialog, Grid, TextField, Card, Typography, Button } from '@mui/material'
-
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import { editUser } from '../../reducers/CurrentUser'
 import Item from '../Item'
 
-const OwnGroup = ( ) => {
+const OwnInfo = ( ) => {
 
 	const [modalOpen, setmodalOpen] = useState(false)
 	const this_worker = useSelector(state => state.currentUser)
@@ -123,5 +122,5 @@ const OwnGroup = ( ) => {
 
 }
 
-export default OwnGroup
+export default OwnInfo
 
