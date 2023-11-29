@@ -8,8 +8,7 @@ const userTypeReducer = createSlice({
 		setUserType: (state, action) => {
 			return action.payload
 		},
-		// eslint-disable-next-line no-unused-vars
-		removeUserType: (state) => {
+		removeUserType: () => {
 			return ''
 		},
 	}

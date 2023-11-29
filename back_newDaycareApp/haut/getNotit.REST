@@ -1,0 +1,3 @@
+GET http://localhost:3001/api/notifications
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbm5pbi5zYWhrb3Bvc3RpQGVtYWlsLmNvbSIsImlkIjoiNjRmODA5YzRjZTJiYjI4YzM5MWU4MDRhIiwiaWF0IjoxNjk4MzE0MDM5LCJleHAiOjE2OTgzMTc2Mzl9.wknQaw_hcFngipDjFIJ4HJ1GkYQZMfbkRG3ggBve2cE

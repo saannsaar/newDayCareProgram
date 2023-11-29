@@ -19,28 +19,40 @@ const schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Group'
     },
-    daycare: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Daycare',
-      },
     monthly_maxtime: {
-        type: String,
+        type: Number,
         required: true,
     },
-    care_time: [{
-        date: {
-            type: String,
-            required: true,
-        },
-        start_time: {
-            type: String,
-            required: true,
-        },
+    care_time: [
+        {start_time: {
+        type: Date
+    },
         end_time: {
+            type: Date
+        },
+        kid_name: {
             type: String,
             required: true,
-        }
-    }],
+        }}
+    ],
+    caretimes_added_monthlysum: [
+        {month: { 
+            type: String,
+            required: true,
+            unique: true},
+        timeLeft: {
+            type: Number,
+            required: true
+
+        }}
+    ],
+    diapers: {
+        type: String,
+        enum: ["FULL", "HALF", "EMPTY"],
+        default: "FULL",
+        required: true,
+    }
+    
 })
 
 schema.set('toJSON', {

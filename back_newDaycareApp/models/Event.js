@@ -19,15 +19,11 @@ const schema = new mongoose.Schema({
     info: {
         type: String,
     },
-    group: {
+    group:[ {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Group',
         required: isChildEvent
-    },
-    daycare: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Daycare',
-      },
+    }],
 }, {timestamps: true})
 
 

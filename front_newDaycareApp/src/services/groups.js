@@ -1,6 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/groups'  
-// const baseUrl = '/api/children'
+// const baseUrl = 'http://localhost:3001/api/groups'  
+const baseUrl = '/api/children'
 let token = null
 
 const setToken = newToken => {
@@ -12,7 +12,7 @@ const getAllGroups = async () => {
 }
 
 const createGroup = async newObject => {
-	console.log('group.js')
+
 	const config = {
 		headers: { Authorization: token },
 	}
@@ -20,7 +20,15 @@ const createGroup = async newObject => {
 	return response.data
 }
 
+const updateGroup = async (group) => {
+	const config = {
+		headers: { Authorization: token },
+	}
+	const response = await axios.put(baseUrl.concat('/').concat(group.id), group, config)
+	console.log(response.data)
+	return response.data
+}
 
 
 
-export default { getAllGroups, createGroup,  setToken }
+export default { getAllGroups, createGroup,  setToken, updateGroup }

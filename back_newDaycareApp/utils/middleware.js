@@ -1,5 +1,6 @@
 const logger = require('./logger')
 const DaycareWorker = require('../models/DaycareWorker')
+const Parent = require('../models/Parent')
 const jwt = require('jsonwebtoken')
 
 const requestLogger = (request, response, next) => {
@@ -33,7 +34,7 @@ next(error)
 }
 
 const getTokenFrom = request => {
-    const authorization = request.get("authorization")
+    const authorization = request.get("Authorization")
     if (authorization && authorization.startsWith("bearer ")) {
         return authorization.replace("bearer ", "")
     } else {
@@ -49,16 +50,20 @@ const tokenExtractor = ( request, response, next ) => {
 
 const userExtractor = async ( request, response, next ) => {
     const token = getTokenFrom(request)
-    console.log(request)
-
     if (token) {
-        console.log(token)
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-        console.log(decodedToken)
         if (!decodedToken.id) {
             return response.status(401).json({ error: "token is invalid"})
         }
-        request.user = await DaycareWorker.findById(decodedToken.id)
+        const find = await DaycareWorker.findById(decodedToken.id)
+        if (find) {
+            console.log('Found')
+            request.user = find
+        } else {
+            console.log("PARENT userextractor")
+            request.user = await Parent.findById(decodedToken.id)
+        }
+        
     }
 
     next()

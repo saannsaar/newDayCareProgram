@@ -28,7 +28,7 @@ jobs:
       - name: Install Dependencies front
         working-directory: ./front_newDaycareApp
         run:
-          npm install
+          npm install --legacy-peer-deps
       - name: Run ui build 
         run: 
           rm -rf build && cd ./front_newDaycareApp && npm run build && cp -r build ./back_newDaycareApp

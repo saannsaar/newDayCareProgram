@@ -1,14 +1,15 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
-import {   Dialog, DialogContent, DialogTitle, Divider } from '@mui/material'
+import {   Dialog, DialogContent, DialogTitle, Divider, Button } from '@mui/material'
 import Item from './Item'
 import moment from 'moment'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteEvent } from '../reducers/EventReducer'
 
-// eslint-disable-next-line react/prop-types
-const EventInfo = ({ event }) => {
+
+const EventInfo = ({ event, usertype }) => {
 
 	const [modalOpen, setmodalOpen] = useState(false)
+	const dispatch = useDispatch()
 	const handleModalOpen = () => {
 		setmodalOpen(true)
 	}
@@ -26,9 +27,16 @@ const EventInfo = ({ event }) => {
 			return '#b6c47e'
 		}
 	}
+
+	const handleDeleteEvent = () => {
+		
+		dispatch(deleteEvent(event.id))
+		setmodalOpen(false)
+
+	}
 	
 	return (
-		<><Item style={{backgroundColor: defineColor()}} onClick={() => handleModalOpen()}>
+		<><Item style={{backgroundColor: defineColor(), margin:'10px'}} onClick={() => handleModalOpen()}>
 			{event.name}
 		</Item>
 		<Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
@@ -41,10 +49,14 @@ const EventInfo = ({ event }) => {
 				<Item>
 					{event.info}
 				</Item>
-				<Item>
+				{event.group ? <Item>
 					{event.group.name}
-				</Item>
+				</Item> : null}
 			</DialogContent>
+			{usertype == 'worker_user' ? <Button color="secondary" variant="contained" style={{ float: 'left' }} type="button"
+				onClick={() => handleDeleteEvent()}> 
+                                                Poista tapahtuma 
+			</Button> : null }
 		</Dialog></>
 	)
 }

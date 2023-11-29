@@ -27,23 +27,25 @@ const schema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  daycare: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Daycare',
-  },
   user_type: {
     type: String,
     value: 'worker_user',
     required: true
   },
+  messages: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Message'
+  }],
   passwordHash: String,
 })
 
+schema.plugin(uniqueValidator)
 schema.set('toJSON', {
   transform: (document, returnedObject) => {
       returnedObject.id = returnedObject._id.toString()
       delete returnedObject._id
       delete returnedObject.__v
+      delete passwordHash
   }
 })
 

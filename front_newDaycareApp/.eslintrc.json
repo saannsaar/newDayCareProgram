@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "jest": true
     },
     "extends": [
         "eslint:recommended",
@@ -32,6 +33,10 @@
         "semi": [
             "error",
             "never"
-        ]
+        ],
+        "react/prop-types": "off",
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-uses-react": "error",   
+        "react/jsx-uses-vars": "error" 
     }
 }

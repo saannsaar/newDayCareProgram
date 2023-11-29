@@ -1,22 +1,34 @@
 import axios from 'axios'
-const baseUrl =  'http://localhost:3001/api/parents' 
-// const baseUrl = '/api/parents'
+// const baseUrl =  'http://localhost:3001/api/parents' 
+const baseUrl = '/api/parents'
+
+let token = null
+
+const setToken = newToken => {
+	token = `bearer ${newToken}`
+}
 
 const getAllParents = async () => {
-	const response = await axios.get(baseUrl)
+	const config = {
+		headers: { Authorization: token },
+	}
+	const response = await axios.get(baseUrl, config)
 	return response.data
 }
 
 const getParentById = async (user) => {
-	console.log('SERVICE PARENT', user)
-	const response = await axios.get(baseUrl.concat('/').concat(user.id))
+	const config = {
+		headers: { Authorization: token },
+	}
+	const response = await axios.get(baseUrl.concat('/').concat(user.id), config)
 	return response.data
 }
 
 const editParentUser = async (user, id) => {
-	console.log('Service edit', user)
-	const response = await axios.put(baseUrl.concat('/').concat(id), user)
-	console.log(response.data)
+	const config = {
+		headers: { Authorization: token },
+	}
+	const response = await axios.put(baseUrl.concat('/').concat(id), user, config)
 	return response.data
 }
-export default { getAllParents, getParentById, editParentUser }
+export default { getAllParents, getParentById, editParentUser, setToken }

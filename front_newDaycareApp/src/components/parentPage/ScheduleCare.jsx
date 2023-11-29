@@ -1,65 +1,107 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/react-in-jsx-scope */
 import {  useEffect, useState } from 'react'
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import 'dayjs/locale/de'
-import { Container, Typography, Card, Grid } from '@mui/material'
-import { useSelector } from 'react-redux'
+
+import { Container,  Typography, Card, Grid } from '@mui/material'
+
 import Item from '../Item'
 import moment from 'moment'
 import EventInfo from '../EventInfo'
+import AddCareTime from '../AddCaretime'
+import CareTimeInfo from '../CareTimeInfo'
+import ErrorAlert from '../ErrorAlert'
 
 
-const ScheduleCare = ({ events }) => {
+
+
+const ScheduleCare = ({ events, pickedChild, pickedChildId }) => {
 	moment.locale('fin')
-
-	console.log(events)
+	console.log(pickedChild)
 	const adapter = new AdapterDayjs()
-	const this_worker = useSelector(state => state.currentUser)
-	console.log(this_worker)
-	const firstAvailableDay = adapter.date(new Date(2023, 9, 9))
-	const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
-	const [pickedEvents, setPickedEvents] = useState([])
 
-	console.log(calendarValue.$d)
-	
-	console.log(moment(events[0].date).format('MMM Do YY'))
-	console.log(moment(calendarValue.$d).format('MMM Do YY'))
-	
-	useEffect(() => {
-		const find_events = events.filter((e) => moment(e.date).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
-		console.log(find_events)
-		setPickedEvents(find_events)
-		console.log(pickedEvents)
-		console.log(find_events.length)
-	}, [calendarValue.$d])
+	const firstAvailableDay = adapter.date(new Date())
 
-	return (
-		<><Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
-			Ilmoita hoitoajat 
-		</Typography><Container>
-			<Card>
-				<Grid container spacing={2}>
-					<Grid item xs={8}>
-						<LocalizationProvider dateAdapter={AdapterDayjs}>
-							<DateCalendar value={calendarValue} onChange={(newValue) => setCalendarValue(newValue)} />
-						</LocalizationProvider>
-					</Grid>
-					<Grid item xs={4}>
-						<Item>
-							{moment(calendarValue.$d).format('MMM Do YY')}
-						</Item>
-						{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <Item>Ei tapahtumia</Item>}
-					</Grid>
-				</Grid>
-			</Card>
-			<Container>
+	if ( !pickedChild || pickedChild == null) {
+		return (
+			<div> Laoding... </div>
+		)
+	} else {
+
+		const [calendarValue, setCalendarValue] = useState(firstAvailableDay)
+		const [pickedEvents, setPickedEvents] = useState([])
+		const [pickedMonth, setPickedMonth] = useState('')
+		const [selectedCaretime, setSelectedCaretime] = useState('')
+		const [changed, setChanged] = useState(true)
+	
+
+		useEffect(() => {
+			console.log(changed)
+			const findTimeLeft = pickedChild.caretimes_added_monthlysum.filter((m) => m.month == moment(calendarValue.$d).format('MM'))
+
+			if (findTimeLeft.length == 0) {
+				setPickedMonth(pickedChild.monthly_maxtime.toString().concat(' tuntia'))
+			} else {
+
+				const hoursLeftThisMonth = Math.floor(findTimeLeft[0].timeLeft / 60) + ' tuntia, ' + findTimeLeft[0].timeLeft % 60 + ' minuuttia'
+				setPickedMonth(hoursLeftThisMonth)
+			}
+
+			const find_events = events.filter((e) => moment(new Date(e.date)).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
+			setPickedEvents(find_events)
+
 		
-			</Container>
-		</Container></>
+			const find_caretime = pickedChild.care_time.filter((c) => moment(c.start_time).format('MMM Do YY') === moment(calendarValue.$d).format('MMM Do YY'))
+			if (!find_caretime) {
+				setSelectedCaretime('')
+			} else {
+				setSelectedCaretime(find_caretime)
+			}
+		
+		}, [calendarValue.$d, pickedChild.care_time.length, changed, pickedChild])
+
+
+		return (
+			<>
 			
-	)
+				<Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
+			Max hoitoaika: {pickedChild.monthly_maxtime} tuntia
+				</Typography>
+				<Typography variant="h6" style={{ marginTop: '1em', marginBottom: '0.5em' }}>
+			Jäljellä hoitoaika kuukaudelle: {pickedMonth} tuntia
+				</Typography>
+				<ErrorAlert />
+				{pickedChild &&
+			<Container>
+				<Card>
+					<Grid container spacing={2}>
+						<Grid item xs={8}>
+							<LocalizationProvider dateAdapter={AdapterDayjs}>
+								<DateCalendar displayWeekNumber value={calendarValue} onChange={(newValue) => setCalendarValue(newValue)} />
+							</LocalizationProvider>
+						</Grid>
+						<Grid item xs={4}>
+							<Item style={{margin: '10px'}}>
+								{moment(calendarValue.$d).format('MMM Do YY')}
+							</Item>
+							{pickedEvents.length > 0 ? pickedEvents.map((e) => <EventInfo key={e.id} event={e}/>) : <><Item style={{margin: '10px'}} >Ei tapahtumia</Item> </>}
+
+							{selectedCaretime == '' ? <><Item  style={{margin: '10px'}}>Ei ilmoitettua hoitoaikaa</Item> 
+								<AddCareTime  pickedChildId={pickedChildId} kid={pickedChild} pickedDay={calendarValue.$d} setChanged={setChanged} changed={changed}/></> :
+								<CareTimeInfo key={selectedCaretime._id} kid={pickedChild} childId={pickedChildId} pickedCareTimes={selectedCaretime} /> 
+							}
+						</Grid>
+					</Grid>
+				</Card>
+				<Container>
+	
+				</Container>
+			</Container>}
+			</>
+			
+		)
+	}
+	
+
 }
 
 export default ScheduleCare

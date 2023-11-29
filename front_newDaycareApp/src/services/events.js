@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3001/api/events'  
-// const baseUrl = '/api/events'
+// const baseUrl = 'http://localhost:3001/api/events'  
+const baseUrl = '/api/events'
 
 let token = null
 
@@ -11,12 +11,10 @@ const setTokenForEvent = newToken => {
 
 const getAllEvents = () => {
 	const request = axios.get(baseUrl)
-	console.log(request)
 	return request.then(response => response.data)
 }
 
 const createEvent = async newObject => {
-	console.log('Creating new event')
 	const config = {
 		headers: { Authorization: token },
 	}
@@ -26,10 +24,18 @@ const createEvent = async newObject => {
 }
 
 const getEventById = async (event) => {
-	console.log('SERVICE Event', event)
 	const response = await axios.get(baseUrl.concat('/').concat(event.id))
 	return response.data
 }
 
+const deleteEvent = async (id) => {
+	const config = {
+		headers: { Authorization: token },
+	}
 
-export default { getAllEvents, createEvent,  setTokenForEvent, getEventById }
+	const response = await axios.delete(baseUrl.concat('/').concat(id), config)
+	return response.data
+}
+
+
+export default { getAllEvents, createEvent,  setTokenForEvent, deleteEvent, getEventById }

@@ -13,11 +13,17 @@ const loginRouter = require('./controllers/login')
 const groupRouter = require('./controllers/groups')
 const eventsRouter = require('./controllers/events')
 const daycareRouter = require('./controllers/daycare')
+const messageRouter = require('./controllers/message')
+const notificationRouter = require('./controllers/notificationsController')
 
 //
 
+if (process.env.NODE_ENV === 'test') {
+  console.log("TESTI")
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
 const middleware = require('./utils/middleware')
-
 mongoose.set('strictQuery', false)
 
 logger.info('connecting to', config.MONGODB_URI)
@@ -38,13 +44,15 @@ mongoose.connect(config.MONGODB_URI)
  
 
   app.use('/api/children', middleware.userExtractor, childRouter)
-  app.use('/api/workers', workerRouter)
-  app.use('/api/parents', parentRouter)
-  app.use ('/api/groups', groupRouter)
+  app.use('/api/workers', middleware.userExtractor, workerRouter)
+  app.use('/api/parents', middleware.userExtractor, parentRouter)
+  app.use ('/api/groups',middleware.userExtractor,  groupRouter)
   app.use('/api/login', loginRouter)
   app.use('/api/events', middleware.userExtractor, eventsRouter)
   app.use('/api/daycare', daycareRouter)
-
+  app.use('/api/notifications', middleware.userExtractor, notificationRouter)
+  app.use('/api/messages', middleware.userExtractor, messageRouter)
+ 
   
   app.use(middleware.unknownEndpoint)
   app.use(middleware.errorHandler)

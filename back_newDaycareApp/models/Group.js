@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 // you must install this library
-const uniqueValidator = require('mongoose-unique-validator')
 
 const schema = new mongoose.Schema({
   name: {
@@ -19,17 +18,9 @@ const schema = new mongoose.Schema({
         ref: 'Child'
     }
   ],
-  events: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Event'
-    }
-  ],
-  daycare: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Daycare',
-  },
+
 })
+
 
 schema.set('toJSON', {
   transform: (document, returnedObject) => {
