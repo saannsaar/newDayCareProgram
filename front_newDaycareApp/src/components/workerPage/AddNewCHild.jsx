@@ -3,6 +3,10 @@ import { createChild } from '../../reducers/ChildReducer'
 import { useDispatch } from 'react-redux'
 import {  useState } from 'react'
 
+
+// Component for adding a new child's information to the system. 
+// There is a button which opens a dialog including a form where the user can
+// add all the necessary information and then save them
 const AddNewChild = ({ daycare, groups }) => {
 
 	if (groups && daycare) {
@@ -26,8 +30,8 @@ const AddNewChild = ({ daycare, groups }) => {
 		
 			e.preventDefault()
 			try{
-				console.log('handleri')
 				const parentsArray = parents.split(', ')
+				// Find the group based on the name so that the right id is found
 				const findgroup = groups.find((g) => group == g.name)
 				const newChild ={
 					name: name,
@@ -39,14 +43,13 @@ const AddNewChild = ({ daycare, groups }) => {
 				}
 				dispatch(createChild(newChild))
 
-				console.log(newChild)
 				setName('')
 				setBorn('')
 				setParents('')
 				setMonthlyMax('')
 				setGroup('')
 			} catch (error) {
-				console.log(error)
+				// console.log(error)
 			}
 		}
 

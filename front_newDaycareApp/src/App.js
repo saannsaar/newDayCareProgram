@@ -1,4 +1,3 @@
-
 import {  useEffect, useState } from 'react'
 import { AppBar, Toolbar, Select, Button, MenuItem } from '@mui/material'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
@@ -19,7 +18,6 @@ import groupService from './services/groups'
 import workerService from './services/workers'
 import notiservice from './services/notiservice'
 import messageService from './services/message'
-
 import { initializeEvents, removeEvents } from './reducers/EventReducer'
 import { initializeGroups, removeGroups } from './reducers/GroupReducer'
 import { initializeDaycare, removeDaycare } from './reducers/DaycareReducer'
@@ -41,7 +39,6 @@ const App = () => {
 	// eslint-disable-next-line no-undef
 	const api_key = process.env.REACT_APP_WEATHER_API_KEY
 	
-
 	const kids = useSelector(state => state.children)
 	const workers = useSelector(state => state.workers)
 	const events = useSelector(state => state.events)
@@ -56,7 +53,6 @@ const App = () => {
 	
 	const caretimes = useSelector(state => state.caretimes)
 	
-	console.log(caretimes)
 	useEffect(() => {
 		if (loggedInUser) {
 			dispatch(initializeChildren(loggedInUser, usertype))
@@ -67,8 +63,6 @@ const App = () => {
 			dispatch(initializeDaycare(loggedInUser))
 			dispatch(initializeConversation(usertype))
 			dispatch(initializeCaretimes(kids))
-			
-			
 		}
 		
 		if (loggedInUser && usertype == 'parent_user') {
@@ -76,24 +70,19 @@ const App = () => {
 			dispatch(initializeCurrentChild(loggedInUser.children[0]))
 		}
 		
-		
-		
 	}, [loggedInUser, kids.length])
 
 	useEffect(() => {
 		
 		if (loggedInUser && kids.length != 0 && currentChild) {
-			console.log('HALOO TÄÄL', loggedInUser, usertype, kids, currentChild)
 			dispatch(initializeCaretimes(kids))
 		}
 	}, [loggedInUser, kids, currentChild])
 
 	useEffect(() => {
 		if(daycare) {
-			console.log(daycare.cityName)
 			axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${daycare.cityName},fi&appid=${api_key}&units=metric`)
 				.then((response) => {
-					console.log('weather', response.data)
 					setWeather(response.data)
 				})
 		}
@@ -102,7 +91,6 @@ const App = () => {
 
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem('loggedDaycareAppUser')
-		console.log(loggedUserJSON)
 		if (loggedUserJSON) {
 			const user = JSON.parse(loggedUserJSON)
 			parentService.setToken(user.token)
@@ -123,8 +111,8 @@ const App = () => {
 		dispatch(initializeCurrentChild(findChild))
 
 	}
-	const logout = (event) => {
 
+	const logout = (event) => {
 		event.preventDefault()
 		window.localStorage.removeItem('loggedDaycareAppUser')
 		dispatch(removeCurrentUser())
@@ -137,19 +125,16 @@ const App = () => {
 		dispatch(emptyNotifications())
 		dispatch(removeCurrentCHild())
 		setLoggedIn(false)
-		
-		console.log(loggedInUser)}
 
-
-	if (loggedIn === true && usertype ==='parent_user' && (!kids || !events || !caretimes || !currentChild || !allNotifications || !weather) || usertype ==='worker_user' && (!kids || !events || !caretimes || !allNotifications || !weather || !workers) ) {
-		console.log(loggedIn)
-		return(
-			<div style={{ display: 'flex', alignItems: 'center', jusitfyContent: 'center', height:'100%', width: '100%'}}>
-				<LoadingIcons.Oval style={{left: '50%', top:'50%', alignSelf: 'center', position: 'fixed'}}stroke="#5d756b" speed={.75}/>
-			</div>
+		if (loggedIn === true && usertype ==='parent_user' && (!kids || !events || !caretimes || !currentChild || !allNotifications || !weather) || usertype ==='worker_user' && (!kids || !events || !caretimes || !allNotifications || !weather || !workers) ) {
+			console.log(loggedIn)
+			return(
+				<div style={{ display: 'flex', alignItems: 'center', jusitfyContent: 'center', height:'100%', width: '100%'}}>
+					<LoadingIcons.Oval style={{left: '50%', top:'50%', alignSelf: 'center', position: 'fixed'}}stroke="#5d756b" speed={.75}/>
+				</div>
 				
-		)
-	}
+			)
+		}}
 	
 	return(
 		<div>
@@ -198,7 +183,7 @@ const App = () => {
 					<Routes>
 						<Route path="/" element={<FrontPage groups={groups}weather={weather} notifications={allNotifications} events={events} kids={kids} usertype={usertype}/>}/>
 						<Route path="/own-info" element={<OwnInfo />}/>
-						<Route path="/own-family" element={<MyFamily user={loggedInUser} kids={kids}/>}/>
+						<Route path="/own-family" element={<MyFamily usertype={usertype} user={loggedInUser} kids={kids}/>}/>
 						<Route path="/caretimes" element={<ScheduleCare events={events}  currentUser={loggedInUser} caretimes={caretimes} pickedChildId={currentChild.id} pickedChild={currentChild}/>}/>
 						<Route path="/messages" element={<Messages usertype={usertype} currentUser={loggedInUser}/>}/>
 						<Route path="/daycare" element={<Daycare caretimes={caretimes} workers={workers} groups={groups} kids={kids} daycare={daycare} usertype={usertype}/>}/>

@@ -1,6 +1,5 @@
 import axios from 'axios'
-// const baseUrl = 'http://localhost:3001/api/groups'  
-const baseUrl = '/api/children'
+const baseUrl = '/api/groups'
 let token = null
 
 const setToken = newToken => {

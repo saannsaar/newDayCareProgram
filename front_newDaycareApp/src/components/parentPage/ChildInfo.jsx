@@ -7,6 +7,10 @@ import { useState } from 'react'
 import { Button } from '@mui/material'
 import { initializeChildren } from '../../reducers/ChildReducer'
 
+
+// COmponent that renders a single child's information, a bit differently depending if it is a parent-user
+// or worker-user who is logged in. Worker-user also can modify the "diapers" value from here with the select
+// input. 
 const ChildInfo = ({ kidinfo, usertype }) => {
 	const [anchorEl, setAnchorEl] = useState(null)
 	const open = Boolean(anchorEl)
@@ -37,7 +41,7 @@ const ChildInfo = ({ kidinfo, usertype }) => {
 		)
 	} else {
 
-		if (usertype == 'parent_user') {
+		if (usertype === 'parent_user') {
 			return (
 				<><Grid item xs={6}>
 					<Item> Vaipat: {kidinfo.diapers}  </Item>
@@ -45,7 +49,7 @@ const ChildInfo = ({ kidinfo, usertype }) => {
 					<Item>{kidinfo.name}</Item>
 				</Grid></>
 			)
-		} else {
+		} else if (usertype === 'worker_user'){
 
 			return (
 				<div>

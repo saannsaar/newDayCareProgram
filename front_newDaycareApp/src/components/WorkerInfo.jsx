@@ -4,6 +4,8 @@ import Item from './Item'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { editGroup } from '../reducers/GroupReducer'
 
+// A component that renders a workers name in the group dialog where the user can delete
+// the worker from the group. 
 const WorkerInfo = ({worker, group}) => {
 
 	const dispatch = useDispatch()

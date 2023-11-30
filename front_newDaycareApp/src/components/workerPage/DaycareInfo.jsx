@@ -1,9 +1,8 @@
 import Item from '../Item'
 import { Typography } from '@mui/material'
 
-
+// Component to render item which contains daycare's info, address, email and phonenumber
 const DaycareInfo = ({ daycare }) => {
-
 
 	return (
 		<Item sx={{ p: 1, m: 1 }}>

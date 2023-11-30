@@ -12,19 +12,15 @@ import { createCaretime } from '../reducers/CaretimeReducer'
 import { initializeCurrentChild } from '../reducers/CurrentChild'
 
 // Element which renders an form where the user can add 
-// new caretimes for their child 
+// new caretimes for their child. They can pick up a start and end time. The day is 
+// defined by the day which was chosen from the calendar. 
 const AddCareTime = ({ kid, pickedChildId, pickedDay, changed, setChanged}) => {
 	moment.locale('fin')
-	console.log(pickedDay)
 
 	const[start_time, setStartTime] = useState(moment(pickedDay))
 	const[end_time, setEndTime] = useState(moment(pickedDay))
-
 	const pickeddateString = moment(pickedDay).format('MMM Do YY')
-
-	
 	const [modalOpen, setmodalOpen] = useState(false)
-
 	
 	useEffect(() => {
 		setStartTime(moment(pickedDay))
@@ -41,11 +37,9 @@ const AddCareTime = ({ kid, pickedChildId, pickedDay, changed, setChanged}) => {
 		setmodalOpen(false)
 	}
 	const handlestartChange = (newValue) => {
-		console.log(newValue)
 		setStartTime(newValue)
 	}
 	const handleendChange = (newValue) => {
-		console.log(newValue)
 		setEndTime(newValue)
 	}
 	
@@ -55,7 +49,6 @@ const AddCareTime = ({ kid, pickedChildId, pickedDay, changed, setChanged}) => {
 		await dispatch(createCaretime({start_time: moment(start_time).format(), end_time: moment(end_time).format()}, child_id))
 		await dispatch(initializeCurrentChild(kid))
 		setmodalOpen(false)
-		console.log(changed, !changed)
 		setChanged(!changed)
 		
 	}

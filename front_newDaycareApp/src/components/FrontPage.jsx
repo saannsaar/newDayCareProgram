@@ -15,7 +15,11 @@ import ArrowUpward from '@mui/icons-material/ArrowUpward'
 import ArrowDownward from '@mui/icons-material/ArrowDownward'
 import Air from '@mui/icons-material/Air'
 
-
+// This is a component which renders the frontpage of the application and there is a bit different
+// funcionalities depending on wether the logged in user is a parent or a worker. For example
+// a parent user can't add new events and they also can't see those events that have a "W_event" value
+// on "event_type" key. Worker user can add events and notifications and they can define if the events are for workers, children 
+// or parents. Events are linked to a specific date. Notifications are just on the board and can be added or deleted. 
 const FrontPage = ({ events, kids, usertype, notifications, weather , groups}) => {
 	const [modalOpen, setmodalOpen] = useState(false)
 	const [emodalOpen, setemodalOpen] = useState(false)

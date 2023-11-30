@@ -6,6 +6,8 @@ import { Button, DialogTitle,DialogContent, Dialog, TextField, Divider, Grid, Li
 import ConversationArea from './ConversationArea'
 
 
+//This is a component which renders the messages page. If the user is a worker user they
+// can also choose to send a message to all the parents and workers with one message. 
 const Messages = ({usertype, currentUser }) => { 
 	const [modalOpen, setmodalOpen] = useState(false)
 	const [content, setContent] = useState('')
@@ -46,7 +48,6 @@ const Messages = ({usertype, currentUser }) => {
 	
 	const sendToAll = (e) => {
 		e.preventDefault()
-		console.log(conversations)
 		const parents = conversations.filter((p) => p.user_type == 'parent_user')
 		parents.map((c) => dispatch(sendNewMessage({content, receiver: c.name})))
 		setmodalOpen(false)

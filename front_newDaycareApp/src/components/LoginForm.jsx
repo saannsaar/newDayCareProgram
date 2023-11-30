@@ -19,7 +19,10 @@ import { removeEvents } from '../reducers/EventReducer'
 import { removeCurrentCHild } from '../reducers/CurrentChild'
 import { emptyMessages } from '../reducers/MessageReducer'
 
-
+// A component for the login form which takes useremail and password and type of user as inputs 
+// while logging in. The user information that comes back as a result from the server
+// is then saved to localStorage which is cleaned after 10 minutes. Token is also set for every servie component
+// that handles the communication with the backend.
 const LoginForm = ( {setLoggedIn} ) => {
 	const [userEmail, setuserEmail] = useState('')
 	const [password, setPassword] = useState('')

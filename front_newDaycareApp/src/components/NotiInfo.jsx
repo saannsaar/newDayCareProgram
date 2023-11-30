@@ -5,7 +5,8 @@ import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { deleteNotification } from '../reducers/NotificationReducer'
 
-
+// A component to render a specific notifications information. If the user is a worker uer
+// they can also delete the notification when they click the item and a dialog opens. 
 const NotiInfo = ({ noti, usertype }) => {
 	const [modalOpen, setmodalOpen] = useState(false)
 	const handleModalOpen = () => {

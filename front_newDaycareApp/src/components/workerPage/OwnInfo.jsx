@@ -5,6 +5,9 @@ import { useState } from 'react'
 import { editUser } from '../../reducers/CurrentUser'
 import Item from '../Item'
 
+// Component that renders page with user's informations
+// and has a feature where the user can modify their own information that is
+// kept in database except the "born" information
 const OwnInfo = ( ) => {
 
 	const [modalOpen, setmodalOpen] = useState(false)
@@ -14,12 +17,9 @@ const OwnInfo = ( ) => {
 	const handleEditUser = (e) => {
 		e.preventDefault()
 
-		console.log({name, email, phone})
 		dispatch(editUser({name, email, phone, worker: this_worker.born}, this_worker.id))
 		setmodalOpen(false)
 	}
-
-
 
 	const [name, setName] = useState(this_worker.name)
 	const [email, setEmail] = useState(this_worker.email)

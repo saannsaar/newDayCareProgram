@@ -12,8 +12,13 @@ import CareTimeInfo from '../CareTimeInfo'
 import ErrorAlert from '../ErrorAlert'
 
 
-
-
+// This page is only for parent-users. 
+// Component to render a page where a parent user can add caretimes for their child/children
+// through a calendar and form. There is a funcionality that shows the maximum caretime for each child and
+// when a user adds a new caretime to the system the page shos how much time there is left for that specific month
+// Since usually at least in Finland children are granted a specific maximum time for daycare per month
+// this funcionality helps parents to use the daycare booking system more quickly and easily. 
+// User can also modify or delete already existing booked caretimes. 
 const ScheduleCare = ({ events, pickedChild, pickedChildId }) => {
 	moment.locale('fin')
 	console.log(pickedChild)
@@ -33,11 +38,8 @@ const ScheduleCare = ({ events, pickedChild, pickedChildId }) => {
 		const [selectedCaretime, setSelectedCaretime] = useState('')
 		const [changed, setChanged] = useState(true)
 	
-
 		useEffect(() => {
-			console.log(changed)
 			const findTimeLeft = pickedChild.caretimes_added_monthlysum.filter((m) => m.month == moment(calendarValue.$d).format('MM'))
-
 			if (findTimeLeft.length == 0) {
 				setPickedMonth(pickedChild.monthly_maxtime.toString().concat(' tuntia'))
 			} else {

@@ -1,6 +1,9 @@
 import { ListItem, Grid, ListItemText } from '@mui/material'
 import moment from 'moment'
 
+//This is a single message component which are used in the conversation area. Depending on the 
+// sender/receiver of the message, the message is render either on the left or on the right
+// side of the area
 const SingleMessage = ({message, index,  currentUserID}) => {
 
 	if(message.sender == currentUserID) {

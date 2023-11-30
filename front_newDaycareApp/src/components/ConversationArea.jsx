@@ -5,7 +5,9 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { sendNewMessage } from '../reducers/MessageReducer'
 
-
+// Component to render the area where a specific conversation's messages
+// are presented with timestamps. There is also a text input where the user can write a message 
+// and click the send icon to send the message
 const ConversationArea = ({ messages, receiver, currentUser }) => {
 
 	if (!messages || !receiver || !currentUser) {

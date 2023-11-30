@@ -9,19 +9,17 @@ import { deleteSpesificCaretime, modifyCaretime } from '../reducers/CaretimeRedu
 import { initializeCurrentChild } from '../reducers/CurrentChild'
 
 
-
+// Component to render a single caretime's info. If the item is clicked it opens a dialog
+// where the user can modify or delete the specific caretime. 
 const CareTimeInfo = ({ pickedCareTimes, childId, kid }) => {
 
 	const [inDayCare, setInDayCare] = useState('No')
-	console.log(kid)
 	const dispatch = useDispatch()
 	const pickeddateString = moment(pickedCareTimes[0].start_time).format('MMM Do YY')
 	const startTime = moment(pickedCareTimes[0].start_time).format('HH:mm')
 	const endTime = moment(pickedCareTimes[0].end_time).format('HH:mm')
 	const [start_time, setStartTime] = useState(moment(new Date(pickedCareTimes[0].start_time)))
 	const [end_time, setEndTime] = useState(moment(new Date(pickedCareTimes[0].end_time)))
-
-	
 
 	useEffect(() => {
 		
