@@ -32,10 +32,10 @@ jobs:
       - name: Run ui build 
         run: 
           rm -rf build && cd ./front_newDaycareApp && npm run build && cp -r build ./back_newDaycareApp
-      - name: Run tests
-        working-directory: ./back_newDaycareApp
-        run:
-          npm install
+      # - name: Run tests
+      #   working-directory: ./back_newDaycareApp
+      #   run:
+      #     npm install
       - name: Render Deploy Action
         if: ${{ success() && github.event_name == 'push' && !contains(join(env.COMMIT_MESSAGE, ' '), '#skip') }}
         uses: johnbeynon/render-deploy-action@v0.0.8
