@@ -84,6 +84,7 @@ childRouter.post('/', userExtractor,  async (request, response) => {
 childRouter.put('/:id', userExtractor,  async (request, response) => {
   const user = request.user
   if (!user) {
+    
     return response.status(401).json({error: "You cant do that"})
   }
  
