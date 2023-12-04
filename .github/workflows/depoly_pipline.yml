@@ -31,7 +31,8 @@ jobs:
           npm install --legacy-peer-deps
       - name: Run ui build 
         run: 
-          rm -rf build && cd ./front_newDaycareApp && npm run build && cp -r build ./back_newDaycareApp
+
+          cd back_newDaycareApp && rm -rf build && cd ./front_newDaycareApp && npm run build && cp -r build ./back_newDaycareApp
       # - name: Run tests
       #   working-directory: ./back_newDaycareApp
       #   run:
