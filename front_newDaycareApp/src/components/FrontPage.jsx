@@ -60,7 +60,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather , groups}) =
 		const [date, setDate] = useState(dayjs('2023-10-24T07:30'))
 		const [event_type, setEventType] = useState('W_event')
 		const [info, setInfo] = useState('')
-		const [group, setGroup] = useState(groups[0].name)
+		const [group, setGroup] = useState(groups[0]?.name)
 
 		const handleColorChange = (newValue) => {
 			setColorCode(newValue.target.value)
