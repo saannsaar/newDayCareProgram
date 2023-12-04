@@ -1,4 +1,4 @@
-import { Button,TextField, Grid, DialogTitle, Divider, DialogContent, Dialog, Select, MenuItem } from '@mui/material'
+import { Button,TextField, Grid, DialogTitle, Divider, DialogContent, Dialog, Select, MenuItem, InputLabel, OutlinedInput } from '@mui/material'
 import { createChild } from '../../reducers/ChildReducer'
 import { useDispatch } from 'react-redux'
 import {  useState } from 'react'
@@ -31,6 +31,7 @@ const AddNewChild = ({ daycare, groups, parents }) => {
 		
 			e.preventDefault()
 			try{
+				console.log(personName)
 				const parentsArray = parents.split(', ')
 				// Find the group based on the name so that the right id is found
 				const findgroup = groups.find((g) => group == g.name)
@@ -54,6 +55,13 @@ const AddNewChild = ({ daycare, groups, parents }) => {
 			}
 		}
 
+
+		const [personName, setPersonName] = useState([])
+		const handleChange = (event) => {
+			const { target: { value }} = event
+			setPersonName(typeof value === 'string' ? value.split(',') : value)
+		}
+
 		return (
 			<><Button onClick={() => handleModalOpen()}> Lisää uusi lapsi </Button><Dialog fullWidth={true} open={modalOpen} onClose={() => handleModalClose()}>
 				<DialogTitle>
@@ -67,9 +75,20 @@ const AddNewChild = ({ daycare, groups, parents }) => {
 							<TextField label="Syntynyt" fullWidth value={born} onChange={({ target }) => setBorn(target.value)} />
 							<TextField label="Max hoitoaika" fullWidth value={monthly_maxtime} onChange={({ target }) => setMonthlyMax(target.value)} />
 							<TextField label="Vanhemmat" fullWidth value={parents} onChange={({ target }) => setParents(target.value)} />
+							<InputLabel> Vanhemmat </InputLabel>
+							<Select  labelId="demo-multiple-name-label"
+								id="demo-multiple-name"
+								multiple
+								value={personName}
+								onChange={handleChange}
+								input={<OutlinedInput label="Name" />}>
+								{parents.map((p, index) => (
+									<MenuItem key={index} value={p.name}> {p.name}</MenuItem>
+								))}
+							</Select>
 							<Select value={group} onChange={({ target }) => setGroup(target.value)}>
-								{groups.map((g) => (
-									<MenuItem key={g.id} value={g.name}>{g.name}</MenuItem>
+								{groups.map((g, index) => (
+									<MenuItem key={index} value={g.name}>{g.name}</MenuItem>
 								))}
 							</Select>
 							<Grid>
