@@ -13,6 +13,7 @@ import NotificationReducer from './reducers/NotificationReducer'
 import messageReducer from './reducers/MessageReducer'
 import conversationsReducer from './reducers/ConversationsReducer'
 import errorReducer from './reducers/errorReducer'
+import parentReducer from './reducers/parentReducer'
 
 const store = configureStore({
 	reducer: {
@@ -29,6 +30,7 @@ const store = configureStore({
 		messages: messageReducer,
 		conversations: conversationsReducer,
 		errors: errorReducer,
+		parents: parentReducer 
 	}
 })
 console.log(store)

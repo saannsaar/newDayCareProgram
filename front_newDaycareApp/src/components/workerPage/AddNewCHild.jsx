@@ -7,9 +7,10 @@ import {  useState } from 'react'
 // Component for adding a new child's information to the system. 
 // There is a button which opens a dialog including a form where the user can
 // add all the necessary information and then save them
-const AddNewChild = ({ daycare, groups }) => {
+const AddNewChild = ({ daycare, groups, parents }) => {
 
-	if (groups && daycare) {
+	if (groups && daycare && parents) {
+		console.log(parents)
 		const [name, setName] = useState('')
 		const [born, setBorn] = useState('')
 		const [parents, setParents] = useState('')

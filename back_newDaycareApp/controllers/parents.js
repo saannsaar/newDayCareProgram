@@ -5,6 +5,10 @@ const {userExtractor } = require('../utils/middleware')
 
 // Get all the parents from the db
 parentRouter.get('/',userExtractor, async (request, response) => {
+  if (request.user.user_type == 'parent_user') {
+    response.status(401).json({error: "You are not authorized to view this page"})
+  }
+  
     const parents = await Parent.find({}).populate({path: 'children', model: 'Child'})
     response.json(parents)
 })

@@ -29,6 +29,7 @@ import { initializeCurrentChild, removeCurrentCHild } from './reducers/CurrentCh
 import { emptyNotifications, initializeNotifications } from './reducers/NotificationReducer'
 import { initializeConversation } from './reducers/ConversationsReducer'
 import LoadingIcons from 'react-loading-icons'
+import { initializeParents } from './reducers/parentReducer'
 
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
 	const api_key = process.env.REACT_APP_WEATHER_API_KEY
 	
 	const kids = useSelector(state => state.children)
+	const parents = useSelector(state => state.parents)
 	const workers = useSelector(state => state.workers)
 	const events = useSelector(state => state.events)
 	const groups = useSelector(state => state.groups)
@@ -68,6 +70,9 @@ const App = () => {
 		if (loggedInUser && usertype == 'parent_user') {
 			setPickedChild(loggedInUser.children[0].id)
 			dispatch(initializeCurrentChild(loggedInUser.children[0]))
+		}
+		if (loggedInUser && usertype == 'worker_user') {
+			dispatch(initializeParents())
 		}
 		
 	}, [loggedInUser, kids.length])
@@ -186,7 +191,7 @@ const App = () => {
 						<Route path="/own-family" element={<MyFamily usertype={usertype} user={loggedInUser} kids={kids}/>}/>
 						<Route path="/caretimes" element={<ScheduleCare events={events}  currentUser={loggedInUser} caretimes={caretimes} pickedChildId={currentChild.id} pickedChild={currentChild}/>}/>
 						<Route path="/messages" element={<Messages usertype={usertype} currentUser={loggedInUser}/>}/>
-						<Route path="/daycare" element={<Daycare caretimes={caretimes} workers={workers} groups={groups} kids={kids} daycare={daycare} usertype={usertype}/>}/>
+						<Route path="/daycare" element={<Daycare parents={parents} caretimes={caretimes} workers={workers} groups={groups} kids={kids} daycare={daycare} usertype={usertype}/>}/>
 					</Routes>
 
 					<AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>

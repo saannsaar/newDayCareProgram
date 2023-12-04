@@ -13,7 +13,7 @@ import AddNewChild from './AddNewCHild'
 // Worker-user can add new children to the system. 
 // There is a panel where the user can see every child who has been reported to be in daycare
 // on that day they are using the system. 
-const Daycare = ( {  groups, kids, daycare, usertype } ) => {
+const Daycare = ( {  groups, kids, daycare, usertype, parents } ) => {
 	if( groups && kids && daycare && usertype) {
 		const [selectedChild, setSelectedChild] = useState({})
 		
@@ -87,7 +87,7 @@ const Daycare = ( {  groups, kids, daycare, usertype } ) => {
 					<Grid item xs={4}>
 						<Item style={{width: 'fit-content'}}>
 							<List>
-								<AddNewChild daycare={daycare} groups={groups} />
+								<AddNewChild parents={parents}daycare={daycare} groups={groups} />
 								{kids.map((k, index) => (
 									<ListItem style={{borderBlockEnd: 'dashed #cfcccc'}} key={index} value={k.name} onClick={() => handleKidNameClick(k)}>
 										<ListItemText>{k.name}</ListItemText>
