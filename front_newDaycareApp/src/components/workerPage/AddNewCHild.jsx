@@ -7,13 +7,12 @@ import {  useState } from 'react'
 // Component for adding a new child's information to the system. 
 // There is a button which opens a dialog including a form where the user can
 // add all the necessary information and then save them
-const AddNewChild = ({ daycare, groups, parents }) => {
+const AddNewChild = ({ daycare, groups, parentsData }) => {
 
-	if (groups && daycare && parents) {
-		console.log(parents)
+	if (groups && daycare && parentsData) {
+		console.log(parentsData)
 		const [name, setName] = useState('')
 		const [born, setBorn] = useState('')
-		const [parents, setParents] = useState('')
 		const [monthly_maxtime, setMonthlyMax] = useState('')
 		const [group, setGroup] = useState(groups[0].name)
 		const [modalOpen, setmodalOpen] = useState(false)
@@ -31,35 +30,36 @@ const AddNewChild = ({ daycare, groups, parents }) => {
 		
 			e.preventDefault()
 			try{
-				console.log(personName)
-				const parentsArray = parents.split(', ')
+				console.log(parents)
 				// Find the group based on the name so that the right id is found
 				const findgroup = groups.find((g) => group == g.name)
 				const newChild ={
 					name: name,
 					born: born,
-					parents: parentsArray,
+					parents: parents,
 					monthly_maxtime: parseInt(monthly_maxtime),
 					daycare: daycare.id,
 					group: findgroup.id
 				}
+				console.log(newChild)
 				dispatch(createChild(newChild))
-
 				setName('')
 				setBorn('')
-				setParents('')
+				setParentsNames([])
 				setMonthlyMax('')
 				setGroup('')
+				setmodalOpen(false)
 			} catch (error) {
 				// console.log(error)
 			}
 		}
 
 
-		const [personName, setPersonName] = useState([])
-		const handleChange = (event) => {
-			const { target: { value }} = event
-			setPersonName(typeof value === 'string' ? value.split(',') : value)
+		const [parents, setParentsNames] = useState([])
+
+		const handleParentChange = (e) => {
+			const { target: { value }} = e
+			setParentsNames(typeof value === 'string' ? value.split(',') : value)
 		}
 
 		return (
@@ -74,15 +74,14 @@ const AddNewChild = ({ daycare, groups, parents }) => {
 							<TextField label="Nimi" fullWidth value={name} onChange={({ target }) => setName(target.value)} />
 							<TextField label="Syntynyt" fullWidth value={born} onChange={({ target }) => setBorn(target.value)} />
 							<TextField label="Max hoitoaika" fullWidth value={monthly_maxtime} onChange={({ target }) => setMonthlyMax(target.value)} />
-							<TextField label="Vanhemmat" fullWidth value={parents} onChange={({ target }) => setParents(target.value)} />
 							<InputLabel> Vanhemmat </InputLabel>
 							<Select  labelId="demo-multiple-name-label"
 								id="demo-multiple-name"
 								multiple
-								value={personName}
-								onChange={handleChange}
+								value={parents}
+								onChange={handleParentChange}
 								input={<OutlinedInput label="Name" />}>
-								{parents.map((p, index) => (
+								{parentsData.map((p, index) => (
 									<MenuItem key={index} value={p.name}> {p.name}</MenuItem>
 								))}
 							</Select>

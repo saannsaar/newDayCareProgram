@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 
 const DaycareWorker = require('../models/DaycareWorker')
 const {userExtractor } = require('../utils/middleware')
+const logger = require('../utils/logger')
 
 
 // Haetaan kaikki työntekijät tietokannasta
@@ -15,6 +16,7 @@ workerRouter.get('/', userExtractor, async (request, response) => {
 
 // Lisätään uusi työntekijä tietokantaan
 workerRouter.post('/', userExtractor,  async (request, response) => {
+   try {
     const {email, name, born, phone, password, user_type} = request.body
 
     const saltRounds = 10 
@@ -32,6 +34,9 @@ workerRouter.post('/', userExtractor,  async (request, response) => {
     const saved_worker = await user.save()
 
     response.status(201).json(saved_worker)
+   } catch (error) {
+    logger.error(`POSTERROR, USER ${user.name}, ERRORMESSAGE: ${error}`)
+   }
 })
 
 
@@ -44,7 +49,9 @@ workerRouter.get('/:id', userExtractor, async (request, response) => {
       const spesific_worker = await DaycareWorker.findById(request.params.id).populate('group').populate('user_type')
         response.json(spesific_worker)
     } catch(error) {
+      logger.error(`GETERROR, USER ${user.name}, ERRORMESSAGE: ${error}`)
       next(error)
+
     }
   }
 })
@@ -57,6 +64,7 @@ workerRouter.get('/:id', userExtractor, async (request, response) => {
         }).exec()
         response.json(worker)
     } catch(error) {
+      logger.error(`PUTERROR, USER ${user.name}, ERRORMESSAGE: ${error}`)
         next(error)
     }
   })

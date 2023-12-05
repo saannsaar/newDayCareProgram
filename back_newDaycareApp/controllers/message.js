@@ -1,40 +1,44 @@
 const messageRouter = require('express').Router()
 
 const mongoose = require('mongoose')
-
+const logger = require('../utils/logger')
 const Message = require('../models/Message')
 const {userExtractor } = require('../utils/middleware')
 const DaycareWorker = require('../models/DaycareWorker')
 const Parent = require('../models/Parent')
 
 messageRouter.get('/:receiver', userExtractor, async (request, response) => {
-   
+   try {
     if (request.params.receiver) {
-         const findReceiver = await Parent.findById(request.params.receiver)
-         if (!findReceiver) {
 
-            const finddReceiver = await DaycareWorker.findById(request.params.receiver)
-            
-            const conversations = await Message.find({ $or: [
-               { $and: [ {receiver: finddReceiver._id},  {sender: request.user._id  } ]},
-               { $and: [ {receiver: request.user._id },  {sender: finddReceiver._id } ]}
-           ]  })
-           response.status(200).json(conversations)
-            
-         } else {
+        const findReceiver = await Parent.findById(request.params.receiver)
+        if (!findReceiver) {
 
-            const conversations = await Message.find({ $or: [
-               { $and: [ {receiver: findReceiver._id},  {sender: request.user._id  } ]},
-               { $and: [ {receiver: request.user._id },  {sender: findReceiver._id } ]}
-           ]  })
+           const finddReceiver = await DaycareWorker.findById(request.params.receiver)
            
-           response.status(200).json(conversations)
-         }
-         
-    } else {
-        const conversations = await Message.find({ $or: [ { sender: request.user._id }, {receiver: request.user._id }]})
-        response.status(200).json(conversations)
-    }
+           const conversations = await Message.find({ $or: [
+              { $and: [ {receiver: finddReceiver._id},  {sender: request.user._id  } ]},
+              { $and: [ {receiver: request.user._id },  {sender: finddReceiver._id } ]}
+          ]  })
+          response.status(200).json(conversations)
+           
+        } else {
+
+           const conversations = await Message.find({ $or: [
+              { $and: [ {receiver: findReceiver._id},  {sender: request.user._id  } ]},
+              { $and: [ {receiver: request.user._id },  {sender: findReceiver._id } ]}
+          ]  })
+          
+          response.status(200).json(conversations)
+        }
+        
+   } else {
+       const conversations = await Message.find({ $or: [ { sender: request.user._id }, {receiver: request.user._id }]})
+       response.status(200).json(conversations)
+   }
+   } catch (error) {
+    logger.error(`GETERROR, USER ${user.name}, ERRORMESSAGE: ${error}`)
+   }    
     
 
 
@@ -64,6 +68,7 @@ messageRouter.post('/', userExtractor, async (request, response) => {
             response.status(201).json(saved_message)
         } catch(error) {
             response.status(400).json(error)
+            logger.error(`POSTERROR, USER ${user.name}, ERRORMESSAGE: ${error}`)
         }
         
     } else {
@@ -83,6 +88,7 @@ messageRouter.post('/', userExtractor, async (request, response) => {
             response.status(201).json(saved_message)
         } catch(error) {
             response.status(400).json(error)
+            logger.error(`POSTERROR, USER ${user.name}, ERRORMESSAGE: ${error}`)
         }
     }
   

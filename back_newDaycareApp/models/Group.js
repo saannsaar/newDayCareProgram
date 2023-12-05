@@ -15,7 +15,8 @@ const schema = new mongoose.Schema({
   children: [
         {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Child'
+        ref: 'Child',
+        unique: true
     }
   ],
 

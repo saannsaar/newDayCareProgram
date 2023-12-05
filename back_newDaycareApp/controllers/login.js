@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
 const DaycareWorker = require('../models/DaycareWorker')
 const Parent = require('../models/Parent')
-
+const logger = require('../utils/logger')
 loginRouter.post('/', async (request, response) => {
    
     const {email, password, user_type} = request.body
@@ -38,7 +38,9 @@ loginRouter.post('/', async (request, response) => {
 
     // Jos väärä käyttäjä tai ei ole olemassa vastataan 401 unauthorized
     if (!(user && passwordCorrect)) {
+        logger.error(`LOGINERROR, USER ${user.email}, ERRORMESSAGE: Invalid email or password`)
         return response.status(401).json({error: "invalid email or password"})
+        
     }
 
     const userForToken = {

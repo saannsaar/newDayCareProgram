@@ -1,20 +1,26 @@
 const eventsRouter = require('express').Router()
-
+const logger = require('../utils/logger')
 const Event = require('../models/Event')
 const Group = require('../models/Group')
 const { userExtractor } = require('../utils/middleware')
 
 // Get all the events from the db
 eventsRouter.get('/', userExtractor, async (request, response) => {
-    const events = await Event.find({})
-    response.json(events)
+    try {
+      const events = await Event.find({})
+      response.json(events)
+    } catch (error) {
+      logger.error(`GETERROR, USER ${user.name}, ERRORMESSAGE: ${error}`)
+    }
 })
 
 eventsRouter.delete('/:id', userExtractor, async (request, response) => {
    
     const user = request.user
     if( !user || user.user_type == "parent_user") {
+      logger.error(`DELETEERROR, USER ${user.name}, ERRORMESSAGE: Not authorized to delete an event`)
       return response(401).json({error: "You are not authorized to delete an event"})
+    
     }
     const event = await Event.deleteOne({_id: request.params.id })
     response.status(204).end()
@@ -40,11 +46,8 @@ eventsRouter.get('/:id', async (request, response) => {
         }
 
         if (request.user.user_type == 'parent_user') {
-          console.log("HALOO:S:S:S:S:S:S:S:S:S:S:S:S:")
           response.status(401).json({error: "You are not authorized create a new event"}).end()
         } else {
-
-
 
           try {
             const new_event = new Event({
@@ -60,7 +63,7 @@ eventsRouter.get('/:id', async (request, response) => {
           response.status(201).json(saved_event)
           }
           catch (error) {
-            console.log(error)
+            logger.error(`POSTERROR, USER ${user.name}, ERRORMESSAGE: ${error}`)
             response.status(401).json(error)
           }
           }

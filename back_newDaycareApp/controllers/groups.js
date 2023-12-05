@@ -2,12 +2,16 @@ const groupRouter = require('express').Router()
 const DaycareWorker = require('../models/DaycareWorker')
 const Group = require('../models/Group')
 const {userExtractor } = require('../utils/middleware')
-
+const logger = require('../utils/logger') 
 // Get all the parents from the db
 groupRouter.get('/', userExtractor, async (request, response) => {
+  try {
     const group = await Group.find({}).populate({path: 'children', model: 'Child'}).populate({path: 'workers_in_charge', model: 'DaycareWorker'})
     console.log(group)
     response.json(group)
+  } catch (error) {
+    logger.error(`GETERROR, USER ${request.user.name}, ERRORMESSAGE: ${error}`)
+  }
 })
 
 groupRouter.post('/', userExtractor, async (request, response) => {
@@ -28,6 +32,7 @@ groupRouter.post('/', userExtractor, async (request, response) => {
         const saved_group = await addGroup.save()
         response.status(201).json(saved_group)
       } catch (error) {
+        logger.error(`POSTERROR, USER ${request.user.name}, ERRORMESSAGE: ${error}`)
         response.status(400).json(error)
   
       }
@@ -45,6 +50,7 @@ groupRouter.put('/:id', userExtractor, async (request, response) => {
       }).exec()
       response.json(changeGroup)
     } catch (error) {
+      logger.error(`PUTERROR, USER ${request.user.name}, ERRORMESSAGE: ${error}`)
       response.status(400).json(error)
 
     }
@@ -52,12 +58,16 @@ groupRouter.put('/:id', userExtractor, async (request, response) => {
 })
 
 groupRouter.get('/:id', async (request, response) => {
+  try {
     const spesific_group = await Group.findById(request.params.id)
     if (spesific_group) {
       response.json(spesific_group)
-    } else {
-      response.status(404).end()
     }
+  } catch (error) {
+    logger.error(`POSTERROR, USER ${user.name}, ERRORMESSAGE: ${error}`)
+    response.status(400).json(error)
+  }
+    
   })
 
   module.exports = groupRouter

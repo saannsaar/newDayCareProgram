@@ -1,13 +1,10 @@
-const logger = require('./logger')
+const logger = require('./logger.js')
 const DaycareWorker = require('../models/DaycareWorker')
 const Parent = require('../models/Parent')
 const jwt = require('jsonwebtoken')
 
 const requestLogger = (request, response, next) => {
-    logger.info('Method:', request.method)
-    logger.info('Path:  ', request.path)
-    logger.info('Body:  ', request.body)
-    logger.info('---')
+    logger.info('Method: '.concat(request.method).concat(' Path:  ').concat(request.path).concat(' Body:  ').concat(JSON.stringify(request.body)))
     next()
   }
 

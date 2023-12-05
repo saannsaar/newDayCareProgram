@@ -14,12 +14,12 @@ import AddNewChild from './AddNewCHild'
 // There is a panel where the user can see every child who has been reported to be in daycare
 // on that day they are using the system. 
 const Daycare = ( {  groups, kids, daycare, usertype, parents } ) => {
-	if( groups && kids && daycare && usertype) {
+	if( groups && kids && daycare && usertype && parents) {
 		const [selectedChild, setSelectedChild] = useState({})
 		
 		const [todaysCaretimes, setTodaysCaretimes] = useState([])
 		const today = new Date()
-		console.log(kids, groups)
+		console.log(kids, groups, parents)
 		useEffect(() => {
 			let apuarr = []
 			for (let i = 0; i < kids.length; i++) {
@@ -87,7 +87,7 @@ const Daycare = ( {  groups, kids, daycare, usertype, parents } ) => {
 					<Grid item xs={4}>
 						<Item style={{width: 'fit-content'}}>
 							<List>
-								<AddNewChild parents={parents}daycare={daycare} groups={groups} />
+								<AddNewChild parentsData={parents} daycare={daycare} groups={groups} />
 								{kids.map((k, index) => (
 									<ListItem style={{borderBlockEnd: 'dashed #cfcccc'}} key={index} value={k.name} onClick={() => handleKidNameClick(k)}>
 										<ListItemText>{k.name}</ListItemText>

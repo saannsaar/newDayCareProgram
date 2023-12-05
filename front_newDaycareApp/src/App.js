@@ -52,7 +52,7 @@ const App = () => {
 	
 	const [pickedChild, setPickedChild] = useState('')
 	const loggedInUser = useSelector(state => state.currentUser)
-	
+	console.log(parents, groups)
 	const caretimes = useSelector(state => state.caretimes)
 	
 	useEffect(() => {
@@ -131,7 +131,7 @@ const App = () => {
 		dispatch(removeCurrentCHild())
 		setLoggedIn(false)
 
-		if (loggedIn === true && usertype ==='parent_user' && (!kids || !events || !caretimes || !currentChild || !allNotifications || !weather) || usertype ==='worker_user' && (!kids || !events || !caretimes || !allNotifications || !weather || !workers) ) {
+		if (loggedIn === true && usertype ==='parent_user' && (!kids || !events || !parents || !caretimes || !groups || !currentChild || !allNotifications || !weather) || usertype ==='worker_user' && (!kids || !events || !caretimes || !allNotifications || !weather || !workers || !groups) ) {
 			console.log(loggedIn)
 			return(
 				<div style={{ display: 'flex', alignItems: 'center', jusitfyContent: 'center', height:'100%', width: '100%'}}>

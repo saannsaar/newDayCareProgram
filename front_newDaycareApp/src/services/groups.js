@@ -6,7 +6,10 @@ const setToken = newToken => {
 	token = `bearer ${newToken}`
 }
 const getAllGroups = async () => {
-	const request = axios.get(baseUrl)
+	const config = {
+		headers: { Authorization: token },
+	}
+	const request = axios.get(baseUrl, config)
 	return request.then(response => response.data)
 }
 

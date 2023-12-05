@@ -5,11 +5,16 @@ const Parent = require('../models/Parent')
 const moment = require('moment')
 const Group = require('../models/Group')
 const Daycare = require('../models/Daycare')
+const logger = require('../utils/logger')
 // Get all the children from the db
 childRouter.get('/', userExtractor, async (request, response) => {
-   const children = await Child.find({})
-   console.log(children)
-   response.json(children)
+    try {
+      const children = await Child.find({})
+      console.log(children)
+      response.json(children)
+    } catch (error) {
+      logger.error(`GETERROR, USER ${requet.user.name}, ERRORMESSAGE: ${error}`)
+    }
 })
 
 
@@ -66,16 +71,17 @@ childRouter.post('/', userExtractor,  async (request, response) => {
        findDaycare.children.push(saved_child._id)
        await findDaycare.save()
        findGroup.children.push(saved_child._id)
+       console.log(findGroup)
        await findGroup.save()
      } catch (exc) {
-       console.log(exc)
+       logger.error(`POSTERROR, USER ${user.name}, ERRORMESSAGE: ${exc}`)
        response.status(400).json({error: "Could not add child to parents children"})
      }
     }
     response.status(201).json(saved_child)
 
     } catch (error) {
-      console.log(error)
+      logger.error(`POSTERROR, USER ${user.name}, ERRORMESSAGE: ${error}`)
       response.status(400).json(error)
       
     }
@@ -96,7 +102,24 @@ childRouter.put('/:id', userExtractor,  async (request, response) => {
   response.status(201).json(updatedChild)
      
   } catch (error) {
-    console.log(error)
+    logger.error(`PUTERROR, USER ${user.name}, ERRORMESSAGE: ${error}`)
+    response.status(400).json(error)
+    
+  }
+})
+
+childRouter.delete('/:id', userExtractor,  async (request, response) => {
+  const user = request.user
+  if (!user) {
+    return response.status(401).json({error: "You cant do that"})
+  }
+ 
+  try {
+    const deleteChild = await Child.deleteOne({_id: request.params.id})
+    response.status(201).json(deleteChild)
+     
+  } catch (error) {
+    logger.error(`DELETE, USER ${user.name}, ERRORMESSAGE: ${error}`)
     response.status(400).json(error)
     
   }
@@ -105,9 +128,7 @@ childRouter.put('/:id', userExtractor,  async (request, response) => {
 
 // Get one spesific child's information from the db with id
 childRouter.get('/:id', userExtractor, async (request, response) => {
-  console.log(request.user)
   if (request.user.user_type === 'parent_user') {
-    console.log('parent router')
     const findmychild = request.user.children.find(c => c.toString() === request.params.id)
     if (!findmychild) {
       response.status(401).json({error: "Not authorized to see this child's info"})
@@ -116,6 +137,7 @@ childRouter.get('/:id', userExtractor, async (request, response) => {
       if (spesific_child) { 
         return response.status(200).json(spesific_child)
       } else {
+        logger.error(`GETERROR, USER ${user.name}, ERRORMESSAGE: Something went wrong`)
         return response.status(404).end()
       }
     }
