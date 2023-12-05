@@ -39,4 +39,4 @@
 | 30.11.  | 5,5h   | Viimeistelyä, koitettu saada git actions toimimaan edelleen, lisätty kommentteja ja poisteltu turhia kommentoituja rivejä ja siistitty koodia ylipäätään |
 | 4.12.  | 1h   | Viimeistely, deployuksen fiksausta, lisätty vielä vanhempien lisäys uutta lasta lisättäessä "select" inputiksi, vielä voisi vaikka mitä lisätä ja hommaa kehittää.. |
 
-| yht     | 197,5h |  | 
+| yht     | 197,5h | - | 
