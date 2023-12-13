@@ -22,11 +22,11 @@ jobs:
         with:
           node-version: '16'
       - name: Install Dependencies back
-        working-directory: ../back_newDaycareApp
+        working-directory: /back_newDaycareApp
         run:
           npm install
       - name: Install Dependencies front
-        working-directory: ../front_newDaycareApp
+        working-directory: /front_newDaycareApp
         run:
           npm install --legacy-peer-deps
       - name: Run ui build 
