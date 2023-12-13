@@ -1,5 +1,5 @@
 import {  useState } from 'react'
-import { Button, TextField, Select, MenuItem, Typography} from '@mui/material'
+import { Button, TextField, Select, MenuItem, Typography } from '@mui/material'
 import loginService from '../services/login'
 import { useDispatch } from 'react-redux'
 import { initializeCurrentWorker, removeCurrentUser } from '../reducers/CurrentUser'
@@ -86,7 +86,6 @@ const LoginForm = ( {setLoggedIn} ) => {
 		}
 	}
 
-
 	return (
 		<>
 			<div style={{textAlign: 'center'}}>
@@ -104,10 +103,10 @@ const LoginForm = ( {setLoggedIn} ) => {
 				</div>
 				<form onSubmit={submit} style={{border: '10px inset #89b0a0',borderRadius: '5px', padding: '20px', display: 'inline-block', backgroundImage: 'linear-gradient(to bottom right, #cbb6e3, #adedd2)'}}> 
 					<div style={{marginBottom: '10px'}}>
-						<TextField label="email" value={userEmail} onChange={({ target }) => setuserEmail(target.value)} />
+						<TextField label="Sähköposti" value={userEmail} onChange={({ target }) => setuserEmail(target.value)} />
 					</div>
 					<div style={{marginBottom: '10px'}}>
-						<TextField type="password" label="password" value={password} onChange={({ target }) => setPassword(target.value)} />
+						<TextField type="password" label="Salasana" value={password} onChange={({ target }) => setPassword(target.value)} />
 					</div>
 					<div>
 						<Button variant="contained" color="primary" type="submit">

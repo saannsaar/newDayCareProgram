@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/children
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvaW5lbi50eW9udGVraWphQGVtYWlsLmZpIiwiaWQiOiI2NGVlZGUyNjQ0MTQ5M2QwYzczN2I0N2QiLCJpYXQiOjE3MDA3MzA1OTAsImV4cCI6MTcwMDczNDE5MH0.YYxoqlE_VKjb2PIv0p57RzCbEkilTj4Os41ALFAz9ow"
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvaW5lbi50eW9udGVraWphQGVtYWlsLmZpIiwiaWQiOiI2NGVlZGUyNjQ0MTQ5M2QwYzczN2I0N2QiLCJpYXQiOjE3MDA3MzA3MTEsImV4cCI6MTcwMDczNDMxMX0.4urd1m7qaEU5Q43s9QrZKVWI-5gG2J628wsnBD_Hsyo
 
 {
         "name": "Kikka Forbes",

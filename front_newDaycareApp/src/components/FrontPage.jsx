@@ -25,7 +25,7 @@ const FrontPage = ({ events, kids, usertype, notifications, weather , groups}) =
 	const [emodalOpen, setemodalOpen] = useState(false)
 	
 	const dispatch = useDispatch()
-
+	
 	if(!events || !notifications || !weather || !groups) {
 		return (
 			<div>

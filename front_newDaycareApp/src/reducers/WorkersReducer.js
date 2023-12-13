@@ -9,7 +9,7 @@ const usersSlice = createSlice({
 	reducers: {
 		setWorkers: (state, action) => {
 			return action.payload
-		},
+		}	
 		
 	}
 })
@@ -22,6 +22,8 @@ export const initializeWorkers = () => {
 		dispatch(setWorkers(workers))
 	}
 }
+
+
 
 
 

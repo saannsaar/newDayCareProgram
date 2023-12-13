@@ -1,6 +1,7 @@
 import axios from 'axios'
 const baseUrl = '/api/workers'
 let token = null
+
 const setToken = newToken => {
 	token = `bearer ${newToken}`
 }
@@ -28,4 +29,5 @@ const editUser = async (worker, id) => {
 	const response = await axios.put(baseUrl.concat('/').concat(id), worker, config)
 	return response.data
 }
+
 export default { getAll, getWorkerById, editUser, setToken }
