@@ -1,4 +1,0 @@
-GET http://localhost:3001/api/messages
-content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvaW5lbi50eW9udGVraWphQGVtYWlsLmNvbSIsImlkIjoiNjRlZWRlMjY0NDE0OTNkMGM3MzdiNDdkIiwiaWF0IjoxNjk4ODIzNDk3LCJleHAiOjE2OTg4MjcwOTd9.RaVU-hCNvbZ7ZDpipCSuAN50qStQKdF5K44p3Tou8nU
-

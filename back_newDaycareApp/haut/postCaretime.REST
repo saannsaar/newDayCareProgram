@@ -1,8 +1,0 @@
-POST http://localhost:3001/api/children/6507f8a77ee5794652673730/caretimes
-content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbm5pbi5zYWhrb3Bvc3RpQGVtYWlsLmNvbSIsImlkIjoiNjRmODA5YzRjZTJiYjI4YzM5MWU4MDRhIiwiaWF0IjoxNjk5ODY5NTQwLCJleHAiOjE2OTk4NzMxNDB9.kCDqkp1I1D4IxgOsDVTLAgAjkTbccx-sKodNqKC7oTE
-
-{
-        "start_time": "2023-08-10T03:15:00.000+00:00",
-        "end_time": "2023-08-10T04:00:00.000+00:00"
-}

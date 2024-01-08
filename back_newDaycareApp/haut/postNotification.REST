@@ -1,9 +1,0 @@
-POST http://localhost:3001/api/notifications
-content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRvaW5lbi50eW9udGVraWphQGVtYWlsLmZpIiwiaWQiOiI2NGVlZGUyNjQ0MTQ5M2QwYzczN2I0N2QiLCJpYXQiOjE2OTc0NTA5MjUsImV4cCI6MTY5NzQ1NDUyNX0.mpMyD5i7WsXmpBjdBM5ouLl_rVMNAeAaiRP9B6d7mTM
-
-{
-        "headingtext": "Päiväkodissa todettu täitä!",
-        "contenttext": "Viimeviikolla 4 eri lapsella todettu täitä. Tarkkailkaa lapsien hiuksia ja kutinaa.",
-        "toParents": true
-}

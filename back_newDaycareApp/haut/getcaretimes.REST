@@ -1,2 +1,0 @@
-http://localhost:3001/api/caretimes
-content-type: application/json
